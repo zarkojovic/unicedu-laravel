@@ -609,12 +609,20 @@
                 "VALUE": "StudyZone"
             },
             {
+                "ID": "639",
+                "VALUE": "Soonestedu"
+            },
+            {
                 "ID": "111",
                 "VALUE": "TDT Edu"
             },
             {
                 "ID": "113",
                 "VALUE": "E\u011fitimAl"
+            },
+            {
+                "ID": "605",
+                "VALUE": "EduMap Global"
             },
             {
                 "ID": "115",
@@ -643,10 +651,6 @@
             {
                 "ID": "561",
                 "VALUE": "Venus E\u011fitim"
-            },
-            {
-                "ID": "605",
-                "VALUE": "EduMap Global"
             }
         ],
         "title": "UF_CRM_1667334114522",
@@ -868,12 +872,12 @@
         "isDynamic": true,
         "items": [
             {
-                "ID": "63",
-                "VALUE": "Bachelor"
-            },
-            {
                 "ID": "65",
                 "VALUE": "Master"
+            },
+            {
+                "ID": "63",
+                "VALUE": "Bachelor"
             },
             {
                 "ID": "67",
@@ -890,7 +894,7 @@
         ],
         "title": "UF_CRM_1667335695035",
         "listLabel": "Degree",
-        "formLabel": "Degree",
+        "formLabel": "Degree student",
         "filterLabel": "Degree",
         "settings": {
             "DISPLAY": "LIST",
@@ -1066,10 +1070,6 @@
                 "VALUE": "Littlehome.pl"
             },
             {
-                "ID": "77",
-                "VALUE": "Student Depot"
-            },
-            {
                 "ID": "79",
                 "VALUE": "Zeitraum"
             },
@@ -1080,6 +1080,10 @@
             {
                 "ID": "83",
                 "VALUE": "Private accommodation"
+            },
+            {
+                "ID": "77",
+                "VALUE": "Student Depot"
             }
         ],
         "title": "UF_CRM_1667336524064",

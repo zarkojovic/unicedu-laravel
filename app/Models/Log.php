@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Log extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'log_id';
 
     protected $fillable = [
         'user_id',

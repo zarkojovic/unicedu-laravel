@@ -9,6 +9,7 @@ class Field extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'field_id';
     protected $fillable = [
         'field_name',
         'type',

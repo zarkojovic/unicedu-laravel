@@ -10,6 +10,8 @@ class Deal extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'deal_id';
+
     protected $fillable = [
         'bitrix_deal_id',
         'university',

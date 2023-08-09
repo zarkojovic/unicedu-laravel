@@ -9,6 +9,8 @@ class Agency extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'agency_id';
+
     protected $fillable = [
         'agency_name',
         'bitrix_agency_id'

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('field_name');
             $table->string('title')->nullable();
             $table->boolean('status')->default(false);
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->string('type')->nullable();
             $table->unsignedBigInteger('field_category_id')->nullable();
             $table->timestamps();
