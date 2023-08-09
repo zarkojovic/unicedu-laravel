@@ -1,0 +1,49 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ */
+class UserFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->firstName(),
+            'password' => bcrypt('password'), // Default password, you can change this
+            'email' => fake()->unique()->safeEmail,
+            'auth_code' => Str::random(10),
+            'email_verified_at' => now(),
+            'profile_image' => 'profile.jpg',
+            'phone' => fake()->unique()->phoneNumber,
+            'contact_id' => $this->faker->randomNumber(),
+            'role_id' => random_int(1,3),
+            'agent_id' => null,
+            'package_id' => null,
+            'remember_token' => Str::random(10),
+
+
+        ];
+    }
+
+    /**
+     * Indicate that the model's email address should be unverified.
+     */
+    public function unverified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+        ]);
+    }
+}

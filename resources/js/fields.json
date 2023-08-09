@@ -1,0 +1,3023 @@
+[
+    {
+        "type": "integer",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "ID",
+        "field_name": "ID"
+    },
+    {
+        "type": "string",
+        "isRequired": true,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Nazwa",
+        "field_name": "TITLE"
+    },
+    {
+        "type": "crm_status",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "statusType": "DEAL_TYPE",
+        "title": "Typ deala",
+        "field_name": "TYPE_ID"
+    },
+    {
+        "type": "crm_category",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": true,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Lejek",
+        "field_name": "CATEGORY_ID"
+    },
+    {
+        "type": "crm_status",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "statusType": "DEAL_STAGE",
+        "title": "Etap deala",
+        "field_name": "STAGE_ID"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Grupa etapu",
+        "field_name": "STAGE_SEMANTIC_ID"
+    },
+    {
+        "type": "char",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Nowy deal",
+        "field_name": "IS_NEW"
+    },
+    {
+        "type": "char",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Powracaj\u0105cy deal",
+        "field_name": "IS_RECURRING"
+    },
+    {
+        "type": "char",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Deal powracaj\u0105cy",
+        "field_name": "IS_RETURN_CUSTOMER"
+    },
+    {
+        "type": "char",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Ponowne zapytanie",
+        "field_name": "IS_REPEATED_APPROACH"
+    },
+    {
+        "type": "integer",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Prawdopodobie\u0144stwo",
+        "field_name": "PROBABILITY"
+    },
+    {
+        "type": "crm_currency",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Waluta",
+        "field_name": "CURRENCY_ID"
+    },
+    {
+        "type": "double",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Razem",
+        "field_name": "OPPORTUNITY"
+    },
+    {
+        "type": "char",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "IS_MANUAL_OPPORTUNITY",
+        "field_name": "IS_MANUAL_OPPORTUNITY"
+    },
+    {
+        "type": "double",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Stawka podatku",
+        "field_name": "TAX_VALUE"
+    },
+    {
+        "type": "crm_company",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Firma",
+        "settings": {
+            "parentEntityTypeId": 4
+        },
+        "field_name": "COMPANY_ID"
+    },
+    {
+        "type": "crm_contact",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "isDeprecated": true,
+        "title": "Kontakt",
+        "field_name": "CONTACT_ID"
+    },
+    {
+        "type": "crm_contact",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": true,
+        "isDynamic": false,
+        "title": "Kontakty",
+        "field_name": "CONTACT_IDS"
+    },
+    {
+        "type": "crm_quote",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Oferta",
+        "settings": {
+            "parentEntityTypeId": 7
+        },
+        "field_name": "QUOTE_ID"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Data rozpocz\u0119cia",
+        "field_name": "BEGINDATE"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Data zako\u0144czenia",
+        "field_name": "CLOSEDATE"
+    },
+    {
+        "type": "char",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Dost\u0119pny dla wszystkich",
+        "field_name": "OPENED"
+    },
+    {
+        "type": "char",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Zamkni\u0119te",
+        "field_name": "CLOSED"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Komentarz",
+        "field_name": "COMMENTS"
+    },
+    {
+        "type": "user",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Osoba odpowiedzialna",
+        "field_name": "ASSIGNED_BY_ID"
+    },
+    {
+        "type": "user",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Utworzony przez",
+        "field_name": "CREATED_BY_ID"
+    },
+    {
+        "type": "user",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Zmodyfikowane przez",
+        "field_name": "MODIFY_BY_ID"
+    },
+    {
+        "type": "user",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "MOVED_BY_ID",
+        "field_name": "MOVED_BY_ID"
+    },
+    {
+        "type": "datetime",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Utworzono dnia",
+        "field_name": "DATE_CREATE"
+    },
+    {
+        "type": "datetime",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Zmodyfikowano dnia",
+        "field_name": "DATE_MODIFY"
+    },
+    {
+        "type": "datetime",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "MOVED_TIME",
+        "field_name": "MOVED_TIME"
+    },
+    {
+        "type": "crm_status",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "statusType": "SOURCE",
+        "title": "\u0179r\u00f3d\u0142o",
+        "field_name": "SOURCE_ID"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Informacja o \u017ar\u00f3dle",
+        "field_name": "SOURCE_DESCRIPTION"
+    },
+    {
+        "type": "crm_lead",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Lead",
+        "settings": {
+            "parentEntityTypeId": 1
+        },
+        "field_name": "LEAD_ID"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Dodatkowe informacje",
+        "field_name": "ADDITIONAL_INFO"
+    },
+    {
+        "type": "location",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Lokalizacja",
+        "field_name": "LOCATION_ID"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "\u0179r\u00f3d\u0142o zewn\u0119trzne",
+        "field_name": "ORIGINATOR_ID"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Identyfikator pozycji w \u017ar\u00f3dle danych",
+        "field_name": "ORIGIN_ID"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "System reklamowy",
+        "field_name": "UTM_SOURCE"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Medium",
+        "field_name": "UTM_MEDIUM"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "UTM kampanii reklamowej",
+        "field_name": "UTM_CAMPAIGN"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Materia\u0142y kampanii",
+        "field_name": "UTM_CONTENT"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "Szukany termin kampanii",
+        "field_name": "UTM_TERM"
+    },
+    {
+        "type": "datetime",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "LAST_ACTIVITY_TIME",
+        "field_name": "LAST_ACTIVITY_TIME"
+    },
+    {
+        "type": "user",
+        "isRequired": false,
+        "isReadOnly": true,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": false,
+        "title": "LAST_ACTIVITY_BY",
+        "field_name": "LAST_ACTIVITY_BY"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "45",
+                "VALUE": "Bronz"
+            },
+            {
+                "ID": "47",
+                "VALUE": "Silver"
+            },
+            {
+                "ID": "49",
+                "VALUE": "Gold"
+            },
+            {
+                "ID": "51",
+                "VALUE": "Platinium"
+            }
+        ],
+        "title": "UF_CRM_1667333858787",
+        "listLabel": "Package",
+        "formLabel": "Package",
+        "filterLabel": "Package",
+        "settings": {
+            "DISPLAY": "UI",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1667333858787"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667334040534",
+        "listLabel": "Citizenship",
+        "formLabel": "Citizenship",
+        "filterLabel": "Citizenship",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667334040534"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "53",
+                "VALUE": "Academix"
+            },
+            {
+                "ID": "85",
+                "VALUE": "Admission"
+            },
+            {
+                "ID": "587",
+                "VALUE": "ASBA yurtd\u0131\u015f\u0131 e\u011fitim"
+            },
+            {
+                "ID": "87",
+                "VALUE": "Al-Bayraq"
+            },
+            {
+                "ID": "559",
+                "VALUE": "Alfa E\u011fitim"
+            },
+            {
+                "ID": "595",
+                "VALUE": "BDTS solutions"
+            },
+            {
+                "ID": "91",
+                "VALUE": "Draft"
+            },
+            {
+                "ID": "93",
+                "VALUE": "Empathy"
+            },
+            {
+                "ID": "95",
+                "VALUE": "EuroPol"
+            },
+            {
+                "ID": "97",
+                "VALUE": "Next Level"
+            },
+            {
+                "ID": "597",
+                "VALUE": "Felix Academy"
+            },
+            {
+                "ID": "99",
+                "VALUE": "Poland Study"
+            },
+            {
+                "ID": "89",
+                "VALUE": "Polonyaakademi"
+            },
+            {
+                "ID": "101",
+                "VALUE": "Polonya Kampus"
+            },
+            {
+                "ID": "103",
+                "VALUE": "Polonya Kultur"
+            },
+            {
+                "ID": "601",
+                "VALUE": "RA Education"
+            },
+            {
+                "ID": "105",
+                "VALUE": "Top Edu Academy"
+            },
+            {
+                "ID": "107",
+                "VALUE": "Univerna"
+            },
+            {
+                "ID": "109",
+                "VALUE": "Saba Yed"
+            },
+            {
+                "ID": "607",
+                "VALUE": "StudyZone"
+            },
+            {
+                "ID": "111",
+                "VALUE": "TDT Edu"
+            },
+            {
+                "ID": "113",
+                "VALUE": "E\u011fitimAl"
+            },
+            {
+                "ID": "115",
+                "VALUE": "FirstStep"
+            },
+            {
+                "ID": "287",
+                "VALUE": "Hoxbridge"
+            },
+            {
+                "ID": "289",
+                "VALUE": "Yurtdisi Egitim"
+            },
+            {
+                "ID": "291",
+                "VALUE": "Poland Edu"
+            },
+            {
+                "ID": "293",
+                "VALUE": "My Future Agency"
+            },
+            {
+                "ID": "297",
+                "VALUE": "Tigro E\u011fitim"
+            },
+            {
+                "ID": "561",
+                "VALUE": "Venus E\u011fitim"
+            },
+            {
+                "ID": "605",
+                "VALUE": "EduMap Global"
+            }
+        ],
+        "title": "UF_CRM_1667334114522",
+        "listLabel": "Agency",
+        "formLabel": "Agency",
+        "filterLabel": "Agency",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1667334114522"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667334170538",
+        "listLabel": "Name of the agent",
+        "formLabel": "Name of the agent",
+        "filterLabel": "Name of the agent",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667334170538"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "233",
+                "VALUE": "Adam Mickiewicz"
+            },
+            {
+                "ID": "593",
+                "VALUE": "AGH"
+            },
+            {
+                "ID": "241",
+                "VALUE": "AFM Karkow"
+            },
+            {
+                "ID": "189",
+                "VALUE": "Collegium Civitas"
+            },
+            {
+                "ID": "191",
+                "VALUE": "Collegium Da Vinci"
+            },
+            {
+                "ID": "227",
+                "VALUE": "Gdansk Technology University"
+            },
+            {
+                "ID": "229",
+                "VALUE": "Gdansk Medical University"
+            },
+            {
+                "ID": "235",
+                "VALUE": "Jagiellonian University"
+            },
+            {
+                "ID": "609",
+                "VALUE": "Lublin Medical University"
+            },
+            {
+                "ID": "193",
+                "VALUE": "Lodz Medical University"
+            },
+            {
+                "ID": "603",
+                "VALUE": "Lodz Technology University"
+            },
+            {
+                "ID": "195",
+                "VALUE": "Lodz University"
+            },
+            {
+                "ID": "197",
+                "VALUE": "Lower Silesia University"
+            },
+            {
+                "ID": "231",
+                "VALUE": "Lazarski University"
+            },
+            {
+                "ID": "613",
+                "VALUE": "Maritime University of Szczecin"
+            },
+            {
+                "ID": "589",
+                "VALUE": "Nicolaus Copernicus University"
+            },
+            {
+                "ID": "615",
+                "VALUE": "Maria Curie Sk\u0142odowska University"
+            },
+            {
+                "ID": "203",
+                "VALUE": "Poznan Technology University"
+            },
+            {
+                "ID": "223",
+                "VALUE": "Poznan Medical University"
+            },
+            {
+                "ID": "199",
+                "VALUE": "Polish Japanese Academy"
+            },
+            {
+                "ID": "201",
+                "VALUE": "SWPS"
+            },
+            {
+                "ID": "239",
+                "VALUE": "SGH"
+            },
+            {
+                "ID": "237",
+                "VALUE": "Silesian University of Technology"
+            },
+            {
+                "ID": "611",
+                "VALUE": "Silesia Medical University"
+            },
+            {
+                "ID": "225",
+                "VALUE": "University of Information Technology and Management in Rzeszow"
+            },
+            {
+                "ID": "205",
+                "VALUE": "Vincent Pol University"
+            },
+            {
+                "ID": "209",
+                "VALUE": "Vizja University"
+            },
+            {
+                "ID": "59",
+                "VALUE": "WMU"
+            },
+            {
+                "ID": "207",
+                "VALUE": "WSCS"
+            },
+            {
+                "ID": "211",
+                "VALUE": "Warsaw Technology"
+            },
+            {
+                "ID": "213",
+                "VALUE": "Warsaw Medical University"
+            },
+            {
+                "ID": "215",
+                "VALUE": "Warsaw University"
+            },
+            {
+                "ID": "617",
+                "VALUE": "Warsaw Film School"
+            },
+            {
+                "ID": "591",
+                "VALUE": "WSB University"
+            },
+            {
+                "ID": "217",
+                "VALUE": "Wroclaw Life Sciences University"
+            },
+            {
+                "ID": "219",
+                "VALUE": "Wroclaw Economy University"
+            },
+            {
+                "ID": "61",
+                "VALUE": "Wroclaw Technology University"
+            },
+            {
+                "ID": "221",
+                "VALUE": "Wroclaw University"
+            },
+            {
+                "ID": "599",
+                "VALUE": "Wroclaw Medical University"
+            }
+        ],
+        "title": "UF_CRM_1667335624051",
+        "listLabel": "University name",
+        "formLabel": "University name",
+        "filterLabel": "University name",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1667335624051"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "63",
+                "VALUE": "Bachelor"
+            },
+            {
+                "ID": "65",
+                "VALUE": "Master"
+            },
+            {
+                "ID": "67",
+                "VALUE": "Long-Cycle"
+            },
+            {
+                "ID": "69",
+                "VALUE": "Prep-year"
+            },
+            {
+                "ID": "71",
+                "VALUE": "Pre-Med"
+            }
+        ],
+        "title": "UF_CRM_1667335695035",
+        "listLabel": "Degree",
+        "formLabel": "Degree",
+        "filterLabel": "Degree",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1667335695035"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667335742921",
+        "listLabel": "Program",
+        "formLabel": "Program",
+        "filterLabel": "Program",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667335742921"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667335881710",
+        "listLabel": "Login TRC",
+        "formLabel": "Login TRC",
+        "filterLabel": "Login TRC",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667335881710"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667335892201",
+        "listLabel": "Password TRC",
+        "formLabel": "Password TRC",
+        "filterLabel": "Password TRC",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667335892201"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667335914257",
+        "listLabel": "ID number",
+        "formLabel": "ID number",
+        "filterLabel": "ID number",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667335914257"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667336076197",
+        "listLabel": "Status",
+        "formLabel": "Status",
+        "filterLabel": "Status",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667336076197"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667336311565",
+        "listLabel": "Passport TRC",
+        "formLabel": "Passport TRC",
+        "filterLabel": "Passport TRC",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1667336311565"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667336320092",
+        "listLabel": "Photo",
+        "formLabel": "Photo",
+        "filterLabel": "Photo",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1667336320092"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "73",
+                "VALUE": "Pokoj.waw.pl"
+            },
+            {
+                "ID": "75",
+                "VALUE": "Littlehome.pl"
+            },
+            {
+                "ID": "77",
+                "VALUE": "Student Depot"
+            },
+            {
+                "ID": "79",
+                "VALUE": "Zeitraum"
+            },
+            {
+                "ID": "81",
+                "VALUE": "University dorm"
+            },
+            {
+                "ID": "83",
+                "VALUE": "Private accommodation"
+            }
+        ],
+        "title": "UF_CRM_1667336524064",
+        "listLabel": "Company name",
+        "formLabel": "Company name",
+        "filterLabel": "Company name",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1667336524064"
+    },
+    {
+        "type": "address",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667336539785",
+        "listLabel": "Address",
+        "formLabel": "Address",
+        "filterLabel": "Address",
+        "settings": {
+            "SHOW_MAP": "Y"
+        },
+        "field_name": "UF_CRM_1667336539785"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667336565703",
+        "listLabel": "Local no",
+        "formLabel": "Local no",
+        "filterLabel": "Local no",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667336565703"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1667336578485",
+        "listLabel": "Room no",
+        "formLabel": "Room no",
+        "filterLabel": "Room no",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1667336578485"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "279",
+                "VALUE": "October 2022\/2023"
+            },
+            {
+                "ID": "281",
+                "VALUE": "March 2022\/2023"
+            },
+            {
+                "ID": "323",
+                "VALUE": "October 2023\/2024"
+            },
+            {
+                "ID": "325",
+                "VALUE": "March 2023\/2024"
+            }
+        ],
+        "title": "UF_CRM_1668001651504",
+        "listLabel": "Intake",
+        "formLabel": "Intake",
+        "filterLabel": "Intake",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1668001651504"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1668771731749",
+        "listLabel": "Diploma",
+        "formLabel": "Diploma",
+        "filterLabel": "Diploma",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1668771731749"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1668771824662",
+        "listLabel": "Diploma Translation",
+        "formLabel": "Diploma Translation",
+        "filterLabel": "Diploma Translation",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1668771824662"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1668771835309",
+        "listLabel": "Transcript",
+        "formLabel": "Transcript",
+        "filterLabel": "Transcript",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1668771835309"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1668771849100",
+        "listLabel": "Transcript Translation",
+        "formLabel": "Transcript Translation",
+        "filterLabel": "Transcript Translation",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1668771849100"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1668771867263",
+        "listLabel": "Payment Confirmation",
+        "formLabel": "Payment Confirmation",
+        "filterLabel": "Payment Confirmation",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1668771867263"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1668771875508",
+        "listLabel": "Passport",
+        "formLabel": "Passport",
+        "filterLabel": "Passport",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1668771875508"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1668771886618",
+        "listLabel": "English Certificate",
+        "formLabel": "English Certificate",
+        "filterLabel": "English Certificate",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1668771886618"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1668771892972",
+        "listLabel": "Other",
+        "formLabel": "Other",
+        "filterLabel": "Other",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1668771892972"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": true,
+        "isDynamic": true,
+        "title": "UF_CRM_1669505816237",
+        "listLabel": "Agreements",
+        "formLabel": "Agreements",
+        "filterLabel": "Agreements",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1669505816237"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1670758910561",
+        "listLabel": "Application files sent date",
+        "formLabel": "Application files sent date",
+        "filterLabel": "Application files sent date",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1670758910561"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1670759018324",
+        "listLabel": "Login",
+        "formLabel": "Login",
+        "filterLabel": "Login",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1670759018324"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1670759033659",
+        "listLabel": "Password",
+        "formLabel": "Password",
+        "filterLabel": "Password",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1670759033659"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1671715557613",
+        "listLabel": "New file",
+        "formLabel": "New file",
+        "filterLabel": "New file",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1671715557613"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1672738144775",
+        "listLabel": "Start date of the visa",
+        "formLabel": "Start date of the visa",
+        "filterLabel": "Start date of the visa",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1672738144775"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1672738192917",
+        "listLabel": "Visa expire date",
+        "formLabel": "Visa expire date",
+        "filterLabel": "Visa expire date",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1672738192917"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1672738206607",
+        "listLabel": "Visa page",
+        "formLabel": "Visa page",
+        "filterLabel": "Visa page",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1672738206607"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1676222263365",
+        "listLabel": "First wezwanie date",
+        "formLabel": "First wezwanie date",
+        "filterLabel": "First wezwanie date",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1676222263365"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1676222274580",
+        "listLabel": "Second wezwanie date",
+        "formLabel": "Second wezwanie date",
+        "filterLabel": "Second wezwanie date",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1676222274580"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1676222429680",
+        "listLabel": "Application number",
+        "formLabel": "Application number",
+        "filterLabel": "Application number",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1676222429680"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": true,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "299",
+                "VALUE": "4 photo (3.5x4.5)"
+            },
+            {
+                "ID": "301",
+                "VALUE": "Confirmation from the bank (340 PLN)"
+            },
+            {
+                "ID": "303",
+                "VALUE": "Passport copies"
+            }
+        ],
+        "title": "UF_CRM_1676223111107",
+        "listLabel": "Documents",
+        "formLabel": "Documents",
+        "filterLabel": "Documents",
+        "settings": {
+            "DISPLAY": "CHECKBOX",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1676223111107"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "305",
+                "VALUE": "Profile created for the student"
+            },
+            {
+                "ID": "321",
+                "VALUE": "Application files sent"
+            },
+            {
+                "ID": "307",
+                "VALUE": "Application registered"
+            },
+            {
+                "ID": "309",
+                "VALUE": "Wezwanie received"
+            },
+            {
+                "ID": "311",
+                "VALUE": "Documents submitted, waiting for decision"
+            },
+            {
+                "ID": "313",
+                "VALUE": "Decision positive"
+            },
+            {
+                "ID": "315",
+                "VALUE": "Decision negative"
+            }
+        ],
+        "title": "UF_CRM_1676223456236",
+        "listLabel": "Residence permit status",
+        "formLabel": "Residence permit status",
+        "filterLabel": "Residence permit status",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1676223456236"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1676223478323",
+        "listLabel": "Date of decision",
+        "formLabel": "Date of decision",
+        "filterLabel": "Date of decision",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1676223478323"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680032015767",
+        "listLabel": "Street name\/number",
+        "formLabel": "Street name\/number",
+        "filterLabel": "Street name\/number",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680032015767"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680032052359",
+        "listLabel": "Building no",
+        "formLabel": "Building no",
+        "filterLabel": "Building no",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680032052359"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680032063562",
+        "listLabel": "Apartment no",
+        "formLabel": "Apartment no",
+        "filterLabel": "Apartment no",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680032063562"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680032097700",
+        "listLabel": "Zip-code",
+        "formLabel": "Zip-code",
+        "filterLabel": "Zip-code",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680032097700"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680032106247",
+        "listLabel": "City",
+        "formLabel": "City",
+        "filterLabel": "City",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680032106247"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680032120828",
+        "listLabel": "Country",
+        "formLabel": "Country",
+        "filterLabel": "Country",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680032120828"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680032383794",
+        "listLabel": "Date of birth",
+        "formLabel": "Date of birth",
+        "filterLabel": "Date of birth",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1680032383794"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680032563099",
+        "listLabel": "Agency Name",
+        "formLabel": "Agency Name",
+        "filterLabel": "Agency Name",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680032563099"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680298400987",
+        "listLabel": "Passport number",
+        "formLabel": "Passport number",
+        "filterLabel": "Passport number",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680298400987"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603233821",
+        "listLabel": "Father's name",
+        "formLabel": "Father's name",
+        "filterLabel": "Father's name",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603233821"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603245745",
+        "listLabel": "Mother's name",
+        "formLabel": "Mother's name",
+        "filterLabel": "Mother's name",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603245745"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603275474",
+        "listLabel": "Mother's maiden name",
+        "formLabel": "Mother's maiden name",
+        "filterLabel": "Mother's maiden name",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603275474"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603289265",
+        "listLabel": "How tall",
+        "formLabel": "How tall",
+        "filterLabel": "How tall",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603289265"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603305002",
+        "listLabel": "Eyes color",
+        "formLabel": "Eyes color",
+        "filterLabel": "Eyes color",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603305002"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603328019",
+        "listLabel": "Special Marks (tattoo, scar etc)",
+        "formLabel": "Special Marks (tattoo, scar etc)",
+        "filterLabel": "Special Marks (tattoo, scar etc)",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603328019"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603383009",
+        "listLabel": "Marital status",
+        "formLabel": "Marital status",
+        "filterLabel": "Marital status",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603383009"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603447777",
+        "listLabel": "All entries and exits you have made in the last 5 years with the name of the country",
+        "formLabel": "All entries and exits you have made in the last 5 years with the name of the country",
+        "filterLabel": "All entries and exits you have made in the last 5 years with the name of the country",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603447777"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "539",
+                "VALUE": "Yes"
+            },
+            {
+                "ID": "541",
+                "VALUE": "No"
+            }
+        ],
+        "title": "UF_CRM_1680603489050",
+        "listLabel": "Have you ever changed your surname or first name?",
+        "formLabel": "Have you ever changed your surname or first name?",
+        "filterLabel": "Have you ever changed your surname or first name?",
+        "settings": {
+            "DISPLAY": "UI",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1680603489050"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680603499003",
+        "listLabel": "New Surname",
+        "formLabel": "New Surname",
+        "filterLabel": "New Surname",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680603499003"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "543",
+                "VALUE": "High school"
+            },
+            {
+                "ID": "545",
+                "VALUE": "Bachelor"
+            },
+            {
+                "ID": "547",
+                "VALUE": "Master"
+            }
+        ],
+        "title": "UF_CRM_1680604973606",
+        "listLabel": "Educational level",
+        "formLabel": "Educational level",
+        "filterLabel": "Educational level",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1680604973606"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680636664320",
+        "listLabel": "Bank Name",
+        "formLabel": "Bank Name",
+        "filterLabel": "Bank Name",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680636664320"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680636675205",
+        "listLabel": "Account holder name",
+        "formLabel": "Account holder name",
+        "filterLabel": "Account holder name",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680636675205"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680636685514",
+        "listLabel": "Account Number",
+        "formLabel": "Account Number",
+        "filterLabel": "Account Number",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680636685514"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680636696101",
+        "listLabel": "Swift Code",
+        "formLabel": "Swift Code",
+        "filterLabel": "Swift Code",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680636696101"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680636704623",
+        "listLabel": "Bank Address",
+        "formLabel": "Bank Address",
+        "filterLabel": "Bank Address",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680636704623"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680636714360",
+        "listLabel": "IBAN",
+        "formLabel": "IBAN",
+        "filterLabel": "IBAN",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680636714360"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680638095155",
+        "listLabel": "Visa refusal letter",
+        "formLabel": "Visa refusal letter",
+        "filterLabel": "Visa refusal letter",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1680638095155"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680638132069",
+        "listLabel": "Visa refusal stamp (in the passport)",
+        "formLabel": "Visa refusal stamp (in the passport)",
+        "filterLabel": "Visa refusal stamp (in the passport)",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1680638132069"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640321661",
+        "listLabel": "University name interns",
+        "formLabel": "University name interns",
+        "filterLabel": "University name interns",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680640321661"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640447206",
+        "listLabel": "Internship start date",
+        "formLabel": "Internship start date",
+        "filterLabel": "Internship start date",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1680640447206"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640463436",
+        "listLabel": "Internship end date",
+        "formLabel": "Internship end date",
+        "filterLabel": "Internship end date",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1680640463436"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640776488",
+        "listLabel": "Why did you choose Poland for your Erasmus internship? Explain in no more than 3 sentences",
+        "formLabel": "Why did you choose Poland for your Erasmus internship? Explain in no more than 3 sentences",
+        "filterLabel": "Why did you choose Poland for your Erasmus internship? Explain in no more than 3 sentences",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680640776488"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640788485",
+        "listLabel": "When is the earliest you can start your internship?",
+        "formLabel": "When is the earliest you can start your internship?",
+        "filterLabel": "When is the earliest you can start your internship?",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680640788485"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640799378",
+        "listLabel": "Our company does not pay salary during the internship, this information was stated in the job advertisement, do you have this information?",
+        "formLabel": "Our company does not pay salary during the internship, this information was stated in the job advertisement, do you have this information?",
+        "filterLabel": "Our company does not pay salary during the internship, this information was stated in the job advertisement, do you have this information?",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680640799378"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640812070",
+        "listLabel": "Have you received a grant for your Erasmus internship?",
+        "formLabel": "Have you received a grant for your Erasmus internship?",
+        "filterLabel": "Have you received a grant for your Erasmus internship?",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680640812070"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640826626",
+        "listLabel": "How many months can you do an internship as part of Erasmus internship ?",
+        "formLabel": "How many months can you do an internship as part of Erasmus internship ?",
+        "filterLabel": "How many months can you do an internship as part of Erasmus internship ?",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680640826626"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640848634",
+        "listLabel": "Have you ever been abroad for study or internship? If you have been where and for how many months?",
+        "formLabel": "Have you ever been abroad for study or internship? If you have been where and for how many months?",
+        "filterLabel": "Have you ever been abroad for study or internship? If you have been where and for how many months?",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680640848634"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680640858360",
+        "listLabel": "Do you have European Union citizenship or living in the European Union with a valid visa or residence permit?",
+        "formLabel": "Do you have European Union citizenship or living in the European Union with a valid visa or residence permit?",
+        "filterLabel": "Do you have European Union citizenship or living in the European Union with a valid visa or residence permit?",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1680640858360"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1680901809249",
+        "listLabel": "CV for internship",
+        "formLabel": "CV for internship",
+        "filterLabel": "CV for internship",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1680901809249"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "571",
+                "VALUE": "Business Administration"
+            },
+            {
+                "ID": "573",
+                "VALUE": "Sales and Marketing"
+            },
+            {
+                "ID": "577",
+                "VALUE": "Graphic Design and Social Media"
+            },
+            {
+                "ID": "575",
+                "VALUE": "Web Development"
+            }
+        ],
+        "title": "UF_CRM_1681228055796",
+        "listLabel": "Department applying for",
+        "formLabel": "Department applying for",
+        "filterLabel": "Department applying for",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1681228055796"
+    },
+    {
+        "type": "boolean",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1681383385628",
+        "listLabel": "Post office confirmation forwarded",
+        "formLabel": "Post office confirmation forwarded",
+        "filterLabel": "Post office confirmation forwarded",
+        "settings": {
+            "DEFAULT_VALUE": 0,
+            "DISPLAY": "CHECKBOX",
+            "LABEL": [
+                null,
+                null
+            ],
+            "LABEL_CHECKBOX": {
+                "pl": "Post office confirmation forwarded",
+                "en": "Post office confirmation forwarded",
+                "de": "Post office confirmation forwarded",
+                "ru": "Post office confirmation forwarded",
+                "ua": "Post office confirmation forwarded",
+                "la": "Post office confirmation forwarded",
+                "th": "Post office confirmation forwarded",
+                "tc": "Post office confirmation forwarded",
+                "sc": "Post office confirmation forwarded",
+                "br": "Post office confirmation forwarded",
+                "fr": "Post office confirmation forwarded",
+                "vn": "Post office confirmation forwarded",
+                "tr": "Post office confirmation forwarded",
+                "ja": "Post office confirmation forwarded",
+                "it": "Post office confirmation forwarded",
+                "ms": "Post office confirmation forwarded",
+                "hi": "Post office confirmation forwarded",
+                "id": "Post office confirmation forwarded"
+            }
+        },
+        "field_name": "UF_CRM_1681383385628"
+    },
+    {
+        "type": "datetime",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1681812004605",
+        "listLabel": "Card received date",
+        "formLabel": "Card received date",
+        "filterLabel": "Card received date",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            },
+            "USE_SECOND": "Y",
+            "USE_TIMEZONE": "N"
+        },
+        "field_name": "UF_CRM_1681812004605"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1682451743364",
+        "listLabel": "Admission open",
+        "formLabel": "Admission open",
+        "filterLabel": "Admission open",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1682451743364"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1682451763159",
+        "listLabel": "Admission close",
+        "formLabel": "Admission close",
+        "filterLabel": "Admission close",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1682451763159"
+    },
+    {
+        "type": "url",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1682452014941",
+        "listLabel": "University link",
+        "formLabel": "University link",
+        "filterLabel": "University link",
+        "settings": {
+            "POPUP": "Y",
+            "SIZE": 20,
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": ""
+        },
+        "field_name": "UF_CRM_1682452014941"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1682453209959",
+        "listLabel": "Addittional time for missing documents",
+        "formLabel": "Addittional time for missing documents",
+        "filterLabel": "Addittional time for missing documents",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1682453209959"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1683816608395",
+        "listLabel": "Father name",
+        "formLabel": "Father name",
+        "filterLabel": "Father name",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1683816608395"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1683816650459",
+        "listLabel": "Father surname",
+        "formLabel": "Father surname",
+        "filterLabel": "Father surname",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1683816650459"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1683816660119",
+        "listLabel": "Mother name",
+        "formLabel": "Mother name",
+        "filterLabel": "Mother name",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1683816660119"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1683816693121",
+        "listLabel": "Mother maiden surname",
+        "formLabel": "Mother maiden surname",
+        "filterLabel": "Mother maiden surname",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1683816693121"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1688037279459",
+        "listLabel": "PESEL",
+        "formLabel": "PESEL",
+        "filterLabel": "PESEL",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1688037279459"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1689018538410",
+        "listLabel": "Acceptance letter",
+        "formLabel": "Acceptance letter",
+        "filterLabel": "Acceptance letter",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1689018538410"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1689237902010",
+        "listLabel": "Package payment confirmation",
+        "formLabel": "Package payment confirmation",
+        "filterLabel": "Package payment confirmation",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1689237902010"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_A_W_GROUP_ID",
+        "listLabel": "WhatsApp Group Id",
+        "formLabel": "WhatsApp Group Id",
+        "filterLabel": "UF_CRM_A_W_GROUP_ID",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": ""
+        },
+        "field_name": "UF_CRM_A_W_GROUP_ID"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_A_T_GROUP_ID",
+        "listLabel": "Telegram Group Id",
+        "formLabel": "Telegram Group Id",
+        "filterLabel": "UF_CRM_A_T_GROUP_ID",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": ""
+        },
+        "field_name": "UF_CRM_A_T_GROUP_ID"
+    },
+    {
+        "type": "enumeration",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "items": [
+            {
+                "ID": "619",
+                "VALUE": "VFS Istanbul"
+            },
+            {
+                "ID": "621",
+                "VALUE": "VFS Ankara"
+            },
+            {
+                "ID": "623",
+                "VALUE": "VFS Izmir"
+            },
+            {
+                "ID": "625",
+                "VALUE": "VFS Gaziantep"
+            },
+            {
+                "ID": "627",
+                "VALUE": "VFS Trabzon"
+            }
+        ],
+        "title": "UF_CRM_1691005504854",
+        "listLabel": "Place of visa appointment",
+        "formLabel": "Place of visa appointment",
+        "filterLabel": "Place of visa appointment",
+        "settings": {
+            "DISPLAY": "LIST",
+            "LIST_HEIGHT": 1,
+            "CAPTION_NO_VALUE": "",
+            "SHOW_NO_VALUE": "Y"
+        },
+        "field_name": "UF_CRM_1691005504854"
+    },
+    {
+        "type": "datetime",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1691005553692",
+        "listLabel": "Date and time of visa appointment",
+        "formLabel": "Date and time of visa appointment",
+        "filterLabel": "Date and time of visa appointment",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            },
+            "USE_SECOND": "Y",
+            "USE_TIMEZONE": "N"
+        },
+        "field_name": "UF_CRM_1691005553692"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1691005637883",
+        "listLabel": "Visa appointment number",
+        "formLabel": "Visa appointment number",
+        "filterLabel": "Visa appointment number",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1691005637883"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1691005661494",
+        "listLabel": "Visa appointment",
+        "formLabel": "Visa appointment",
+        "filterLabel": "Visa appointment",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1691005661494"
+    },
+    {
+        "type": "crm",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": true,
+        "isDynamic": true,
+        "title": "UF_CRM_1691072192",
+        "listLabel": "Company Company",
+        "formLabel": "Company Company",
+        "filterLabel": "Company Company",
+        "settings": {
+            "COMPANY": "Y",
+            "LEAD": null
+        },
+        "field_name": "UF_CRM_1691072192"
+    },
+    {
+        "type": "string",
+        "field_name": "new_field",
+        "formLabel": "Novo polje"
+    }
+]
