@@ -1,13 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>App</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{$pageTitle}}</title>
+    <link
+        rel="shortcut icon"
+        type="image/png"
+        href="{{asset("images/logos/polandstudylogo.png")}}"
+    />
+    @vite(['resources/scss/styles.scss'])
 </head>
+
 <body>
+
+@yield('main')
+
+@vite(['resources/scss/styles.scss',
+            'resources/libs/jquery/dist/jquery.min.js',
+            'resources/libs/bootstrap/dist/js/bootstrap.bundle.min.js',
+            'resources/js/dashboard.js',
+            'resources/js/main.js',
+            'resources/libs/apexcharts/dist/apexcharts.min.js',
+            'resources/libs/simplebar/dist/simplebar.js'])
 
 </body>
 </html>
