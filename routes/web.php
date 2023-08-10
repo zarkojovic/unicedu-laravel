@@ -76,11 +76,17 @@ Route::get("/get/agencies", function () {
     echo "</pre>";
 });
 
-Route::get('/user/{id}', '\App\Http\Controllers\UserController@index');
+//Route::get('/user/{id}', '\App\Http\Controllers\UserController@index');
 
 Route::get("/make/users", '\App\Http\Controllers\UserController@store');
 
+Route::get("/register","\App\Http\Controllers\AuthController@index");
 
+Route::post("/register","\App\Http\Controllers\AuthController@check");
+
+Route::get("/user/profile",function (){
+   return view("profile");
+});
 
 Route::get("/field/check", function () {
 
@@ -108,7 +114,6 @@ Route::get("/field/check", function () {
 
     //passing through all api keys
     foreach ($keys as $key) {
-        //checking if the item is dropdown list
         $newItem = $fields['result'][$key];
         // checking if the type is dropdown list
         if($newItem['type'] == 'enumeration'){

@@ -1,0 +1,74 @@
+// ----------------------------------------------
+// Dashboard1 Style
+// ----------------------------------------------
+
+.profile-picture {
+    width: 120px;   // Adjust the size as needed
+    height: 120px;  // Maintain aspect ratio
+    border-radius: 50%;  // Make it perfectly round
+    border: 10px solid silver;  // Add a silver border
+    overflow: hidden;  // Ensure the image stays within the rounded container
+  
+    img {
+      width: 100%;  // Make the image fill the container
+      height: 100%;  // Make the image fill the container
+      object-fit: cover;  // Fit the entire image within the container
+    }
+  }
+
+  .platinum-package {
+    display: inline-block; // Adjust width based on content
+    position: relative;
+    position: relative;
+    background-color: #D1D6E0;
+    padding: 5px 10px;
+    border-radius: 0px 20px 20px 20px;
+  
+    .text {
+      color: white;
+      letter-spacing: 0.5px;
+      font-weight: 400;
+    }
+  }
+
+  .text-hover:hover {
+    color: #d3591e!important;
+  }
+
+  .t05{
+    transition: 0.5s;
+  }
+  
+.timeline-widget {
+    .timeline-item {
+        min-height: 70px;
+
+        .timeline-time {
+            padding: 6px 16px 6px 0;
+            min-width: 90px;
+        }
+
+        .timeline-badge-wrap {
+            .timeline-badge {
+                width: 12px;
+                height: 12px;
+                border-radius: 50px;
+                background-color: transparent;
+            }
+
+            .timeline-badge-border {
+                width: 1px;
+                height: 100%;
+                background-color: $border-color;
+            }
+        }
+
+        .timeline-desc {
+            padding: 6px 16px;
+        }
+
+        .timeline-badge.badge-primary {
+            border: 2px solid $primary;
+        }
+    }
+}

@@ -512,7 +512,7 @@
         "filterLabel": "Citizenship",
         "settings": {
             "SIZE": 20,
-            "ROWS": 1,
+            "ROWS": 1,x
             "REGEXP": "",
             "MIN_LENGTH": 0,
             "MAX_LENGTH": 0,
