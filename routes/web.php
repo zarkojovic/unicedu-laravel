@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Kafka0238\Crest\Src;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\UserController;
+
 
 
 /*
@@ -86,9 +88,7 @@ Route::post("/register","\App\Http\Controllers\AuthController@check");
 
 Route::get("/login","\App\Http\Controllers\AuthController@login")->name("login");
 
-Route::get("/user/profile",function (){
-   return view("profile");
-});
+Route::get("/user/{id}/profile",[UserController::class,"show"]);
 
 Route::get("/field/check", function () {
 

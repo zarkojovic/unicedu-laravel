@@ -512,7 +512,7 @@
         "filterLabel": "Citizenship",
         "settings": {
             "SIZE": 20,
-            "ROWS": 1,x
+            "ROWS": 1,
             "REGEXP": "",
             "MIN_LENGTH": 0,
             "MAX_LENGTH": 0,
@@ -872,12 +872,12 @@
         "isDynamic": true,
         "items": [
             {
-                "ID": "65",
-                "VALUE": "Master"
-            },
-            {
                 "ID": "63",
                 "VALUE": "Bachelor"
+            },
+            {
+                "ID": "65",
+                "VALUE": "Master"
             },
             {
                 "ID": "67",
@@ -894,7 +894,7 @@
         ],
         "title": "UF_CRM_1667335695035",
         "listLabel": "Degree",
-        "formLabel": "Degree student",
+        "formLabel": "Degree",
         "filterLabel": "Degree",
         "settings": {
             "DISPLAY": "LIST",
@@ -1070,6 +1070,10 @@
                 "VALUE": "Littlehome.pl"
             },
             {
+                "ID": "77",
+                "VALUE": "Student Depot"
+            },
+            {
                 "ID": "79",
                 "VALUE": "Zeitraum"
             },
@@ -1080,10 +1084,6 @@
             {
                 "ID": "83",
                 "VALUE": "Private accommodation"
-            },
-            {
-                "ID": "77",
-                "VALUE": "Student Depot"
             }
         ],
         "title": "UF_CRM_1667336524064",
@@ -3018,10 +3018,5 @@
             "LEAD": null
         },
         "field_name": "UF_CRM_1691072192"
-    },
-    {
-        "type": "string",
-        "field_name": "new_field",
-        "formLabel": "Novo polje"
     }
 ]
