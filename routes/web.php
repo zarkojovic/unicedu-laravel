@@ -90,6 +90,10 @@ Route::get("/login","\App\Http\Controllers\AuthController@login")->name("login")
 
 Route::get("/user/{id}/profile",[UserController::class,"show"]);
 
+Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+
+Route::put('/user/{id}/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+
 Route::get("/field/check", function () {
 
     // Path to the public/js directory

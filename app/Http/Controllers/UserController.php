@@ -96,16 +96,16 @@ class UserController extends RootController
                     }
 
                     #IF UPDATED IN DATABASE, CALL CREST METHOD
-                    CRest::call("crm.contact.update", [
-                        'ID' => '3025',//contact for test deal
-                        'FIELDS' => [
-                            'NAME' => $data["first_name"],
-                            'LAST_NAME' => $data["last_name"]
-                        ]
-                    ]);
+//                    CRest::call("crm.contact.update", [
+//                        'ID' => '3025',//contact for test deal
+//                        'FIELDS' => [
+//                            'NAME' => $data["first_name"],
+//                            'LAST_NAME' => $data["last_name"]
+//                        ]
+//                    ]);
                 });
 
-                return redirect()->route('user.show', ['user' => $id])->with("success", "Profile information updated successfully.");
+                return redirect()->route('show', ['user' => $id])->with("success", "Profile information updated successfully.");
             }
             catch (\Exception $e){
                 return "Error: ".$e->getMessage();

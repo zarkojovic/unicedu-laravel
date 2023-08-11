@@ -28,15 +28,19 @@
                                 </div>
                             </div>
                             <div class="col-6 col-lg-10 col-md-9 col-sm-8">
-                                <h5 class="fw-semibold">Marko Barisic</h5>
-                                <h6 class="fw-semibold text-muted">barisicm@gmail.com</h6>
+                                <h5 class="fw-semibold">{{ $user->first_name }} {{ $user->last_name }}</h5>
+                                <h6 class="fw-semibold text-muted">{{ $user->email }}</h6>
                                 <div class="platinum-package">
                                     <span class="text">PLATINUM</span>
                                 </div>
                                 <div class="mt-3">
-                                    <a class="text-primary text-hover t05" href="#"
-                                    >Change Profile Picture</a
-                                    >
+                                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.image.update', ['id' => $user->user_id]) }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <label class="text-primary text-hover t05">Change Profile Picture</label>
+                                        <input type="file" name="profile-image" id="profile-image"/>
+                                        <button type="submit">Update</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -93,6 +97,7 @@
                                             class="form-control"
                                             id="nameInput"
                                             aria-describedby="emailHelp"
+                                            value="{{ $user->first_name }}"
                                         />
                                         <div id="emailHelp" class="form-text d-none">
                                             We'll never share your email with anyone else.
@@ -109,6 +114,7 @@
                                             class="form-control"
                                             id="surnameInput"
                                             aria-describedby="emailHelp"
+                                            value="{{ $user->last_name }}"
                                         />
                                         <div id="emailHelp" class="form-text d-none">
                                             We'll never share your email with anyone else.
@@ -126,6 +132,7 @@
                                             type="date"
                                             class="form-control"
                                             id="dobInput"
+                                            value="{{ $user->date_birth }}"
                                         />
                                     </div>
                                 </div>
@@ -138,6 +145,7 @@
                                             type="tel"
                                             class="form-control"
                                             id="phoneInput"
+                                            value="{{ $user->phone }}"
                                         />
                                     </div>
                                 </div>
@@ -152,6 +160,7 @@
                                             type="text"
                                             class="form-control"
                                             id="citizenshipInput"
+                                            value="{{ $user->citizenship }}"
                                         />
                                     </div>
                                 </div>
@@ -164,6 +173,7 @@
                                             type="text"
                                             class="form-control"
                                             id="passportInput"
+                                            value="{{ $user->passport }}"
                                         />
                                     </div>
                                 </div>
@@ -175,7 +185,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Name</label>
                                         <p id="displayName" class="form-control-static">
-                                            Marko
+                                            {{ $user->first_name }}
                                         </p>
                                     </div>
                                 </div>
@@ -183,7 +193,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Surname</label>
                                         <p id="displaySurname" class="form-control-static">
-                                            Barisic
+                                            {{ $user->last_name }}
                                         </p>
                                     </div>
                                 </div>
@@ -192,13 +202,17 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3">
                                         <label class="form-label">Date of Birth</label>
-                                        <p id="displayDOB" class="form-control-static"></p>
+                                        <p id="displayDOB" class="form-control-static">
+                                            {{ $user->date_birth }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3">
                                         <label class="form-label">Phone</label>
-                                        <p id="displayPhone" class="form-control-static"></p>
+                                        <p id="displayPhone" class="form-control-static">
+                                            {{ $user->phone }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -206,19 +220,17 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3">
                                         <label class="form-label">Citizenship</label>
-                                        <p
-                                            id="displayCitizenship"
-                                            class="form-control-static"
-                                        ></p>
+                                        <p id="displayCitizenship" class="form-control-static">
+                                            {{ $user->citizenship }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3">
                                         <label class="form-label">Passport</label>
-                                        <p
-                                            id="displayPassport"
-                                            class="form-control-static"
-                                        ></p>
+                                        <p id="displayPassport" class="form-control-static">
+                                            {{ $user->passport }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
