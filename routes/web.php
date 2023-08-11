@@ -27,11 +27,11 @@ Route::get('/home', function () {
     return view('home');
 });
 
-Route::get('/user_role', function () {
-    $user = User::find(1);
-
-    var_dump($user->role->role_name);
-});
+//Route::get('/user_role', function () {
+//    $user = User::find(1);
+//
+//    var_dump($user->role->role_name);
+//});
 
 Route::get("/crest", function () {
     $res = CRest::call("crm.deal.fields");
@@ -80,9 +80,11 @@ Route::get("/get/agencies", function () {
 
 Route::get("/make/users", '\App\Http\Controllers\UserController@store');
 
-Route::get("/register","\App\Http\Controllers\AuthController@index");
+Route::get("/register","\App\Http\Controllers\AuthController@register")->name("register");
 
 Route::post("/register","\App\Http\Controllers\AuthController@check");
+
+Route::get("/login","\App\Http\Controllers\AuthController@login")->name("login");
 
 Route::get("/user/profile",function (){
    return view("profile");

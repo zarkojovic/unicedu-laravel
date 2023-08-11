@@ -15,3 +15,8 @@
         animation: 15s ease 0s infinite normal none running gradient;
     }
 }
+
+.bg-gradient{
+    background: rgb(229,100,70) !important;
+    background: linear-gradient(90deg, rgba(229,100,70,1) 0%, rgba(235,171,88,1) 100%) !important;
+}

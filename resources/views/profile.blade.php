@@ -56,27 +56,31 @@
                                 </h5>
                             </div>
                             <div class="col-4 text-end">
-                                <button
-                                    type="button"
-                                    class="btn btn-success btn-block m-1 d-none"
-                                    id="btnSave"
-                                >
-                                    Save
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-danger btn-block m-1 d-none"
-                                    id="btnCancel"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-danger btn-block m-1"
-                                    id="btnEdit"
-                                >
-                                    Edit
-                                </button>
+                                <div id="userFormBtn" class="d-none">
+                                    <button
+                                        type="button"
+                                        class="btn btn-success btn-block m-1 "
+                                        id="btnSave"
+                                    >
+                                        Save
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger btn-block m-1"
+                                        id="btnCancel"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                                <div id="displayFormBtn">
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger btn-block m-1"
+                                        id="btnEdit"
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <form id="userForm" class="mt-4 d-none">

@@ -8,7 +8,7 @@
     border-radius: 50%;  // Make it perfectly round
     border: 10px solid silver;  // Add a silver border
     overflow: hidden;  // Ensure the image stays within the rounded container
-  
+
     img {
       width: 100%;  // Make the image fill the container
       height: 100%;  // Make the image fill the container
@@ -23,7 +23,7 @@
     background-color: #D1D6E0;
     padding: 5px 10px;
     border-radius: 0px 20px 20px 20px;
-  
+
     .text {
       color: white;
       letter-spacing: 0.5px;
@@ -38,7 +38,7 @@
   .t05{
     transition: 0.5s;
   }
-  
+
 .timeline-widget {
     .timeline-item {
         min-height: 70px;
@@ -71,4 +71,13 @@
             border: 2px solid $primary;
         }
     }
+}
+#registerForm {
+    label{
+        color: #2A3547 !important;
+    }
+}
+
+.text-dark{
+    color:$gray-600 !important;
 }
