@@ -12,7 +12,7 @@
     @vite(['resources/scss/styles.scss'])
 </head>
 
-<body>
+<body class="overflow-x-hidden">
 
 @yield('main')
 

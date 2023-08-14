@@ -2,7 +2,7 @@
 @extends("layouts.app")
 
 @section("main")
-    <div class="container-fluid min-vh-100 py-sm-5 py-4 px-4 vw-100 bg-gradient d-flex align-items-center justify-content-center w-100">
+    <div class="container-fluid min-vh-100 py-sm-5 py-4 px-4 vw-100 bg-gradient d-flex align-items-center justify-content-center w-100 overflow-x-hidden">
         <div class="row justify-content-center align-items-center">
             <div
                 class="col-lg-10 bg-white p-sm-5 p-4 rounded-5">
