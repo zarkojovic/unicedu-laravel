@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Kafka0238\Crest\Src;
+use Illuminate\Support\Facades\Storage;
+
 class UserController extends RootController
 {
     /**
@@ -123,27 +125,52 @@ class UserController extends RootController
     #CONTINUE WORKING ON UPLOADING PROFILE IMAGE
     public function updateImage(Request $request, string $id) {
         #INPUTS
-        if ($request->hasFile('profile-image')) {
-            $file = $request->file('profile-image');
-
-            $filename = $file->getClientOriginalName();
-            $tmpName = $file->getPathname(); // tmp_name
-            $size = $file->getSize();
-            $type = $file->getClientMimeType();
-        }
-        else {
+        if (!$request->hasFile('profile-image')) {
             return "No file uploaded.";
         }
 
-        var_dump($filename);
-        var_dump($tmpName);
-        var_dump($size);
-        var_dump($type);
+//        $pathOriginal = public_path("/images/profile/original");
+//        $pathThumbnail = public_path("/images/profile/thumbnail");
+        $allowedMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+        $maxFileSize = 2048; // 2MB in kilobytes
+        $errors = [];
+
+        $file = $request->file('profile-image');
+
+        $fileName = $file->getClientOriginalName();
+        $tmpName = $file->getPathname(); // tmp_name
+        $fileSize = $file->getSize();
+        $fileType = $file->getClientMimeType();
 
         #VALIDATE INPUTS
+        if (!in_array($fileType, $allowedMimeTypes)) {
+            $errors[] = "Allowed file types are jpg, jpeg and png.";
+        }
+
+        if ($fileSize > $maxFileSize * 1024) {
+            $errors[] = "File size should not exceed 2MB.";
+        }
+
+//        if (file_exists($pathOriginal.'/'.$fileName)) {
+//            $errors[] = "File with the same name already exists.";
+//        }
+
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                echo $error;
+            }
+            return false;
+        }
+
+
+        #NASTAVI OVDE: UPLOADUJE SLIKE U TMP FOLDER I PREMESTA IH U STORAGE UMESTO U PUBLIC
+//        $uploadedPath = $file->store("images/profile/original", 'public');
+        Storage::move($tmpName,"public/profile/original");
+        echo "check folder";
 
 
 
+        #REDIRECT
 //        return redirect()->route('user.show', ['user' => $id])->with("success", "Profile information updated successfully.");
     }
 

@@ -24,7 +24,7 @@
                                         src="{{asset("images/profile/user-1.jpg")}}"
                                         alt="Profile Picture"
                                         class="img-fluid"
-                                    />
+                                    /><!--$imageUrl = asset('storage/profile/original/uploaded_image.jpg');-->
                                 </div>
                             </div>
                             <div class="col-6 col-lg-10 col-md-9 col-sm-8">
