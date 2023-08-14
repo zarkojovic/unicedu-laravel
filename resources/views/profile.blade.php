@@ -2,7 +2,6 @@
 @extends("layouts.student")
 
 @section('main-content')
-
     {{-- Student profile--}}
     <div class="container-fluid">
         <!--  Student Profile -->
