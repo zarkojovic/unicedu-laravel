@@ -61,8 +61,14 @@
                                 <label for="password" class="text-dark fw-medium">Password</label>
                                 <input type="password" name="password"  value="{{old('password')}}" id="password" class="form-control">
                             </div>
+{{--                            <div class="input-group">--}}
+{{--                                <input type="password" class="form-control border-end-0" id="passwordInput" placeholder="Enter your password">--}}
+{{--                                <button class="btn border border-start-0" type="button" id="togglePassword">--}}
+{{--                                    <i class="ti ti-eye"></i>--}}
+{{--                                </button>--}}
+{{--                            </div>--}}
                             @error('password')
-                            <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -70,7 +76,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="password" class="text-dark fw-medium">Confirm Password</label>
-                                <input type="password" name="password_confirmation"  value="{{old('repeat_password')}}" id="password_confirmation" class="form-control">
+                                <input type="password" name="password_confirmation"  id="password_confirmation" class="form-control">
                             </div>
                             @error('repeat_password')
                             <span class="text-danger">{{ $message }}</span>
