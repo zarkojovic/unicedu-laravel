@@ -5,10 +5,11 @@
     @if(isset($success))
         <div class="alert alert-success">{{$success}}</div>
     @endif
-    <div class="vh-100 vw-100 bg-gradient d-flex align-items-center justify-content-center ">
-        <div class="container">
+
+    <div class="container-fluid min-vh-100 py-sm-5 py-4 px-4 vw-100 bg-gradient d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center align-items-center">
             <div
-                class="col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1 col-12 bg-white p-sm-5 p-4 rounded-5">
+                class="col-lg-10 bg-white bg-white p-sm-5 p-4 rounded-5">
                 <div class="row">
                     <img src="{{asset("images/logos/polandstudylogo.png")}}" alt="Logo" class="w-50 mx-auto mb-3">
                 </div>
