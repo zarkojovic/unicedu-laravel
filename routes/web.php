@@ -2,11 +2,12 @@
 
 use App\Models\Agency;
 use App\Models\Field;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Kafka0238\Crest\Src;
 use Illuminate\Support\Facades\File;
-
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,19 +20,28 @@ use Illuminate\Support\Facades\File;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(["auth"])->group(function (){
+    Route::get('/', function () {
+
+        $user = Auth::user();
+
+        return view('profile', ['user'=>$user]);
+    })->name("home");
+
+    Route::post("/logout","\App\Http\Controllers\AuthController@logout")->name("logout");
+
 });
 
-Route::get('/home', function () {
-    return view('home');
-});
+Route::middleware(['guest'])->group(function () {
+    Route::get("/register","\App\Http\Controllers\AuthController@register")->name("register");
 
-//Route::get('/user_role', function () {
-//    $user = User::find(1);
-//
-//    var_dump($user->role->role_name);
-//});
+    Route::post("/register","\App\Http\Controllers\AuthController@check");
+
+    Route::get("/login","\App\Http\Controllers\AuthController@login")->name("login");
+
+    Route::post("/login","\App\Http\Controllers\AuthController@auth");
+
+});
 
 Route::get("/crest", function () {
     $res = CRest::call("crm.deal.fields");
@@ -80,15 +90,14 @@ Route::get("/get/agencies", function () {
 
 Route::get("/make/users", '\App\Http\Controllers\UserController@store');
 
-Route::get("/register","\App\Http\Controllers\AuthController@register")->name("register");
 
-Route::post("/register","\App\Http\Controllers\AuthController@check");
+Route::get("/activate","\App\Http\Controllers\AuthController@activate");
 
-Route::get("/login","\App\Http\Controllers\AuthController@login")->name("login");
+Route::get("/user/{id}/profile",[UserController::class,"show"]);
 
-Route::get("/user/profile",function (){
-   return view("profile");
-});
+Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+
+Route::put('/user/{id}/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
 
 Route::get("/field/check", function () {
 
