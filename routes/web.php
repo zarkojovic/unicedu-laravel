@@ -93,11 +93,20 @@ Route::get("/make/users", '\App\Http\Controllers\UserController@store');
 
 Route::get("/activate","\App\Http\Controllers\AuthController@activate");
 
-Route::get("/user/{id}/profile",[UserController::class,"show"]);
+Route::group(['middleware' => 'auth'], function () {
 
-Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+    Route::get("/profile",[UserController::class,"show"])->name("profile");
 
-Route::put('/user/{id}/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+    Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+
+    Route::put('/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+});
+
+//Route::get("/user/{id}/profile",[UserController::class,"show"]);
+//
+//Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+//
+//Route::put('/user/{id}/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
 
 Route::get("/field/check", function () {
 

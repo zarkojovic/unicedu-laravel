@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use CRest;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Kafka0238\Crest\Src;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+
 
 class UserController extends RootController
 {
@@ -38,10 +41,10 @@ class UserController extends RootController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        $user = new User();
-        $user = $user->getUserById($id);
+//        $user = new User();
+        $user = Auth::user();
 
         return view('profile', ['user'=>$user]);
     }
@@ -49,10 +52,9 @@ class UserController extends RootController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        $user = new User();
-        $user = $user->getUserById($id);
+        $user = Auth::user();
 
         return view('user.edit', ['user'=>$user]);
     }
@@ -123,14 +125,15 @@ class UserController extends RootController
     }
 
     #CONTINUE WORKING ON UPLOADING PROFILE IMAGE
-    public function updateImage(Request $request, string $id) {
+    public function updateImage(Request $request) {
         #INPUTS
         if (!$request->hasFile('profile-image')) {
             return "No file uploaded.";
         }
 
-//        $pathOriginal = public_path("/images/profile/original");
-//        $pathThumbnail = public_path("/images/profile/thumbnail");
+        $pathOriginal = "public/profile/original";
+        $pathThumbnail = "public/profile/thumbnail";
+        $pathTiny = "public/profile/tiny";
         $allowedMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
         $maxFileSize = 2048; // 2MB in kilobytes
         $errors = [];
@@ -161,17 +164,53 @@ class UserController extends RootController
             }
             return false;
         }
+        #QUESTION: DA LI SU OVDE PRISTUPACNE SLIKE? DA LI MOGU DA SE PRIKAZU IZ STORAGEA? MOZDA MORA SOFTLINK...
+        $moved = Storage::putFileAs($pathOriginal, $file, $fileName);
+        if (!$moved) {
+            return "Saving image on the server failed.";
+        }
+
+        try {
+            #THUMBNAIL
+            $size = 150;
+            $thumbnail = Image::make($file)->resize($size, $size);
+            Storage::put($pathThumbnail.'/'.$fileName, (string) $thumbnail->encode());
+
+            #TINY
+            $size = 35;
+            $tinyImage = Image::make($file)->resize($size, $size);
+            Storage::put($pathTiny.'/'.$fileName, (string) $tinyImage->encode());
+        } catch (\Exception $e) {
+            return back()->with('error', 'An error occurred while storing images.');
+        }
+
+        #NASTAVI OVDE: UPDATE U BAZI
+        #NAPOMENA: KADA KORISNIK PRISTUPA SLIKAMA, OBAVEZNO PROVERI DA LI NJEGOV ID ODGOVARA ID-JU KORISNIKA IZ BAZE,
+        #I TAKO MU DOZVOLI DA VIDI SAMO SVOJE SLIKE!
+        #$user = Auth::user(); DA SE DOHVATI ULOGOVANI USER
+
+        try {
+            DB::beginTransaction();
+
+            $user = Auth::user();
+            $user->profile_image = $fileName;
+            $user->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+//            report($e);
+            return back()->with('error', 'An error occurred while saving images and updating records.');
+        }
 
 
-        #NASTAVI OVDE: UPLOADUJE SLIKE U TMP FOLDER I PREMESTA IH U STORAGE UMESTO U PUBLIC
-//        $uploadedPath = $file->store("images/profile/original", 'public');
-        Storage::move($tmpName,"public/profile/original");
-        echo "check folder";
 
+//        return "proveri folder";
 
+        $user = Auth::user();
 
         #REDIRECT
-//        return redirect()->route('user.show', ['user' => $id])->with("success", "Profile information updated successfully.");
+        return redirect()->route('profile', ['user' => $user])->with("success", "Profile information updated successfully.");
     }
 
     /**
