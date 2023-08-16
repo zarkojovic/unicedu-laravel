@@ -24,5 +24,7 @@
             'resources/libs/apexcharts/dist/apexcharts.min.js',
             'resources/libs/simplebar/dist/simplebar.js'])
 
+@yield('scripts')
+
 </body>
 </html>

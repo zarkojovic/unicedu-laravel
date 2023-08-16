@@ -27,6 +27,10 @@
                             <h1 class="text-center">Activation code is invalid!</h1>
                             <p class="text-center"><a href="{{route("login")}}">Go to login page</a></p>
                             @break
+                        @case("404")
+                            <h1 class="text-center">Oops! Something went wrong...</h1>
+                            <p class="text-center"><a href="{{route("home")}}">Go back to safety</a></p>
+                            @break
                         @default
                             <script>
                                 window.location.href = "{{ route('login') }}";

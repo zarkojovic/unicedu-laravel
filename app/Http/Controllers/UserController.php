@@ -41,6 +41,8 @@ class UserController extends RootController
         $user = new User();
         $user = $user->getUserById($id);
 
+
+
         return view('profile', ['user'=>$user]);
     }
 

@@ -20,26 +20,74 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware(["auth"])->group(function (){
+//CUSTOM 404 REDIRECT
+Route::fallback(function () {
+    return view('notification', ['type' => '404']);
+});
+
+//ROUTES FOR AUTHORIZED USERS
+Route::middleware(["auth"])->group(function () {
     Route::get('/', function () {
 
         $user = Auth::user();
 
-        return view('profile', ['user'=>$user]);
+        if ($user->role->role_name == "admin") {
+            return redirect()->route("admin_home");
+        }
+
+        return view('profile', ['user' => $user]);
     })->name("home");
 
-    Route::post("/logout","\App\Http\Controllers\AuthController@logout")->name("logout");
+    Route::post("/logout", "\App\Http\Controllers\AuthController@logout")->name("logout");
+
+    //    ADMIN PERMISSIONS
+    Route::middleware(["admin"])->group(function () {
+        //ADMIN ROUTES
+        Route::prefix('admin')->group(function () {
+            Route::get('/', function () {
+                $categories = \App\Models\FieldCategory::all();
+                $fields = Field::where('is_active', '1')->where('field_category_id', NULL)->get();
+                return view("admin", ["fields" => $fields, "categories" => $categories]);
+            })->name("admin_home");
+
+            Route::get("/category_fields", function () {
+                $categories = \App\Models\FieldCategory::all();
+                $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
+                return view("category_fields", ["fields" => $fields, "categories" => $categories]);
+            });
+        });
+    });
+
+});
+//ROUTES FOR GUESTS
+Route::middleware(['guest'])->group(function () {
+    Route::get("/register", "\App\Http\Controllers\AuthController@register")->name("register");
+
+    Route::post("/register", "\App\Http\Controllers\AuthController@check");
+
+    Route::get("/login", "\App\Http\Controllers\AuthController@login")->name("login");
+
+    Route::post("/login", "\App\Http\Controllers\AuthController@auth");
 
 });
 
-Route::middleware(['guest'])->group(function () {
-    Route::get("/register","\App\Http\Controllers\AuthController@register")->name("register");
 
-    Route::post("/register","\App\Http\Controllers\AuthController@check");
+//CONVERT THIS ROUTE IN CONTROLLER
+Route::post("/add_fields", function (\Illuminate\Http\Request $request) {
 
-    Route::get("/login","\App\Http\Controllers\AuthController@login")->name("login");
+    $fields = $request->fields;
+    foreach ($fields as $field) {
 
-    Route::post("/login","\App\Http\Controllers\AuthController@auth");
+        $f_id = (int)$field;
+
+        $field_update = Field::find($f_id);
+
+        $field_update->field_category_id = $request->category_id;
+
+        $field_update->save();
+    }
+
+    return redirect()->back();
 
 });
 
@@ -75,7 +123,8 @@ Route::get("/get/agencies", function () {
     });
     echo "<pre>";
 //    print_r($agencies[47]->items[0]);
-    $items = $agencies[47]->items;
+    $agencies = array_values($agencies);
+    $items = $agencies[0]->items;
     foreach ($items as $item) {
         var_dump($item->ID);
 //        Agency::create([
@@ -90,15 +139,16 @@ Route::get("/get/agencies", function () {
 
 Route::get("/make/users", '\App\Http\Controllers\UserController@store');
 
+Route::get("/activate", "\App\Http\Controllers\AuthController@activate");
 
-Route::get("/activate","\App\Http\Controllers\AuthController@activate");
+Route::get("/user/{id}/profile", [UserController::class, "show"]);
 
-Route::get("/user/{id}/profile",[UserController::class,"show"]);
-
-Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+Route::put("/user/{id}/edit", [UserController::class, "edit"]);
 
 Route::put('/user/{id}/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
 
+
+//CONVERT TO CONTROLLER
 Route::get("/field/check", function () {
 
     // Path to the public/js directory
@@ -127,29 +177,29 @@ Route::get("/field/check", function () {
     foreach ($keys as $key) {
         $newItem = $fields['result'][$key];
         // checking if the type is dropdown list
-        if($newItem['type'] == 'enumeration'){
+        if ($newItem['type'] == 'enumeration') {
             // gets the dropdown item from json, to check it's fields
-            $jsonItem = array_filter($jsonData,function ($item) use ($key){
-               return $item['field_name'] == $key;
+            $jsonItem = array_filter($jsonData, function ($item) use ($key) {
+                return $item['field_name'] == $key;
             });
             // make the index goes from zero
             $jsonItem = array_values($jsonItem);
             // going through items in dropdown menu
-            foreach ($newItem['items'] as $item){
+            foreach ($newItem['items'] as $item) {
                 //geting the id from dropdown item
                 $i_id = $item["ID"];
                 // getting dropdown items from json array
                 $elemItems = $jsonItem[0]['items'];
 
                 // checking if the items exists in json dropdown items
-                $checkItem = array_filter($elemItems,function ($el) use ($i_id){
+                $checkItem = array_filter($elemItems, function ($el) use ($i_id) {
                     return $el["ID"] == $i_id;
                 });
                 // if it doesn't exist add to json
-                if($checkItem == null){
+                if ($checkItem == null) {
                     // get the index of array element with that field name
-                    $id = array_filter($jsonData,function ($el) use ($key){
-                       return $el['field_name'] == $key;
+                    $id = array_filter($jsonData, function ($el) use ($key) {
+                        return $el['field_name'] == $key;
                     });
 //                    get id and convert to int
                     $id = array_keys($id);
@@ -185,10 +235,10 @@ Route::get("/field/check", function () {
     }
 
     //check if json has some element that is not in api anymore
-    foreach ($jsonKeys as $jsonKey){
-        if(!in_array($jsonKey,$keys)){
+    foreach ($jsonKeys as $jsonKey) {
+        if (!in_array($jsonKey, $keys)) {
 
-            $field = Field::where('field_name',$jsonKey)->first();
+            $field = Field::where('field_name', $jsonKey)->first();
             $field->is_active = 0;
             $field->status = 0;
             $field->save();
