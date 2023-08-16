@@ -150,8 +150,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
 
-    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
-        ->name('profile.image.path');
+//    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
+//        ->name('profile.image.path');
 });
 
 
