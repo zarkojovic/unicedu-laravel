@@ -1,5 +1,5 @@
 import axios from "axios";
-
+console.log("pozz")
 function printHTML(el){
         let html = '';
         if (el.type == "crm_category" && el.field_name == "CATEGORY_ID") {

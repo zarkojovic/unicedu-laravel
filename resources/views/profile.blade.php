@@ -239,5 +239,10 @@
             </div>
         </div>
     </div>
+    <div id="fieldsWrap"></div>
+@endsection
+
+@section('scripts')
+    @vite('resources/js/profile.js');
 @endsection
 
