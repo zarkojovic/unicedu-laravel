@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class,'role_id');
     }
 
     public function info(): \Illuminate\Database\Eloquent\Relations\hasMany

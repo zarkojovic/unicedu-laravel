@@ -22,4 +22,12 @@
             @yield('main-content')
         </div>
     </div>
+
+
+    <script src='https://salebot.ai/js/salebot.js' charset='utf-8'></script>
+    <script>
+        SaleBotPro.init({
+            onlineChatId: '1579'
+        });
+    </script>
 @endsection

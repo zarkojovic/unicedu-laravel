@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Kafka0238\Crest\Src;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -45,6 +46,8 @@ class UserController extends RootController
     {
 //        $user = new User();
         $user = Auth::user();
+
+
 
         return view('profile', ['user'=>$user]);
     }
@@ -124,20 +127,19 @@ class UserController extends RootController
         }
     }
 
-    public function getProfileImagePath($directory,$imageName)
-    {
-        $user = Auth::user();
-
-        if ($user && $user->profile_image === $imageName) {
-            return asset("storage/profile/{$directory}/{$imageName}");
-        }
-
-        abort(403, 'Unauthorized');
-    }
+//    public function getProfileImagePath($directory,$imageName)
+//    {
+//        $user = Auth::user();
+//
+//        if ($user && $user->profile_image === $imageName) {
+//            return asset("storage/profile/{$directory}/{$imageName}");
+//        }
+//
+//        abort(403, 'Unauthorized');
+//    }
 
     #CONTINUE WORKING ON UPLOADING PROFILE IMAGE
-    public function updateImage(Request $request)
-    {
+    public function updateImage(Request $request) {
 //        if($request->method() !== "put"){
 //            return redirect()->route("home");
 //        }
@@ -160,6 +162,7 @@ class UserController extends RootController
         $tmpName = $file->getPathname(); // tmp_name
         $fileSize = $file->getSize();
         $fileType = $file->getClientMimeType();
+        $fileExtension = $file->getClientOriginalExtension();
 
         #VALIDATE INPUTS
         if (!in_array($fileType, $allowedMimeTypes)) {
@@ -176,35 +179,52 @@ class UserController extends RootController
             }
             return false;
         }
+
         #QUESTION: DA LI SU OVDE PRISTUPACNE SLIKE? DA LI MOGU DA SE PRIKAZU IZ STORAGEA? MOZDA MORA SOFTLINK...
         #ODGOVOR: MORAO JE SOFTLINK...
-        $moved = Storage::putFileAs($pathOriginal, $file, $fileName);
+
+        $uniqueString = Str::uuid()->toString();
+        $currentDate = now()->format('Y-m-d');
+        $newFileName = $currentDate.'_'.$uniqueString.'.'.$fileExtension;
+
+        $moved = Storage::putFileAs($pathOriginal, $file, $newFileName);
         if (!$moved) {
             return "Saving image on the server failed.";
         }
 
+        #MAKE SMALL IMAGES
         try {
             #THUMBNAIL
             $size = 150;
-            $thumbnail = Image::make($file)->resize($size, $size);
-            Storage::put($pathThumbnail . '/' . $fileName, (string)$thumbnail->encode());
+            $thumbnail = Image::make($file)->fit($size, $size, null, "top");
+            Storage::put($pathThumbnail.'/'.$newFileName, (string) $thumbnail->encode());
 
             #TINY
             $size = 35;
-            $tinyImage = Image::make($file)->resize($size, $size);
-            Storage::put($pathTiny . '/' . $fileName, (string)$tinyImage->encode());
+            $tinyImage = Image::make($file)->fit($size, $size, null, "top");
+            Storage::put($pathTiny.'/'.$newFileName, (string) $tinyImage->encode());
         } catch (\Exception $e) {
-            dd($e->getMessage());     }
-
+            return back()->with('error', 'An error occurred while storing images.');
+        }
 
         #NAPOMENA: KADA KORISNIK PRISTUPA SLIKAMA, OBAVEZNO PROVERI DA LI NJEGOV ID ODGOVARA ID-JU KORISNIKA IZ BAZE,
         #I TAKO MU DOZVOLI DA VIDI SAMO SVOJE SLIKE!
 
+        #INSERT INTO DATABASE
         try {
             DB::beginTransaction();
 
             $user = Auth::user();
-            $user->profile_image = $fileName;
+
+            #REMOVE OLD IMAGE FROM FOLDERS
+            $oldProfileImage = $user->profile_image;
+            Storage::delete([
+                "{$pathOriginal}/{$oldProfileImage}",
+                "{$pathThumbnail}/{$oldProfileImage}",
+                "{$pathTiny}/{$oldProfileImage}",
+            ]);
+
+            $user->profile_image = $newFileName;
             $user->save();
 
             DB::commit();
@@ -214,7 +234,9 @@ class UserController extends RootController
             return back()->with('error', 'An error occurred while saving images and updating records.');
         }
 
-        #NASTAVI OVDE: OBRISI STARU SLIKU, UPDATE U BITRIXU
+        #NASTAVI OVDE: UPDATE U BITRIXU
+
+
 
         $user = Auth::user();
 
