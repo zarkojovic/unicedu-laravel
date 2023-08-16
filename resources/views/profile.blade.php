@@ -19,11 +19,12 @@
                         <div class="row">
                             <div class="col-6 col-lg-2 col-md-3 col-sm-4">
                                 <div class="profile-picture border border-silver">
-                                    <img
-                                        src="{{asset("images/profile/user-1.jpg")}}"
-                                        alt="Profile Picture"
-                                        class="img-fluid"
+                                    <img src="{{ asset("storage/profile/thumbnail/{$user->profile_image}") }}"
+                                         alt="Profile Picture"
+                                         class="img-fluid"
                                     />
+
+                                    <!--$imageUrl = asset('storage/profile/original/uploaded_image.jpg');-->
                                 </div>
                             </div>
                             <div class="col-6 col-lg-10 col-md-9 col-sm-8">
@@ -33,7 +34,7 @@
                                     <span class="text">PLATINUM</span>
                                 </div>
                                 <div class="mt-3">
-                                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.image.update', ['id' => $user->user_id]) }}">
+                                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.image.update') }}">
                                         @csrf
                                         @method('PUT')
                                         <label class="text-primary text-hover t05">Change Profile Picture</label>

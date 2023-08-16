@@ -71,9 +71,9 @@ class User extends Authenticatable
         return $this->hasONe(Package::class);
     }
 
-    public function getUserById($id) {
-        return $this->find($id);
-    }
+//    public function getUserById($id) {
+//        return $this->find($id);
+//    }
 
     public function updateUser($id, $data) {
         return $this->where('id',$id)->update($data);
