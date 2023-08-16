@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <!--  Student Profile -->
         <div class="row">
-            <div class="col-lg-12 d-flex align-items-stretch">
+            <div class="col-lg-12 d-flex align-items-strech">
                 <div class="card w-100">
                     <div class="card-body">
                         <div
@@ -33,8 +33,7 @@
                                     <span class="text">PLATINUM</span>
                                 </div>
                                 <div class="mt-3">
-                                    <form method="POST" enctype="multipart/form-data"
-                                          action="{{ route('user.image.update', ['id' => $user->user_id]) }}">
+                                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.image.update', ['id' => $user->user_id]) }}">
                                         @csrf
                                         @method('PUT')
                                         <label class="text-primary text-hover t05">Change Profile Picture</label>
@@ -239,14 +238,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="fieldsWrap">
-
-        </div>
-
-        @section('scripts')
-        @vite(['resources/js/profile.js'])
-    @endsection
-</div>
+    </div>
 @endsection
 

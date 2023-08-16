@@ -41,7 +41,7 @@
                         aria-expanded="false"
                     >
                         <img
-                            src="{{asset("images/profile/user-1.jpg")}}"
+                            src="{{ asset("storage/profile/tiny/{$user->profile_image}") }}"
                             alt=""
                             width="35"
                             height="35"
