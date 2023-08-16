@@ -141,11 +141,23 @@ Route::get("/make/users", '\App\Http\Controllers\UserController@store');
 
 Route::get("/activate", "\App\Http\Controllers\AuthController@activate");
 
-Route::get("/user/{id}/profile", [UserController::class, "show"]);
+Route::group(['middleware' => 'auth'], function () {
 
-Route::put("/user/{id}/edit", [UserController::class, "edit"]);
+    Route::get("/profile",[UserController::class,"show"])->name("profile");
 
-Route::put('/user/{id}/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+    #PROBLEM: KADA SE UNESU OVE RUTE U URL IZADJE ERROR (I KADA JE NEULOGOVAN KORISNIK)
+    Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+
+    Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+
+    Route::match(['get','delete','head','trace','options','connect'], '/image/edit', function () {
+        return redirect()->route("/");
+    });
+    #VELIKI PROBLEM: ZA SVAKU RUTU TREBA ZABRANITI NEKAKO OSTALE HTTP METODE
+
+    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
+        ->name('profile.image.path');
+});
 
 
 //CONVERT TO CONTROLLER
