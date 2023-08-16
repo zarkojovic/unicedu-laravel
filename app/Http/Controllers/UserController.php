@@ -124,8 +124,23 @@ class UserController extends RootController
         }
     }
 
+    public function getProfileImagePath($directory,$imageName)
+    {
+        $user = Auth::user();
+
+        if ($user && $user->profile_image === $imageName) {
+            return asset("storage/profile/{$directory}/{$imageName}");
+        }
+
+        abort(403, 'Unauthorized');
+    }
+
     #CONTINUE WORKING ON UPLOADING PROFILE IMAGE
     public function updateImage(Request $request) {
+//        if($request->method() !== "put"){
+//            return redirect()->route("home");
+//        }
+
         #INPUTS
         if (!$request->hasFile('profile-image')) {
             return "No file uploaded.";
@@ -154,10 +169,6 @@ class UserController extends RootController
             $errors[] = "File size should not exceed 2MB.";
         }
 
-//        if (file_exists($pathOriginal.'/'.$fileName)) {
-//            $errors[] = "File with the same name already exists.";
-//        }
-
         if (!empty($errors)) {
             foreach ($errors as $error) {
                 echo $error;
@@ -165,6 +176,7 @@ class UserController extends RootController
             return false;
         }
         #QUESTION: DA LI SU OVDE PRISTUPACNE SLIKE? DA LI MOGU DA SE PRIKAZU IZ STORAGEA? MOZDA MORA SOFTLINK...
+        #ODGOVOR: MORAO JE SOFTLINK...
         $moved = Storage::putFileAs($pathOriginal, $file, $fileName);
         if (!$moved) {
             return "Saving image on the server failed.";
@@ -184,10 +196,8 @@ class UserController extends RootController
             return back()->with('error', 'An error occurred while storing images.');
         }
 
-        #NASTAVI OVDE: UPDATE U BAZI
         #NAPOMENA: KADA KORISNIK PRISTUPA SLIKAMA, OBAVEZNO PROVERI DA LI NJEGOV ID ODGOVARA ID-JU KORISNIKA IZ BAZE,
         #I TAKO MU DOZVOLI DA VIDI SAMO SVOJE SLIKE!
-        #$user = Auth::user(); DA SE DOHVATI ULOGOVANI USER
 
         try {
             DB::beginTransaction();
@@ -203,9 +213,7 @@ class UserController extends RootController
             return back()->with('error', 'An error occurred while saving images and updating records.');
         }
 
-
-
-//        return "proveri folder";
+        #NASTAVI OVDE: OBRISI STARU SLIKU, UPDATE U BITRIXU
 
         $user = Auth::user();
 
