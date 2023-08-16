@@ -101,22 +101,16 @@ Route::group(['middleware' => 'auth'], function () {
     #PROBLEM: KADA SE UNESU OVE RUTE U URL IZADJE ERROR (I KADA JE NEULOGOVAN KORISNIK)
     Route::put("/user/{id}/edit",[UserController::class,"edit"]);
 
-    Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+//    Route::put('/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
 
-    Route::match(['get','delete','head','trace','options','connect'], '/image/edit', function () {
-        return redirect()->route("/");
-    });
+//    Route::match(['get','delete','head','trace','options','connect'], '/image/edit', function () {
+//        return redirect()->route("/");
+//    });
     #VELIKI PROBLEM: ZA SVAKU RUTU TREBA ZABRANITI NEKAKO OSTALE HTTP METODE
 
     Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
         ->name('profile.image.path');
 });
-
-//Route::get("/user/{id}/profile",[UserController::class,"show"]);
-//
-//Route::put("/user/{id}/edit",[UserController::class,"edit"]);
-//
-//Route::put('/user/{id}/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
 
 Route::get("/field/check", function () {
 
