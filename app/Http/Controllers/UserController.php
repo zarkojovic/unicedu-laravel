@@ -46,6 +46,8 @@ class UserController extends RootController
 //        $user = new User();
         $user = Auth::user();
 
+
+
         return view('profile', ['user'=>$user]);
     }
 

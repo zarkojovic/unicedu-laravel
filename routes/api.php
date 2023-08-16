@@ -18,5 +18,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+
+Route::post("/user_fields","\App\Http\Controllers\FieldController@getAvailableFields");
 

@@ -19,17 +19,11 @@
                         <div class="row">
                             <div class="col-6 col-lg-2 col-md-3 col-sm-4">
                                 <div class="profile-picture border border-silver">
-                                    @php
-                                        $user = \Illuminate\Support\Facades\Auth::user();
-                                        $imagePathRoute = route('profile.image.path', ['directory' => 'thumbnail',
-                                                                                       'imageName' => $user->profile_image]);
-                                    @endphp
-                                    <img src="{{ $imagePathRoute }}"
-                                         alt="Profile Picture"
-                                         class="img-fluid"
+                                    <img
+                                        src="{{asset("images/profile/user-1.jpg")}}"
+                                        alt="Profile Picture"
+                                        class="img-fluid"
                                     />
-
-                                    <!--asset("storage/profile/thumbnail/{$user->profile_image}")-->
                                 </div>
                             </div>
                             <div class="col-6 col-lg-10 col-md-9 col-sm-8">
@@ -39,7 +33,7 @@
                                     <span class="text">PLATINUM</span>
                                 </div>
                                 <div class="mt-3">
-                                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.image.update') }}">
+                                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.image.update', ['id' => $user->user_id]) }}">
                                         @csrf
                                         @method('PUT')
                                         <label class="text-primary text-hover t05">Change Profile Picture</label>
@@ -245,5 +239,10 @@
             </div>
         </div>
     </div>
+    <div id="fieldsWrap"></div>
+@endsection
+
+@section('scripts')
+    @vite('resources/js/profile.js');
 @endsection
 

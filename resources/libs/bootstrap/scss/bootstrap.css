@@ -2097,7 +2097,7 @@ progress {
   line-height: 1.5;
   color: var(--bs-body-color);
   background-color: var(--bs-form-control-bg);
-  background-clip: padding-box;
+  background-clip: padding-box;a
   border: var(--bs-border-width) solid var(--bs-border-color);
   -webkit-appearance: none;
      -moz-appearance: none;
