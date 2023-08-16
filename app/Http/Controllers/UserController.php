@@ -136,7 +136,8 @@ class UserController extends RootController
     }
 
     #CONTINUE WORKING ON UPLOADING PROFILE IMAGE
-    public function updateImage(Request $request) {
+    public function updateImage(Request $request)
+    {
 //        if($request->method() !== "put"){
 //            return redirect()->route("home");
 //        }
@@ -186,15 +187,15 @@ class UserController extends RootController
             #THUMBNAIL
             $size = 150;
             $thumbnail = Image::make($file)->resize($size, $size);
-            Storage::put($pathThumbnail.'/'.$fileName, (string) $thumbnail->encode());
+            Storage::put($pathThumbnail . '/' . $fileName, (string)$thumbnail->encode());
 
             #TINY
             $size = 35;
             $tinyImage = Image::make($file)->resize($size, $size);
-            Storage::put($pathTiny.'/'.$fileName, (string) $tinyImage->encode());
+            Storage::put($pathTiny . '/' . $fileName, (string)$tinyImage->encode());
         } catch (\Exception $e) {
-            return back()->with('error', 'An error occurred while storing images.');
-        }
+            dd($e->getMessage());     }
+
 
         #NAPOMENA: KADA KORISNIK PRISTUPA SLIKAMA, OBAVEZNO PROVERI DA LI NJEGOV ID ODGOVARA ID-JU KORISNIKA IZ BAZE,
         #I TAKO MU DOZVOLI DA VIDI SAMO SVOJE SLIKE!
