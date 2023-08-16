@@ -150,11 +150,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
 
-    Route::match(['get','delete','head','trace','options','connect'], '/image/edit', function () {
-        return redirect()->route("/");
-    });
-    #VELIKI PROBLEM: ZA SVAKU RUTU TREBA ZABRANITI NEKAKO OSTALE HTTP METODE
-
     Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
         ->name('profile.image.path');
 });
