@@ -2,6 +2,7 @@
 
 use App\Models\Agency;
 use App\Models\Field;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -97,9 +98,18 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get("/profile",[UserController::class,"show"])->name("profile");
 
+    #PROBLEM: KADA SE UNESU OVE RUTE U URL IZADJE ERROR (I KADA JE NEULOGOVAN KORISNIK)
     Route::put("/user/{id}/edit",[UserController::class,"edit"]);
 
-    Route::put('/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+    Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+
+    Route::match(['get','delete','head','trace','options','connect'], '/image/edit', function () {
+        return redirect()->route("/");
+    });
+    #VELIKI PROBLEM: ZA SVAKU RUTU TREBA ZABRANITI NEKAKO OSTALE HTTP METODE
+
+    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
+        ->name('profile.image.path');
 });
 
 //Route::get("/user/{id}/profile",[UserController::class,"show"]);
