@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Field;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FieldController extends Controller
 {
@@ -18,6 +19,10 @@ class FieldController extends Controller
         $json = file_get_contents($jsPath . "/fields.json");
         //Make it in php array
         $json_fields = json_decode($json, true);
+
+        $user = Auth::user();
+
+        $test_info = $user->info;
 
         $data = [$categories,$fields,$json_fields];
 

@@ -11,8 +11,15 @@ class UserInfo extends Model
     use HasFactory;
 
     protected $primaryKey = 'user_info_id';
-    protected function user(): BelongsTo{
-        return $this->belongsTo(User::class);
+
+    protected function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+    protected function field(): BelongsTo
+    {
+        return $this->belongsTo(Field::class, 'field_id');
     }
 
 }

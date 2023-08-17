@@ -1,24 +1,39 @@
 $(document).ready(function (){
 
-    $(document).on("click","#btnEdit",function (){
-        $("#userForm").removeClass("d-none");
-        $("#displayForm").addClass("d-none");
-        $("#displayFormBtn").addClass("d-none");
-        $("#userFormBtn").removeClass("d-none");
+    $(document).on("click",".btnEditClass",function (){
+        let id = $(this).data("category");
+        console.log(id);
+        // $("#displayForm"+id).addClass("d-none");
+        $(document).find("#userForm"+id).removeClass("d-none");
+        $(document).find("#displayForm"+id).addClass("d-none");
+        $(document).find("#displayFormBtn"+id).addClass("d-none");
+        $(document).find("#userFormBtn"+id).removeClass("d-none");
+        // $("#displayFormBtn").addClass("d-none");
+        // $("#userFormBtn").removeClass("d-none");
     });
 
-    function showDisplayForm(){
-        $("#userForm").addClass("d-none");
-        $("#displayForm").removeClass("d-none");
-        $("#displayFormBtn").removeClass("d-none");
-        $("#userFormBtn").addClass("d-none");
+    function showDisplayForm(id){
+
+        $(document).find("#userForm"+id).addClass("d-none");
+        $(document).find("#displayForm"+id).removeClass("d-none");
+        $(document).find("#displayFormBtn"+id).removeClass("d-none");
+        $(document).find("#userFormBtn"+id).addClass("d-none");
+
+        // $("#userForm").addClass("d-none");
+        // $("#displayForm").removeClass("d-none");
+        // $("#displayFormBtn").removeClass("d-none");
+        // $("#userFormBtn").addClass("d-none");
     }
 
-    $(document).on("click","#btnSave",function (){
+    $(document).on("click",".btnSaveClass",function (){
+        let id = $(this).data("category");
         updateDisplay();
-        showDisplayForm();
+        showDisplayForm(id);
     });
-    $(document).on("click","#btnCancel",showDisplayForm);
+    $(document).on("click",".btnCancelClass",function (){
+        let id = $(this).data("category");
+        showDisplayForm(id);
+    });
 
     const inputs = {
         dob: document.getElementById('dobInput'),
