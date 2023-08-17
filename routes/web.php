@@ -143,12 +143,18 @@ Route::get("/activate", "\App\Http\Controllers\AuthController@activate");
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get("/profile",[UserController::class,"show"])->name("profile");
+    Route::get("/profile", [UserController::class, "show"])->name("profile");
 
     #PROBLEM: KADA SE UNESU OVE RUTE U URL IZADJE ERROR (I KADA JE NEULOGOVAN KORISNIK)
-    Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+    Route::put("/user/{id}/edit", [UserController::class, "edit"]);
 
-    Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+    Route::match(['post', 'put', 'patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+
+    Route::get("/user_info", function () {
+        $user = Auth::user();
+        $json = json_encode($user->info);
+        echo json_encode($user->info()->get());
+    });
 
 //    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
 //        ->name('profile.image.path');

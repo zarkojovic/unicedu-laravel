@@ -71,6 +71,10 @@ function printElements() {
     axios.post('/api/user_fields')
         .then(response => {
             console.log(response);
+
+            if (1) {
+                throw new Error("An error occurred"); // Stop further execution
+            }
             // MAKING THEM SEPERATE
             let categories = response.data[0];
             let fields = response.data[1];
@@ -220,3 +224,8 @@ function printElements() {
 }
 
 printElements();
+
+axios.get("/user_info")
+    .then(response => {
+        console.log(response.data);
+})

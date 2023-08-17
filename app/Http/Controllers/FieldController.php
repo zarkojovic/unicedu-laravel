@@ -21,10 +21,11 @@ class FieldController extends Controller
         $json_fields = json_decode($json, true);
 
         $user = Auth::user();
+        $test_info = $user->load('info');
+//        $json = json_encode($user->info()->get());
+//        $test_info = json_decode($json);
 
-        $test_info = $user->info;
-
-        $data = [$categories,$fields,$json_fields];
+        $data = [$categories,$fields,$json_fields,$test_info];
 
         return response()->json($data);
     }
