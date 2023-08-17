@@ -24,10 +24,10 @@
     </div>
 
 
-    <script src='https://salebot.ai/js/salebot.js' charset='utf-8'></script>
+    <script src='https://salebot.pro/js/salebot.js' charset='utf-8'></script>
     <script>
         SaleBotPro.init({
-            onlineChatId: '1579'
+            onlineChatId: '1584'
         });
     </script>
 @endsection

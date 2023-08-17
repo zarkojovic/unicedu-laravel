@@ -64,7 +64,7 @@ class User extends Authenticatable
 
     public function info(): \Illuminate\Database\Eloquent\Relations\hasMany
     {
-        return $this->hasMany(UserInfo::class);
+        return $this->hasMany(UserInfo::class,'user_id');
     }
     public function package(): \Illuminate\Database\Eloquent\Relations\hasOne
     {
