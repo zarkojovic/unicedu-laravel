@@ -6,6 +6,10 @@
     visibility: hidden;
 }
 
+.profile-image-label {
+    cursor:pointer;
+}
+
 .profile-picture {
     width: 120px;   // Adjust the size as needed
     height: 120px;  // Maintain aspect ratio
