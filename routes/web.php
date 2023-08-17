@@ -145,14 +145,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get("/profile",[UserController::class,"show"])->name("profile");
 
-
-    #PROBLEM: KADA SE UNESU OVE RUTE U URL IZADJE ERROR (I KADA JE NEULOGOVAN KORISNIK)
     Route::put("/user/{id}/edit",[UserController::class,"edit"]);
 
     Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
-
-//    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
-//        ->name('profile.image.path');
 });
 
 

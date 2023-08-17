@@ -44,12 +44,8 @@ class UserController extends RootController
      */
     public function show()
     {
-//        $user = new User();
-        $user = Auth::user();
-
-
-
-        return view('profile', ['user'=>$user]);
+//        $user = Auth::user();
+        return view('profile');
     }
 
     /**
@@ -216,28 +212,27 @@ class UserController extends RootController
             return back()->with('error', 'An error occurred while updating.');
         }
 
-        #NASTAVI OVDE: UPDATE U BITRIXU
         #UF_CRM_1667336320092 - polje za sliku
         #6533 - DEAL ID
 
         #IF UPDATED IN DATABASE, UPDATE IN BITRIX24
-        try {
-            $imageContent = Storage::get($pathOriginal.'/'.$newFileName);
-
-            CRest::call("crm.deal.update", [
-                'id' => '6533',//test deal
-                'fields' => [
-                    'UF_CRM_1667336320092' => [
-                        'fileData' => [
-                            $newFileName,
-                            base64_encode($imageContent)
-                        ]
-                    ]
-                ]
-            ]);
-        } catch (\Exception $e) {
-            return "Error: " . $e->getMessage();
-        }
+//        try {
+//            $imageContent = Storage::get($pathOriginal.'/'.$newFileName);
+//
+//            CRest::call("crm.deal.update", [
+//                'id' => '6533',//test deal
+//                'fields' => [
+//                    'UF_CRM_1667336320092' => [
+//                        'fileData' => [
+//                            $newFileName,
+//                            base64_encode($imageContent)
+//                        ]
+//                    ]
+//                ]
+//            ]);
+//        } catch (\Exception $e) {
+//            return "Error: " . $e->getMessage();
+//        }
 
 
 
