@@ -20,16 +20,16 @@
                             <div class="col-6 col-lg-2 col-md-3 col-sm-4">
                                 <div class="profile-picture border border-silver">
                                     @php
-                                        $user = \Illuminate\Support\Facades\Auth::user();
-                                        $imagePathRoute = route('profile.image.path', ['directory' => 'thumbnail',
-                                                                                       'imageName' => $user->profile_image]);
+                                              $user = \Illuminate\Support\Facades\Auth::user();
+//{{--                                        $imagePathRoute = route('profile.image.path', ['directory' => 'thumbnail',--}}
+//{{--                                                                                       'imageName' => $user->profile_image]);--}}
                                     @endphp
-                                    <img src="{{ $imagePathRoute }}"
+                                    <img src="{{ asset("storage/profile/thumbnail/{$user->profile_image}")  }}"
                                          alt="Profile Picture"
                                          class="img-fluid"
                                     />
 
-                                    <!--asset("storage/profile/thumbnail/{$user->profile_image}")-->
+                                    <!--asset("storage/profile/thumbnail/{$user->profile_image}") -->
                                 </div>
                             </div>
                             <div class="col-6 col-lg-10 col-md-9 col-sm-8">

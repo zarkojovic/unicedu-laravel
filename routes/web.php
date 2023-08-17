@@ -150,23 +150,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
 
-    Route::get("/user_info",function (){
-        $user = Auth::user();
-//        var_dump($user->info);
-        var_dump(json_encode($user->info));
-
-//        $new_array = [];
-//        foreach ($user->info as $info){
-//            $new_array[] = $info
-//        }
-    });
-//    Route::match(['get','delete','head','trace','options','connect'], '/image/edit', function () {
-//        return redirect()->route("/");
-//    });
-    #VELIKI PROBLEM: ZA SVAKU RUTU TREBA ZABRANITI NEKAKO OSTALE HTTP METODE
-
-    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
-        ->name('profile.image.path');
+//    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
+//        ->name('profile.image.path');
 });
 
 
