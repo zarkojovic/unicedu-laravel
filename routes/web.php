@@ -145,6 +145,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get("/profile", [UserController::class, "show"])->name("profile");
 
+
     #PROBLEM: KADA SE UNESU OVE RUTE U URL IZADJE ERROR (I KADA JE NEULOGOVAN KORISNIK)
     Route::put("/user/{id}/edit", [UserController::class, "edit"]);
 

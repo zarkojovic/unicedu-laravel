@@ -1,5 +1,9 @@
 $(document).ready(function (){
 
+    $(document).on('change','#profile-image-input', function() {
+        this.form.submit();
+    });
+
     $(document).on("click",".btnEditClass",function (){
         let id = $(this).data("category");
         console.log(id);

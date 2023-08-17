@@ -42,9 +42,8 @@
                                     <form method="POST" enctype="multipart/form-data" action="{{ route('user.image.update') }}">
                                         @csrf
                                         @method('PUT')
-                                        <label class="text-primary text-hover t05">Change Profile Picture</label>
-                                        <input type="file" name="profile-image" id="profile-image"/>
-                                        <button type="submit">Update</button>
+                                        <label class="text-primary text-hover t05" for="profile-image-input">Change Profile Picture</label>
+                                        <input type="file" name="profile-image" id="profile-image-input"/>
                                     </form>
                                 </div>
                             </div>
