@@ -127,23 +127,7 @@ class UserController extends RootController
         }
     }
 
-//    public function getProfileImagePath($directory,$imageName)
-//    {
-//        $user = Auth::user();
-//
-//        if ($user && $user->profile_image === $imageName) {
-//            return asset("storage/profile/{$directory}/{$imageName}");
-//        }
-//
-//        abort(403, 'Unauthorized');
-//    }
-
-    #CONTINUE WORKING ON UPLOADING PROFILE IMAGE
     public function updateImage(Request $request) {
-//        if($request->method() !== "put"){
-//            return redirect()->route("home");
-//        }
-
         #INPUTS
         if (!$request->hasFile('profile-image')) {
             return "No file uploaded.";
@@ -189,7 +173,7 @@ class UserController extends RootController
 
         $moved = Storage::putFileAs($pathOriginal, $file, $newFileName);
         if (!$moved) {
-            return "Saving image on the server failed.";
+            return "Error: Saving image on the server failed.";
         }
 
         #MAKE SMALL IMAGES
@@ -204,11 +188,9 @@ class UserController extends RootController
             $tinyImage = Image::make($file)->fit($size, $size, null, "top");
             Storage::put($pathTiny.'/'.$newFileName, (string) $tinyImage->encode());
         } catch (\Exception $e) {
-            return back()->with('error', 'An error occurred while storing images.');
+            report($e);
+            return back()->with('error', 'An error occurred while saving images and updating records.');
         }
-
-        #NAPOMENA: KADA KORISNIK PRISTUPA SLIKAMA, OBAVEZNO PROVERI DA LI NJEGOV ID ODGOVARA ID-JU KORISNIKA IZ BAZE,
-        #I TAKO MU DOZVOLI DA VIDI SAMO SVOJE SLIKE!
 
         #INSERT INTO DATABASE
         try {
@@ -230,11 +212,33 @@ class UserController extends RootController
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-//            report($e);
-            return back()->with('error', 'An error occurred while saving images and updating records.');
+            report($e);
+            return back()->with('error', 'An error occurred while updating.');
         }
 
         #NASTAVI OVDE: UPDATE U BITRIXU
+        #UF_CRM_1667336320092 - polje za sliku
+        #6533 - DEAL ID
+
+        #IF UPDATED IN DATABASE, UPDATE IN BITRIX24
+        try {
+            $imageContent = Storage::get($pathOriginal.'/'.$newFileName);
+
+            CRest::call("crm.deal.update", [
+                'id' => '6533',//test deal
+                'fields' => [
+                    'UF_CRM_1667336320092' => [
+                        'fileData' => [
+                            $newFileName,
+                            base64_encode($imageContent)
+                        ]
+                    ]
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+
 
 
 
