@@ -44,7 +44,6 @@
                                         @method('PUT')
                                         <label class="text-primary text-hover t05" for="profile-image-input">Change Profile Picture</label>
                                         <input type="file" name="profile-image" id="profile-image-input"/>
-                                        <button type="submit">Update</button>
                                     </form>
                                 </div>
                             </div>
