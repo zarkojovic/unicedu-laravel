@@ -26,8 +26,6 @@
                                          alt="Profile Picture"
                                          class="img-fluid"
                                     />
-
-                                    <!--asset("storage/profile/thumbnail/{$user->profile_image}") -->
                                 </div>
                             </div>
                             <div class="col-6 col-lg-10 col-md-9 col-sm-8">

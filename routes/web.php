@@ -2,6 +2,8 @@
 
 use App\Models\Agency;
 use App\Models\Field;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -25,40 +27,82 @@ Route::fallback(function () {
     return view('notification', ['type' => '404']);
 });
 
+
 //ROUTES FOR AUTHORIZED USERS
 Route::middleware(["auth"])->group(function () {
-    Route::get('/', function () {
-
+    //REGISTRATION SUCCESS, GO TO EMAIL TO VERIFY
+    Route::get('/email/verify', function () {
         $user = Auth::user();
 
-        if ($user->role->role_name == "admin") {
-            return redirect()->route("admin_home");
+        //NOTIFICATION ONLY IF LOGGED IN BUT NOT YET VERIFIED
+        if ($user->email_verified_at === null) {
+            return view('notification', ['type' => 'success_registration']);
         }
 
-        return view('profile', ['user' => $user]);
-    })->name("home");
+        return redirect()->route('home');
+    })->name('verification.notice');
 
     Route::post("/logout", "\App\Http\Controllers\AuthController@logout")->name("logout");
 
-    //    ADMIN PERMISSIONS
-    Route::middleware(["admin"])->group(function () {
-        //ADMIN ROUTES
-        Route::prefix('admin')->group(function () {
-            Route::get('/', function () {
-                $categories = \App\Models\FieldCategory::all();
-                $fields = Field::where('is_active', '1')->where('field_category_id', NULL)->get();
-                return view("admin", ["fields" => $fields, "categories" => $categories]);
-            })->name("admin_home");
+    //RESEND CONFIRMATION EMAIL
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', 'Verification link sent!');
+    })->middleware(['throttle:6,1'])->name('verification.send');
 
-            Route::get("/category_fields", function () {
-                $categories = \App\Models\FieldCategory::all();
-                $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
-                return view("category_fields", ["fields" => $fields, "categories" => $categories]);
+    //    Route::put("/user/{id}/edit",[UserController::class,"edit"]);
+
+
+    //ROUTES FOR VERIFIED USERS
+    Route::middleware(["verified"])->group(function () {
+        Route::get('/', function () {
+
+            $user = Auth::user();
+
+            if ($user->role->role_name == "admin") {
+                return redirect()->route("admin_home");
+            }
+
+            return view('profile');//, ['user' => $user]);
+        })->name("home");
+
+        Route::get("/profile",[UserController::class,"show"])->name("profile");
+
+        //EDIT IMAGE
+        Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+
+        //ADMIN PERMISSIONS
+        Route::middleware(["admin"])->group(function () {
+            //ADMIN ROUTES
+            Route::prefix('admin')->group(function () {
+                Route::get('/', function () {
+                    $categories = \App\Models\FieldCategory::all();
+                    $fields = Field::where('is_active', '1')->where('field_category_id', NULL)->get();
+                    return view("admin", ["fields" => $fields, "categories" => $categories]);
+                })->name("admin_home");
+
+                Route::get("/category_fields", function () {
+                    $categories = \App\Models\FieldCategory::all();
+                    $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
+                    return view("category_fields", ["fields" => $fields, "categories" => $categories]);
+                });
             });
         });
     });
-
 });
+
+
+//AUTH ROUTE
+//Auth::routes(['verify' => true]);
+
+//AFTER CLICK ON VERIFY LINK IN EMAIL
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return view('notification', ['type' => 'profile_activated']);//redirect('/home');
+})->middleware(['signed','auth'])->name('verification.verify');
+
+
+
 //ROUTES FOR GUESTS
 Route::middleware(['guest'])->group(function () {
     Route::get("/register", "\App\Http\Controllers\AuthController@register")->name("register");
@@ -69,7 +113,13 @@ Route::middleware(['guest'])->group(function () {
 
     Route::post("/login", "\App\Http\Controllers\AuthController@auth");
 
+//    //REGISTRATION SUCCESS, GO TO EMAIL TO VERIFY
+//    Route::get('/email/verify', function () {
+//        return view('notification', ['type' => 'success_registration']);
+//    })->name('verification.notice');
 });
+
+
 
 
 //CONVERT THIS ROUTE IN CONTROLLER
@@ -135,20 +185,10 @@ Route::get("/get/agencies", function () {
     echo "</pre>";
 });
 
-//Route::get('/user/{id}', '\App\Http\Controllers\UserController@index');
 
 Route::get("/make/users", '\App\Http\Controllers\UserController@store');
 
 Route::get("/activate", "\App\Http\Controllers\AuthController@activate");
-
-Route::group(['middleware' => 'auth'], function () {
-
-    Route::get("/profile",[UserController::class,"show"])->name("profile");
-
-    Route::put("/user/{id}/edit",[UserController::class,"edit"]);
-
-    Route::match(['post','put','patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
-});
 
 
 //CONVERT TO CONTROLLER

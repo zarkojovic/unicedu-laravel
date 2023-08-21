@@ -44,7 +44,6 @@ class UserController extends RootController
      */
     public function show()
     {
-//        $user = Auth::user();
         return view('profile');
     }
 
@@ -53,9 +52,7 @@ class UserController extends RootController
      */
     public function edit()
     {
-        $user = Auth::user();
 
-        return view('user.edit', ['user'=>$user]);
     }
 
     /**
