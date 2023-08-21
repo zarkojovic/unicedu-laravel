@@ -2,7 +2,10 @@
 
 use App\Models\Agency;
 use App\Models\Field;
+use App\Models\UserInfo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Kafka0238\Crest\Src;
@@ -39,6 +42,7 @@ Route::middleware(["auth"])->group(function () {
     })->name("home");
 
     Route::post("/logout", "\App\Http\Controllers\AuthController@logout")->name("logout");
+
 
     //    ADMIN PERMISSIONS
     Route::middleware(["admin"])->group(function () {
@@ -150,12 +154,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put("/user/{id}/edit", [UserController::class, "edit"]);
 
     Route::match(['post', 'put', 'patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
-
-    Route::get("/user_info", function () {
-        $user = Auth::user();
-        $json = json_encode($user->info);
-        echo json_encode($user->info()->get());
-    });
 
 //    Route::get('/storage/profile/{directory}/{imageName}', [UserController::class, 'getProfileImagePath'])
 //        ->name('profile.image.path');

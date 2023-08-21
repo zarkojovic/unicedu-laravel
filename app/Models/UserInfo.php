@@ -10,6 +10,14 @@ class UserInfo extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'field_id',
+        'value',
+        'file_name',
+        'file_path'
+    ];
+
     protected $primaryKey = 'user_info_id';
 
     protected function user(): BelongsTo

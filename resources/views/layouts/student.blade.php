@@ -2,6 +2,11 @@
 
 
 @section('main')
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <img src="{{ asset("images/logos/spinner.gif") }}" alt="spinner" />
+    </div>
     <!--  Body Wrapper -->
     <div
         class="page-wrapper"

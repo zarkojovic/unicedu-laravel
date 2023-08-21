@@ -50,6 +50,9 @@ class AuthController extends Controller
             $new->contact_id = $contact_id;
 
             if ($new->save()) {
+
+
+
                 return view("notification", ["type" => "success_registration"]);
             } else {
                 return redirect()->back();
