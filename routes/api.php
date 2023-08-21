@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\UserInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post("/user_fields","\App\Http\Controllers\FieldController@getAvailableFields");
+Route::post("/user_fields", "\App\Http\Controllers\FieldController@getAvailableFields");
+
 

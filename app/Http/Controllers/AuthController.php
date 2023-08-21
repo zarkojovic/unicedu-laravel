@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifyEmail;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -20,6 +23,14 @@ class AuthController extends Controller
     {
         return view("login");
     }
+
+//    public function sendVerificationEmail($email, $first_name, $auth_code)
+//    {
+//        $verificationLink = "http://127.0.0.1:8000/activate?code=".$auth_code;
+//        Mail::to($email)->send(new VerifyEmail($email, $first_name, $verificationLink));
+//
+//        return "Email sent successfully!";
+//    }
 
     public function check(Request $request)
     {
@@ -37,20 +48,19 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
             $validated = $validator->validated();
-            $auth_code = Str::random(30);
             $contact_id = random_int(1000, 2000);
             $new = new User();
-
             $new->first_name = $request->first_name;
             $new->last_name = $request->last_name;
             $new->email = $request->email;
             $new->password = bcrypt($request->password);
-            $new->auth_code = $auth_code;
             $new->phone = $request->phone;
             $new->contact_id = $contact_id;
 
             if ($new->save()) {
-                return view("notification", ["type" => "success_registration"]);
+                event(new Registered($new));
+                Auth::login($new);
+                return redirect()->route("verification.notice");
             } else {
                 return redirect()->back();
             }
@@ -100,10 +110,8 @@ class AuthController extends Controller
                     return redirect()->intended('/');
                 } else {
                     // User is not verified
-                    Auth::logout();
-                    return redirect()->back()->withInput($request->only('email'))->withErrors([
-                        'password' => 'Your account is not verified.',
-                    ]);
+                    return redirect()->route('verification.notice');
+
                 } // Redirect to the dashboard or the intended URL
             } else {
                 // Authentication failed

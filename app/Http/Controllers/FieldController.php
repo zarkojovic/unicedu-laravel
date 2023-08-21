@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class FieldController extends Controller
 {
-    public function getAvailableFields(){
+    public function getAvailableFields()
+    {
 
         $categories = \App\Models\FieldCategory::all();
         $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
@@ -20,11 +21,7 @@ class FieldController extends Controller
         //Make it in php array
         $json_fields = json_decode($json, true);
 
-        $user = Auth::user();
-
-        $test_info = $user->info;
-
-        $data = [$categories,$fields,$json_fields];
+        $data = [$categories, $fields, $json_fields];
 
         return response()->json($data);
     }

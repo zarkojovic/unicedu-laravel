@@ -1,4 +1,7 @@
 <!--  Header Start -->
+@php
+    $user = \Illuminate\Support\Facades\Auth::user();
+@endphp
 <header class="app-header position-relative w-100">
     <nav class="navbar navbar-expand-lg navbar-light">
         <ul class="navbar-nav">
@@ -40,11 +43,6 @@
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
-                        @php
-                            $user = \Illuminate\Support\Facades\Auth::user();
-//                            $imagePathRoute = route('profile.image.path', ['directory' => 'tiny',
-//                                                                           'imageName' => $user->profile_image]);
-                        @endphp
                         <img
                             src="{{ asset("storage/profile/tiny/{$user->profile_image}") }}"
                             alt=""
