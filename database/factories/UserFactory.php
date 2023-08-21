@@ -23,7 +23,6 @@ class UserFactory extends Factory
             'last_name' => fake()->firstName(),
             'password' => bcrypt('password'), // Default password, you can change this
             'email' => fake()->unique()->safeEmail,
-            'auth_code' => Str::random(10),
             'email_verified_at' => now(),
             'profile_image' => 'profile.jpg',
             'phone' => fake()->unique()->phoneNumber,

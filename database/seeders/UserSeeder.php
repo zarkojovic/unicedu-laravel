@@ -23,7 +23,6 @@ class UserSeeder extends Seeder
             $new->last_name = $user->last_name;
             $new->email = $user->email;
             $new->password = $user->password;
-            $new->auth_code = $user->auth_code;
             $new->phone = $user->phone;
             $new->contact_id = $user->contact_id;
             $new->role_id = $user->role_id;

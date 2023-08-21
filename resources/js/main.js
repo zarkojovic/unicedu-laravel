@@ -1,21 +1,20 @@
 import axios from "axios";
+
 function printHTML(el, val = null) {
     // if(el.type == "enumeration"){
 
     // }
     let html = '';
     if (el.type == "crm_category" && el.field_name == "CATEGORY_ID") {
-        html += `
-                                    <label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
-                                    <select class="form-control" name="${el.field_name}">
-                                    <option value="0">Select</option>
-                                        `;
+        html += `<label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
+                    <select class="form-control" name="${el.field_name}">
+                    <option value="0">Select</option>`;
 
         el.items.forEach(item => {
             html += `<option value="${item.ID}">${item.NAME}</option>`
         })
         html += `
-                                    </select>
+                                </select>
                                  `;
     } else if (el.type == "crm_status" && el.statusType == "DEAL_STAGE") {
         html += `
@@ -77,68 +76,72 @@ function printHTML(el, val = null) {
 
 function printForm(category, fields, field_details, user_info, display = true) {
     let html = `
-        <form id="${display ? 'display' : 'user'}Form${category.field_category_id}" class="mt-4 ${!display ? "d-none" : ""}">
-            <div class="col">`;
+        <form id="${display ? 'display' : 'user'}Form${category.field_category_id}" class="${!display ? "d-none" : ''}">
 
-            // DECLARING COUNTER SO WE KNOW WHEN TO BREAK FOR DESIGN
-            var i = 0;
+            <div class="container-fluid">
+                <div class="row">
+                <div class="col-sm-8">
+                <div class="row">
+            `;
 
-            // GET ONLY FIELDS WHICH ARE IN THAT CATEGORY
-            var category_fields = fields.filter(el => el.field_category_id == category.field_category_id);
+    // DECLARING COUNTER SO WE KNOW WHEN TO BREAK FOR DESIGN
+    var i = 0;
 
-            // GO THROUGH EACH FIELD
-            category_fields.forEach(field => {
+    // GET ONLY FIELDS WHICH ARE IN THAT CATEGORY
+    var category_fields = fields.filter(el => el.field_category_id == category.field_category_id);
 
-                // GET THE FIELD NAME FOR DISPLAY
-                let displayName = field.title != null ? field.title : field.field_name;
+    // GO THROUGH EACH FIELD
+    category_fields.forEach(field => {
 
-                // CHECKING ON EVERY TWO TO MAKE NEW ROW
-                let breakRow = i % 2;
+        // GET THE FIELD NAME FOR DISPLAY
+        let displayName = field.title != null ? field.title : field.field_name;
 
-                // GET ELEMENT OBJECT FROM JSON
-                let element = field_details.filter(el => el.field_name == field.field_name);
-                element = element[0];
-                element.field_id = field.field_id;
-                // console.log(element)
+        // CHECKING ON EVERY TWO TO MAKE NEW ROW
+        let breakRow = i % 2;
 
-                if (!breakRow) {
-                    html += `<div class="row my-2">`
-                }
-                html += `<div class="col-sm-4">`;
+        // GET ELEMENT OBJECT FROM JSON
+        let element = field_details.filter(el => el.field_name == field.field_name);
+        element = element[0];
+        element.field_id = field.field_id;
+        // console.log(element)
+        // if (!breakRow) {
+        //     html += `<div class="row my-2">`
+        // }
+        html += `<div class="col-sm-6">`;
+
+        // FUNCTION FOR PRINTING ITEM
+        let info_elem = user_info.filter(el => el.field_id == field.field_id);
+        if (display) {
+            html += `<div class="mb-3">
+                            <label class="form-label">${displayName}</label>
+                            <p id="display${displayName}" class="form-control-static">
+                                ${info_elem.length > 0 ? info_elem[0].value : ""}
+                            </p>
+                    </div>`;
+        } else {
+            if (info_elem.length > 0) {
+                // FUNCTION FOR PRINTING ITEM
+                html += printHTML(element, info_elem[0]);
+            } else {
 
                 // FUNCTION FOR PRINTING ITEM
-                let info_elem = user_info.filter(el => el.field_id == field.field_id);
-                if (display) {
-                    html += `<div class="mb-3">
-                                    <label class="form-label">${displayName}</label>
-                                    <p id="display${displayName}" class="form-control-static">
-                                        ${info_elem.length > 0 ? info_elem[0].value : ""}
-                                    </p>
-                            </div>`;
-                } else {
-                    if (info_elem.length > 0) {
+                html += printHTML(element);
+            }
+        }
+        html += `</div> `;
+        // if (breakRow) {
+        //     html += `</div>`;
+        // }
+        i++;
+    });
 
-                        // FUNCTION FOR PRINTING ITEM
-                        html += printHTML(element, info_elem[0]);
-                    } else {
-
-                        // FUNCTION FOR PRINTING ITEM
-                        html += printHTML(element);
-                    }
-                }
-
-
-                html += `</div>`;
-                if (breakRow) {
-                    html += `</div>`;
-                }
-                i++;
-            });
-
-            html += `
+    html += `
+                        </div>
+                    </div>
                 </div>
             </div>
-        </form>`;
+        </form>
+        `;
 
 
     return html;
@@ -177,54 +180,59 @@ function printElements() {
                     categories.forEach(category => {
                         html += `
             <div class="row">
-            <div class="col-lg-12 d-flex align-items-stretch">
-                <div class="card w-100">
-                    <div class="card-header p-4">
-                        <div class="row">
-                            <div class="col-8">
-                                <h5 class="card-title fw-semibold mb-4">
-                                    ${category.category_name}
-                                </h5>
-                            </div>
-                            <div class="col-4 text-end">
-                                <div id="userFormBtn${category.field_category_id}" class="d-none">
-                                    <button
-                                        type="button"
-                                        class="btn btn-success btn-block m-1 btnSaveClass"
-                                        id="btnSave${category.field_category_id}"
-                                        data-category="${category.field_category_id}"
-                                    >
-                                        Save
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-danger btn-block m-1 btnCancelClass"
-                                        id="btnCancel${category.field_category_id}"
-                                        data-category="${category.field_category_id}"
-                                    >
-                                        Cancel
-                                    </button>
+                <div class="col-lg-12 d-flex align-items-stretch">
+                    <div class="card w-100">
+                        <div class="card-header p-3">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h5 class="card-title fw-semibold m-0">
+                                        ${category.category_name}
+                                    </h5>
                                 </div>
-                                <div id="displayFormBtn${category.field_category_id}">
-                                    <button
-                                        type="button"
-                                        class="btn btn-danger btn-block m-1 btnEditClass"
-                                        id="btnEdit${category.field_category_id}"
-                                        data-category="${category.field_category_id}"
-                                    >
-                                        Edit
-                                    </button>
+                                <div class="col-4 text-end">
+                                    <div id="userFormBtn${category.field_category_id}" class="d-none">
+                                        <button
+                                            type="button"
+                                            class="btn btn-success btn-block m-1 btnSaveClass"
+                                            id="btnSave${category.field_category_id}"
+                                            data-category="${category.field_category_id}"
+                                        >
+                                            Save
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger btn-block m-1 btnCancelClass"
+                                            id="btnCancel${category.field_category_id}"
+                                            data-category="${category.field_category_id}"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                    <div id="displayFormBtn${category.field_category_id}">
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger btn-block m-1 btnEditClass"
+                                            id="btnEdit${category.field_category_id}"
+                                            data-category="${category.field_category_id}"
+                                        >
+                                            Edit
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        </div>`;
-                        html += printForm(category, fields, field_details, user_info);
-                        html += printForm(category, fields, field_details, user_info, false);
-                        html += `
+                        <div class="card-body">`;
+                            html += printForm(category, fields, field_details, user_info, false);
+                            html += printForm(category, fields, field_details, user_info);
+                            html += `
+                        </div>
                     </div>
                 </div>
-            </div>`;
+            </div>
+                `;
+
                     });
+                    console.log(html);
                     // PRINT IN THE ELEMENT
                     $("#fieldsWrap").html(html);
                     $("#fieldsWrap").slideDown();

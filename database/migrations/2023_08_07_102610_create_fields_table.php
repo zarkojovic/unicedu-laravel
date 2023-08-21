@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -17,7 +18,9 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->boolean('status')->default(false);
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_required')->default(false);
             $table->string('type')->nullable();
+            $table->integer('priority')->nullable();
             $table->unsignedBigInteger('field_category_id')->nullable();
             $table->timestamps();
         });

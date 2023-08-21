@@ -13,7 +13,11 @@ class Field extends Model
     protected $fillable = [
         'field_name',
         'type',
-        'title'
+        'title',
+        'status',
+        'is_active',
+        'is_required',
+        'field'
     ];
 
 

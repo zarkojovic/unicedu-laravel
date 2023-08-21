@@ -15,17 +15,30 @@
                 @if(isset($type))
                     @switch($type)
                         @case("success_registration")
-                            <h1 class="text-center">You registered successfully!</h1>
-                            <p class="text-center">We sent you a confirmation link to activate your account!</p>
-                            <p class="text-center"><a href="{{route("login")}}">Go to login page</a></p>
+                            <h1 class="text-center">Just one more step!</h1>
+                            <h5 class="text-center text-muted">We sent you a confirmation link to activate your account!</h5>
+                            <form action="{{route("logout")}}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                        class="btn btn-outline-primary mx-auto mt-2 d-block">Logout
+                                </button>
+                            </form>
+                            <form action="{{route("verification.send")}}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                        class="btn btn-outline-primary mx-auto mt-2 d-block">Resend Verification Email
+                                </button>
+                                <p class="text-center pt-2">{{ session("message") }}</p>
+                            </form>
+{{--                            <p class="text-center"><a href="{{route("logout")}}">Logout</a></p>--}}
                             @break
                         @case("profile_activated")
-                            <h1 class="text-center">You activated your account!</h1>
-                            <p class="text-center"><a href="{{route("login")}}">Go to login page</a></p>
+                            <h1 class="text-center">Congratulations! You activated your account.</h1>
+                            <p class="text-center"><a href="{{route("profile")}}">Go to your profile</a></p>
                             @break
                         @case("activation_failed")
                             <h1 class="text-center">Activation code is invalid!</h1>
-                            <p class="text-center"><a href="{{route("login")}}">Go to login page</a></p>
+                            <p class="text-center"><a href="{{route("login")}}">Go to the login page</a></p>
                             @break
                         @case("404")
                             <h1 class="text-center">Oops! Something went wrong...</h1>

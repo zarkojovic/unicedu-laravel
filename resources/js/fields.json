@@ -28,37 +28,7 @@
         "isDynamic": false,
         "statusType": "DEAL_TYPE",
         "title": "Typ deala",
-        "field_name": "TYPE_ID",
-        "items": [
-            {
-                "ID": "1",
-                "CREATED_DATE": "2023-04-02T03:00:00+03:00",
-                "NAME": "Sales",
-                "SORT": "10",
-                "IS_LOCKED": "N"
-            },
-            {
-                "ID": "3",
-                "CREATED_DATE": "2023-04-04T03:00:00+03:00",
-                "NAME": "Interns",
-                "SORT": "10",
-                "IS_LOCKED": "N"
-            },
-            {
-                "ID": "5",
-                "CREATED_DATE": "2023-04-04T03:00:00+03:00",
-                "NAME": "TRC",
-                "SORT": "10",
-                "IS_LOCKED": "N"
-            },
-            {
-                "ID": "7",
-                "CREATED_DATE": "2023-04-25T03:00:00+03:00",
-                "NAME": "Universities",
-                "SORT": "10",
-                "IS_LOCKED": "N"
-            }
-        ]
+        "field_name": "TYPE_ID"
     },
     {
         "type": "crm_category",
@@ -68,37 +38,7 @@
         "isMultiple": false,
         "isDynamic": false,
         "title": "Lejek",
-        "field_name": "CATEGORY_ID",
-        "items": [
-            {
-                "ID":"1",
-                "CREATED_DATE":"2023-04-02T03:00:00+03:00",
-                "NAME":"Sales",
-                "SORT":"10",
-                "IS_LOCKED":"N"
-            },
-            {
-                "ID":"3",
-                "CREATED_DATE":"2023-04-04T03:00:00+03:00",
-                "NAME":"Interns",
-                "SORT":"10",
-                "IS_LOCKED":"N"
-            },
-            {
-                "ID":"5",
-                "CREATED_DATE":"2023-04-04T03:00:00+03:00",
-                "NAME":"TRC",
-                "SORT":"10",
-                "IS_LOCKED":"N"
-            },
-            {
-                "ID":"7",
-                "CREATED_DATE":"2023-04-25T03:00:00+03:00",
-                "NAME":"Universities",
-                "SORT":"10",
-                "IS_LOCKED":"N"
-            }
-        ]
+        "field_name": "CATEGORY_ID"
     },
     {
         "type": "crm_status",
@@ -109,69 +49,7 @@
         "isDynamic": false,
         "statusType": "DEAL_STAGE",
         "title": "Etap deala",
-        "field_name": "STAGE_ID",
-        "items": [
-            {
-                "NAME": "New Application",
-                "SORT": 10,
-                "STATUS_ID": "NEW"
-            },
-            {
-                "NAME": "Applied",
-                "SORT": 20,
-                "STATUS_ID": "6"
-            },
-            {
-                "NAME": "Accepted, pending payment",
-                "SORT": 30,
-                "STATUS_ID": "UC_IXD6WN"
-            },
-            {
-                "NAME": "Paid",
-                "SORT": 40,
-                "STATUS_ID": "PREPAYMENT_INVOICE"
-            },
-            {
-                "NAME": "Visa letter",
-                "SORT": 50,
-                "STATUS_ID": "EXECUTING"
-            },
-            {
-                "NAME": "Visa Received",
-                "SORT": 60,
-                "STATUS_ID": "1"
-            },
-            {
-                "NAME": "Arrived",
-                "SORT": 70,
-                "STATUS_ID": "WON"
-            },
-            {
-                "NAME": "Visa Refusal",
-                "SORT": 80,
-                "STATUS_ID": "LOSE"
-            },
-            {
-                "NAME": "Refund application sent to the university",
-                "SORT": 90,
-                "STATUS_ID": "4"
-            },
-            {
-                "NAME": "Resigned",
-                "SORT": 100,
-                "STATUS_ID": "3"
-            },
-            {
-                "NAME": "Tuition fee Refunded",
-                "SORT": 110,
-                "STATUS_ID": "2"
-            },
-            {
-                "NAME": "Went back home",
-                "SORT": 120,
-                "STATUS_ID": "5"
-            }
-        ]
+        "field_name": "STAGE_ID"
     },
     {
         "type": "string",
