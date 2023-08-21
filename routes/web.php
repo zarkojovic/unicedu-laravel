@@ -58,6 +58,11 @@ Route::middleware(["auth"])->group(function () {
         });
     });
 
+    //    DOCUMENTS
+    Route::get('/documents', function (){
+       return view('documents');
+    });
+
 });
 //ROUTES FOR GUESTS
 Route::middleware(['guest'])->group(function () {
