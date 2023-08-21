@@ -59,13 +59,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Role::class,'role_id');
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
     public function info(): \Illuminate\Database\Eloquent\Relations\hasMany
     {
-        return $this->hasMany(UserInfo::class,'user_id');
+        return $this->hasMany(UserInfo::class, 'user_id');
     }
+
     public function package(): \Illuminate\Database\Eloquent\Relations\hasOne
     {
         return $this->hasONe(Package::class);
@@ -75,8 +76,9 @@ class User extends Authenticatable implements MustVerifyEmail
 //        return $this->find($id);
 //    }
 
-    public function updateUser($id, $data) {
-        return $this->where('id',$id)->update($data);
+    public function updateUser($id, $data)
+    {
+        return $this->where('id', $id)->update($data);
     }
 
 }

@@ -29,7 +29,8 @@ class AgencySeeder extends Seeder
                 return 0;
             }
         });
-        $items = $agencies[47]->items;
+        $agencies = array_values($agencies);
+        $items = $agencies[0]->items;
         foreach ($items as $item){
             Agency::create([
                 'bitrix_agency_id'=> $item->ID,
