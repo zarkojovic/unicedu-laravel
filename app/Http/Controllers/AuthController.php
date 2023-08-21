@@ -68,28 +68,8 @@ class AuthController extends Controller
         }
     }
 
-    public function activate(Request $request)
+    public function auth(Request $request)
     {
-        $code = $request->query("code");
-        if ($code != null) {
-            $user = User::where('auth_code', $code)->where('email_verified_at', NULL)->first();
-            if (!$user) {
-                return view("notification", ["activation_failed"]);
-            }
-            $user->email_verified_at = Carbon::now();
-
-            if ($user->save()) {
-                return view("notification", ["type" => 'profile_activated']);
-            }
-            return view("notification", ["type" => "activation_failed"]);
-
-
-        } else {
-            return view("notification");
-        }
-    }
-
-    public function auth(Request $request){
 
         $validator = Validator::make($request->all(), [
             'password' => 'required',
@@ -100,7 +80,7 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
 
-            $credentials = $validator->safe(["email","password"]);
+            $credentials = $validator->safe(["email", "password"]);
 
             if (Auth::attempt($credentials)) {
                 $user = Auth()->user();
@@ -127,9 +107,36 @@ class AuthController extends Controller
         }
     }
 
+    public function resendVerification(Request $request)
+    {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', 'Verification link sent!');
+    }
+
+
     public function logout()
     {
         Auth::logout();
         return redirect()->route("login");
+    }
+
+
+    public function disallowVerified()
+    {
+        $user = Auth::user();
+
+        //NOTIFICATION ONLY IF LOGGED IN BUT NOT YET VERIFIED
+        if ($user->email_verified_at === null) {
+            return view('notification', ['type' => 'success_registration']);
+        }
+
+        return redirect()->route('home');
+    }
+
+
+    public function successVerification(EmailVerificationRequest $request)
+    {
+        $request->fulfill();
+        return view('notification', ['type' => 'profile_activated']);
     }
 }
