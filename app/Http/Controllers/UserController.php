@@ -74,7 +74,7 @@ class UserController extends RootController
         $errors = [];
 
         #VALIDATE INPUTS
-        if (empty($firstName) || empty($lastName)){
+        if (empty($firstName) || empty($lastName)) {
             $errors[] = "No field can be empty.";
         }
 
@@ -85,13 +85,13 @@ class UserController extends RootController
                     'last_name' => $lastName
                 ];
 
-                DB::transaction(function() use ($id, $data){
+                DB::transaction(function () use ($id, $data) {
                     $user = new User();
 
                     #UPDATE DATABASE
                     $updatedRows = $user->updateUser($id, $data);
 
-                    if (!$updatedRows){
+                    if (!$updatedRows) {
                         throw new \Exception('Updating information failed.');
                     }
 
@@ -106,12 +106,10 @@ class UserController extends RootController
                 });
 
                 return redirect()->route('show', ['user' => $id])->with("success", "Profile information updated successfully.");
+            } catch (\Exception $e) {
+                return "Error: " . $e->getMessage();
             }
-            catch (\Exception $e){
-                return "Error: ".$e->getMessage();
-            }
-        }
-        else {
+        } else {
             foreach ($errors as $error) {
                 echo $error;
             }
@@ -120,7 +118,48 @@ class UserController extends RootController
         }
     }
 
-    public function updateImage(Request $request) {
+
+    public function updateUserInfo(Request $request)
+    {
+
+        $allData = $request->all();
+
+        $items = $allData['data'];
+
+        $user = Auth::user();
+        foreach ($items as $entry) {
+
+            $user_info = UserInfo::where("user_id", (int)$user->user_id)->where("field_id", (int)$entry['field_id'])->first();
+
+            if (!$user_info) {
+                UserInfo::create([
+                    'user_id' => (int)$user->user_id,
+                    'field_id' => (int)$entry['field_id'],
+                    'value' => $entry['value']
+                ]);
+            } else {
+                $user_info->value = $entry['value'];
+                $user_info->save();
+            }
+
+        }
+        return "Uspeh!";
+    }
+
+    public function getUserInfo()
+    {
+        $user = Auth::user();
+        $info = Db::table("user_infos")
+            ->selectRaw("field_id, value")
+            ->where("user_id", $user->user_id)
+            ->groupBy("field_id", "value")
+            ->get();
+
+        echo json_encode($info);
+    }
+
+    public function updateImage(Request $request)
+    {
         #INPUTS
         if (!$request->hasFile('profile-image')) {
             return "No file uploaded.";
@@ -162,7 +201,7 @@ class UserController extends RootController
 
         $uniqueString = Str::uuid()->toString();
         $currentDate = now()->format('Y-m-d');
-        $newFileName = $currentDate.'_'.$uniqueString.'.'.$fileExtension;
+        $newFileName = $currentDate . '_' . $uniqueString . '.' . $fileExtension;
 
         $moved = Storage::putFileAs($pathOriginal, $file, $newFileName);
         if (!$moved) {
@@ -174,12 +213,12 @@ class UserController extends RootController
             #THUMBNAIL
             $size = 150;
             $thumbnail = Image::make($file)->fit($size, $size, null, "top");
-            Storage::put($pathThumbnail.'/'.$newFileName, (string) $thumbnail->encode());
+            Storage::put($pathThumbnail . '/' . $newFileName, (string)$thumbnail->encode());
 
             #TINY
             $size = 35;
             $tinyImage = Image::make($file)->fit($size, $size, null, "top");
-            Storage::put($pathTiny.'/'.$newFileName, (string) $tinyImage->encode());
+            Storage::put($pathTiny . '/' . $newFileName, (string)$tinyImage->encode());
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'An error occurred while saving images and updating records.');
@@ -232,10 +271,8 @@ class UserController extends RootController
 //        }
 
 
-
-
         $user = Auth::user();
-        return redirect()->route('profile', ['user' => $user])->with("success", "Profile image updated successfully.");
+        return redirect()->route('profile')->with("success", "Profile image updated successfully.");
     }
 
     /**
