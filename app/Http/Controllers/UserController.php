@@ -44,6 +44,11 @@ class UserController extends RootController
      */
     public function show()
     {
+        $user = Auth::user();
+        if ($user->role->role_name === "admin") {
+            return redirect()->route("admin_home");
+        }
+
         return view('profile');
     }
 
@@ -104,8 +109,8 @@ class UserController extends RootController
 //                        ]
 //                    ]);
                 });
-
-                return redirect()->route('show', ['user' => $id])->with("success", "Profile information updated successfully.");
+                //, ['user' => $id]
+                return redirect()->route('show')->with("success", "Profile information updated successfully.");
             }
             catch (\Exception $e){
                 return "Error: ".$e->getMessage();
@@ -234,8 +239,8 @@ class UserController extends RootController
 
 
 
-        $user = Auth::user();
-        return redirect()->route('profile', ['user' => $user])->with("success", "Profile image updated successfully.");
+        $user = Auth::user();//, ['user' => $user]
+        return redirect()->route('profile')->with("success", "Profile image updated successfully.");
     }
 
     /**

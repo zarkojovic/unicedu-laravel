@@ -61,11 +61,11 @@ Route::middleware(["auth"])->group(function () {
 
             $user = Auth::user();
 
-            if ($user->role->role_name == "admin") {
+            if ($user->role->role_name === "admin") {
                 return redirect()->route("admin_home");
             }
 
-            return view('profile');//, ['user' => $user]);
+            return view('profile');
         })->name("home");
 
         Route::get("/profile",[UserController::class,"show"])->name("profile");
