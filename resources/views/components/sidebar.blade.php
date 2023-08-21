@@ -25,47 +25,58 @@
                     <span class="hide-menu">Student Platform</span>
                 </li>
                 @php
-                    $routes = ["My profile"=>"/profile", "Documents" => "/documents"];
-
-                    foreach ($routes as $route) :
+                    $menuItems = [
+                        [
+                            "name" => "My profile",
+                            "route" => "/profile",
+                            "icon" => "ti ti-user"
+                        ],
+                        [
+                            "name" => "Documents",
+                            "route" => "/documents",
+                            "icon" => "ti ti-files"
+                        ],
+                    ];
+var_dump(request()->route()->getName());
+                    foreach ($menuItems as $item) :
                 @endphp
                 <li class="sidebar-item">
                     <a
-                        class="sidebar-link"
-                        href="{{  }}"
+                        class="sidebar-link {{ request()->route()->getName() === "/".$item["route"] ? "active" : "" }}"
+                        href="{{ $item["route"] }}"
                         aria-expanded="false"
                     >
                   <span>
-                    <i class="ti ti-user"></i>
+                    <i class="{{ $item["icon"] }}"></i>
                   </span>
-                        <span class="hide-menu">{{ $user->role->role_name === "admin" ? "Admin" : "My profile" }}</span>
+                        <span class="hide-menu">{{ $user->role->role_name === "admin" && $item["name"] === "My profile" ? "Admin" : $item["name"] }}</span>
                     </a>
                 </li>
                 @php endforeach; @endphp
-                <li class="sidebar-item">
-                    <a
-                        class="sidebar-link"
-                        href="/profile"
-                        aria-expanded="false"
-                    >
-                  <span>
-                    <i class="ti ti-user"></i>
-                  </span>
-                        <span class="hide-menu">{{ $user->role->role_name === "admin" ? "Admin" : "My profile" }}</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a
-                        class="sidebar-link"
-                        href="/documents"
-                        aria-expanded="false"
-                    >
-                  <span>
-                    <i class="ti ti-files"></i>
-                  </span>
-                        <span class="hide-menu">Documents</span>
-                    </a>
-                </li>
+{{--                <li class="sidebar-item">--}}
+{{--                    <a--}}
+{{--                        class="sidebar-link"--}}
+{{--                        href="/profile"--}}
+{{--                        aria-expanded="false"--}}
+{{--                    >--}}
+{{--                  <span>--}}
+{{--                    <i class="ti ti-user"></i>--}}
+{{--                  </span>--}}
+{{--                        <span class="hide-menu">{{ $user->role->role_name === "admin" ? "Admin" : "My profile" }}</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--                <li class="sidebar-item">--}}
+{{--                    <a--}}
+{{--                        class="sidebar-link"--}}
+{{--                        href="/documents"--}}
+{{--                        aria-expanded="false"--}}
+{{--                    >--}}
+{{--                  <span>--}}
+{{--                    <i class="ti ti-files"></i>--}}
+{{--                  </span>--}}
+{{--                        <span class="hide-menu">Documents</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
                 {{--                <li class="nav-small-cap">--}}
                 {{--                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>--}}
                 {{--                    <span class="hide-menu">UI COMPONENTS</span>--}}
