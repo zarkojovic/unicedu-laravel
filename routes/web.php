@@ -147,12 +147,14 @@ Route::post("/update_user", function (Request $request) {
     }
     return "Uspeh!";
 
-    //    DOCUMENTS
-    Route::get('/documents', function (){
-       return view('documents');
-    });
 
 });
+
+//    DOCUMENTS
+Route::get('/documents', function (){
+    return view('documents');
+});
+
 
 
 //AUTH ROUTE
