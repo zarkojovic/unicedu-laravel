@@ -2,9 +2,73 @@
 // Dashboard1 Style
 // ----------------------------------------------
 
-#profile-image-input {
-    visibility: hidden;
+
+.document-uploaded-label{
+    border-radius: 10px;
+    background-color: $primary;
+    color: #fff;
+    display: inline-flex;
+    border: 0.5px solid $primary;
+    align-items: center;
+    position: relative;
+    padding: 10px 20px;
+
+    i{
+        font-size: 20px;
+        margin-left: 5px;
+    }
+
 }
+
+.upload-document-label {
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    background-color: #fff;
+    color: #2A3547;
+    padding: 10px 40px;
+    border: 0.5px solid #A8ADBD;
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+    position: relative;
+
+    &:before {
+        content: "\eb47";
+        font-family: 'tabler-icons';
+        color: #fff;
+        font-size: 20px;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        height: 100%;
+        width: 40px;
+        transition: all 0.2s linear 0s;
+    }
+
+    span {
+        transition: transform 0.25s;
+        margin-left: 1.5px;
+    }
+
+    &:hover {
+        background-color: $primary;
+        color: #fff;
+        cursor:pointer;
+        border-color: $primary;
+
+        span {
+            transform: translateX(-10px); // Adjust the text position
+        }
+
+        &:before {
+            opacity: 1;
+        }
+    }
+}
+
 
 .profile-image-label {
     cursor:pointer;
@@ -91,4 +155,21 @@
 }
 .form-control{
     box-shadow: none !important;
+}
+
+#preloader {
+    position: fixed;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.56);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    //   opacity: 0;
+    justify-content: center;
+    transition: all 0.5s;
+    align-items: center;
+    img {
+        width: 100px;
+        margin: 0 auto;
+    }
 }
