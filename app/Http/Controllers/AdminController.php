@@ -11,7 +11,7 @@ class AdminController extends RootController
     public function home()
     {
         $categories = FieldCategory::all();
-        $fields = Field::where('is_active', '1')->where('field_category_id', NULL)->get();
+        $fields = Field::where('is_active', '1')->get();
         return view("admin", ["fields" => $fields, "categories" => $categories]);
     }
 

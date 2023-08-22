@@ -14,15 +14,11 @@
 
                 @foreach($fields as $field)
                     @if ($field->field_category_id === $category->field_category_id)
-                        <div class="form-group">
-                            <input type="checkbox" id="{{$field->field_name}}" value="{{$field->field_id}}" name="fields[]" checked>
-                            {{$field->title != null ? $field->title : $field->field_name}}
-                        </div>
-                    @else
-                        <div class="form-group">
-                            <input type="checkbox" id="{{$field->field_name}}" value="{{$field->field_id}}" name="fields[]">
-                            {{$field->title != null ? $field->title : $field->field_name}}
-                        </div>
+
+                    <div class="form-group">
+                        <input type="checkbox" id="{{$field->field_name}}" value="{{$field->field_id}}" name="fields[]" {{ $field->field_category_id === $category->field_category_id ? 'checked' : '' }}>
+                        {{$field->title != null ? $field->title : $field->field_name}}
+                    </div>
                     @endif
                 @endforeach
 
