@@ -6,7 +6,7 @@ use App\Models\Field;
 use App\Models\FieldCategory;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class AdminController extends RootController
 {
     public function home()
     {
