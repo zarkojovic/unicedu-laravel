@@ -37,7 +37,7 @@
                             "icon" => "ti ti-files"
                         ],
                     ];
-var_dump(request()->route()->getName());
+                    var_dump(request()->route()->getName());
                     foreach ($menuItems as $item) :
                 @endphp
                 <li class="sidebar-item">
