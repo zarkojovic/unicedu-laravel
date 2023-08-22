@@ -10,12 +10,22 @@
 
             <form action="/add_fields" method="POST">
                 @csrf
+                <input type="hidden" value="{{$category->field_category_id}}" name="category_id">
+
                 @foreach($fields as $field)
-                    <input type="hidden" value="{{$category->field_category_id}}" name="category_id">
-                    <div class="form-group">
-                        <input type="checkbox" id="{{$field->field_name}}" value="{{$field->field_id}}" name="fields[]"> {{$field->title != null ? $field->title : $field->field_name}}
-                    </div>
+                    @if ($field->field_category_id === $category->field_category_id)
+                        <div class="form-group">
+                            <input type="checkbox" id="{{$field->field_name}}" value="{{$field->field_id}}" name="fields[]" checked>
+                            {{$field->title != null ? $field->title : $field->field_name}}
+                        </div>
+                    @else
+                        <div class="form-group">
+                            <input type="checkbox" id="{{$field->field_name}}" value="{{$field->field_id}}" name="fields[]">
+                            {{$field->title != null ? $field->title : $field->field_name}}
+                        </div>
+                    @endif
                 @endforeach
+
                 <input type="submit" value="Submit" class="btn btn-primary">
             </form>
         @endforeach

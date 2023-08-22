@@ -235,7 +235,7 @@ class UserController extends RootController
 
 
         $user = Auth::user();
-        return redirect()->route('profile', ['user' => $user])->with("success", "Profile image updated successfully.");
+        return redirect()->route('profile')->with("success", "Profile image updated successfully.");
     }
 
     /**
