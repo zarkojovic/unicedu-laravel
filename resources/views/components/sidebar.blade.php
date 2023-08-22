@@ -41,7 +41,8 @@
                 @endphp
                 <li class="sidebar-item">
                     <a
-                        class="sidebar-link {{ "/".request()->path() === $item["route"] ? "active" : "" }} {{ request()->path() === "admin" && $item["route"] === "/profile" ? "active" : "" }}"
+                        class="sidebar-link {{ "/".request()->path() === $item["route"] ? "active" : "" }} {{ request()->path() === "admin" && $item["route"] === "/profile" ? "active" : "" }}
+                        {{ request()->path() === '/' && $item["route"] === "/profile" ? "active" : "" }}"
                         href="{{ $item["route"] }}"
                         aria-expanded="false"
                     >
