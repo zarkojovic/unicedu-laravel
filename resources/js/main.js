@@ -31,7 +31,10 @@ function printHTML(el, val = null) {
     } else if (el.type == "file") {
         html += `
                                     <label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
-                                    <input type="file" name="${el.field_name}"  class="form-control">
+                                    <br>
+                                    <label class="upload-document-label" for="${el.fieldName}"><span>Upload Document</span></label>
+                                    <input type="file" id="${el.fieldName}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control d-none">
+
                                 `
     } else if (el.type == "date") {
         html += `
@@ -44,7 +47,7 @@ function printHTML(el, val = null) {
                                     <input type="datetime-local" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" name="${el.field_name}" class="form-control">
                                 `
     } else if (el.type == "enumeration") {
-        console.log("DROPPPP");
+
         html += `
                                     <label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
                                     <select class="form-control" data-field-id="${el.field_id}" name="${el.field_name}">
@@ -103,7 +106,7 @@ function printForm(category, fields, field_details, user_info, display = true) {
         let element = field_details.filter(el => el.field_name == field.field_name);
         element = element[0];
         element.field_id = field.field_id;
-        // console.log(element)
+
         // if (!breakRow) {
         //     html += `<div class="row my-2">`
         // }
@@ -222,17 +225,15 @@ function printElements() {
                             </div>
                         </div>
                         <div class="card-body">`;
-                            html += printForm(category, fields, field_details, user_info, false);
-                            html += printForm(category, fields, field_details, user_info);
-                            html += `
+                        html += printForm(category, fields, field_details, user_info, false);
+                        html += printForm(category, fields, field_details, user_info);
+                        html += `
                         </div>
                     </div>
                 </div>
             </div>
                 `;
-
                     });
-                    console.log(html);
                     // PRINT IN THE ELEMENT
                     $("#fieldsWrap").html(html);
                     $("#fieldsWrap").slideDown();
@@ -241,7 +242,6 @@ function printElements() {
                 .catch(error => {
                     console.error(error);
                 });
-
         })
         .catch(error => {
             console.error(error);
@@ -280,6 +280,7 @@ $(document).ready(function () {
 
         var inputElements = forma.elements; // Get all input elements within the form
 
+
         var sendObj = {};
         var elems = [];
         // Loop through the input elements and access their properties
@@ -291,14 +292,16 @@ $(document).ready(function () {
                 var elemObj = {};
 
                 elemObj.field_id = input.getAttribute('data-field-id');
-
                 elemObj.value = input.value;
+                if (input.type == 'file') {
+                    // elemObj = new FormData(input);
+                }
                 elems.push(elemObj);
             }
         }
         sendObj.data = elems;
         sendObj._token = $('meta[name="csrf-token"]').attr('content');
-
+        console.log(sendObj);
         axios.post("/update_user", sendObj)
             .then(response => {
                 printElements();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserInfo;
 use CRest;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -126,7 +127,6 @@ class UserController extends RootController
 
     public function updateUserInfo(Request $request)
     {
-
         $allData = $request->all();
 
         $items = $allData['data'];
