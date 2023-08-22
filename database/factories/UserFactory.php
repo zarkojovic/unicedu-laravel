@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'profile_image' => 'profile.jpg',
             'phone' => fake()->unique()->phoneNumber,
             'contact_id' => $this->faker->randomNumber(),
-            'role_id' => random_int(1,3),
+            'role_id' => random_int(1, 3),
             'agent_id' => null,
             'package_id' => null,
             'remember_token' => Str::random(10),
@@ -41,7 +41,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
