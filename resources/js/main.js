@@ -32,8 +32,8 @@ function printHTML(el, val = null) {
         html += `
                                     <label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
                                     <br>
-                                    <label class="upload-document-label" for="${el.fieldName}"><span>Upload Document</span></label>
-                                    <input type="file" id="${el.fieldName}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control d-none">
+<!--                                    <label class="upload-document-label" for="${el.fieldName}"><span>Upload Document</span></label>-->
+                                    <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control ">
 
                                 `
     } else if (el.type == "date") {
@@ -79,7 +79,7 @@ function printHTML(el, val = null) {
 
 function printForm(category, fields, field_details, user_info, display = true) {
     let html = `
-        <form id="${display ? 'display' : 'user'}Form${category.field_category_id}" class="${!display ? "d-none" : ''}">
+        <form id="${display ? 'display' : 'user'}Form${category.field_category_id}" class="${!display ? "d-none" : ''}" ${!display ? 'enctype="multipart/form-data"' : ''}>
 
             <div class="container-fluid">
                 <div class="row">
@@ -283,33 +283,44 @@ $(document).ready(function () {
 
         var sendObj = {};
         var elems = [];
-        // Loop through the input elements and access their properties
-        for (var i = 0; i < inputElements.length; i++) {
-            var input = inputElements[i];
-
-            if (input.value != "") {
-
-                var elemObj = {};
-
-                elemObj.field_id = input.getAttribute('data-field-id');
-                elemObj.value = input.value;
-                if (input.type == 'file') {
-                    // elemObj = new FormData(input);
-                }
-                elems.push(elemObj);
-            }
+        var formEl = document.getElementById('userForm' + id);
+        var formObj = new FormData(formEl);
+        for (const pair of formObj.entries()) {
+            console.log(pair[0], pair[1]);
         }
-        sendObj.data = elems;
+
+        // Loop through the input elements and access their properties
+        // for (var i = 0; i < inputElements.length; i++) {
+        //     var input = inputElements[i];
+        //
+        //     if (input.value != "") {
+        //
+        //         var elemObj = {};
+        //         console.log(input.type);
+        //         if (input.type == 'file') {
+        //             elemObj = new FormData(formEl);
+        //             console.log(elemObj);
+        //         } else {
+        //             elemObj.field_id = input.getAttribute('data-field-id');
+        //             elemObj.value = input.value;
+        //         }
+        //         elems.push(elemObj);
+        //     }
+        // }
+        sendObj.data = formObj;
         sendObj._token = $('meta[name="csrf-token"]').attr('content');
-        console.log(sendObj);
-        axios.post("/update_user", sendObj)
-            .then(response => {
-                printElements();
-            })
+        console.log(formObj);
+        axios.post("/update_user", sendObj, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then(response => {
+            console.log(response)
+            printElements();
+        })
             .catch(error => {
                 console.error('Error:', error);
             });
-
     });
     $(document).on("click", ".btnCancelClass", function () {
         let id = $(this).data("category");

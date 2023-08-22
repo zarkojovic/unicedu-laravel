@@ -124,26 +124,34 @@ class UserController extends RootController
     {
         $allData = $request->all();
 
-        $items = $allData['data'];
-
         $user = Auth::user();
-        foreach ($items as $entry) {
 
-            $user_info = UserInfo::where("user_id", (int)$user->user_id)->where("field_id", (int)$entry['field_id'])->first();
-
-            if (!$user_info) {
-                UserInfo::create([
-                    'user_id' => (int)$user->user_id,
-                    'field_id' => (int)$entry['field_id'],
-                    'value' => $entry['value']
-                ]);
-            } else {
-                $user_info->value = $entry['value'];
-                $user_info->save();
-            }
-
+        $array = [];
+        foreach ($allData as $item) {
+            $array[] = $item['key'];
+            $array[] = $item['values'];
         }
-        return "Uspeh!";
+
+
+//        $items = $allData['data'];
+//
+//        foreach ($items as $entry) {
+//
+//            $user_info = UserInfo::where("user_id", (int)$user->user_id)->where("field_id", (int)$entry['field_id'])->first();
+//
+//            if (!$user_info) {
+//                UserInfo::create([
+//                    'user_id' => (int)$user->user_id,
+//                    'field_id' => (int)$entry['field_id'],
+//                    'value' => $entry['value']
+//                ]);
+//            } else {
+//                $user_info->value = $entry['value'];
+//                $user_info->save();
+//            }
+//
+//        }
+        return response()->json($array);
     }
 
     public function getUserInfo()
