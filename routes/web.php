@@ -30,7 +30,7 @@ Route::middleware(["auth"])->group(function () {
 
         Route::get('/', function () {
             $user = Auth::user();
-            if ($user->role->role_name == "admin") {
+            if ($user->role->role_name === "admin") {
                 return redirect()->route("admin_home");
             }
             return view('profile');
