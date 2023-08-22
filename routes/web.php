@@ -79,3 +79,11 @@ Route::middleware(['guest'])->group(function () {
 });
 
 
+#TEST
+Route::get("/search", function () {
+    return view("search-test");
+});
+
+Route::get("/search-dropdown", [AdminController::class, "search"]);
+
+
