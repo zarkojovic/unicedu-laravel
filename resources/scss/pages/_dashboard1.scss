@@ -1,6 +1,25 @@
 // ----------------------------------------------
 // Dashboard1 Style
 // ----------------------------------------------
+.panel-field-settings{
+    font-size: 20px;
+    cursor: pointer;
+
+}
+
+.checkboxes {
+    position: absolute;
+    width: 150px;
+    top: 50%; /* Position below the icon */
+    left: 115%; /* Center the checkboxes horizontally */
+    transform: translateX(-50%); /* Center adjustment */
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: none;
+    z-index: 100;
+    border-radius: 0px 5px 5px 5px;
+}
 
 .btn-edit{
     border: 1px solid #5A6A85;
@@ -210,6 +229,16 @@
         margin: 0 auto;
     }
 }
+#search-dropdown {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    z-index: 1000;
+}
+.form-control, .form-select {
+    background-color: #fff !important;
+}
+
 .toast-notification {
     z-index: 50;
     left: 50%;
