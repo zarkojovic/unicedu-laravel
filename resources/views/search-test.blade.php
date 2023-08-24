@@ -28,9 +28,9 @@
     <script>
         $(document).ready(function() {
             let currentCategory = null; // To keep track of the currently focused category
-
+            let clickedCategory = null;
             $('.add-category').click(function(event) {
-                const clickedCategory = $(this);
+                clickedCategory = $(this);
 
                 if (currentCategory && currentCategory.is(clickedCategory)) {
                     currentCategory.next('#search-dropdown').remove();
@@ -93,8 +93,15 @@
                 let selectedValue = selectedOption.val();
                 let selectedText = selectedOption.text();
 
-                console.log("Selected Value:", selectedValue);
-                console.log("Selected Text:", selectedText);
+                data = {
+                    "field_id": selectedValue,
+                    "field_category_id": clickedCategory.attr("id")
+                };
+                ajaxCallback("/search-update","post",data, function (result) {
+                    console.log("uspeh");
+                }), function (xhr,message,status) {
+                    console.log(message, status);
+                }
 
                 $("#search-fields").val(selectedText);
                 // Remove #search-dropdown
@@ -103,11 +110,15 @@
             });
         });
 
-        function ajaxCallback(route,method,data,success, error){
+        function ajaxCallback(route,method,data,success,error=null){
+            let csrfToken = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 url: route,
                 method: method,
                 data: data,
+                headers: {
+                    "X-CSRF-Token": csrfToken // Include the CSRF token in the headers
+                },
                 success: success,
                 error: error
             });
