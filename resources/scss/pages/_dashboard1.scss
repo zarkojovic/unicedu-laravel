@@ -176,3 +176,13 @@
         margin: 0 auto;
     }
 }
+
+#search-dropdown {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    z-index: 1000;
+}
+.form-control, .form-select {
+    background-color: #fff !important;
+}
