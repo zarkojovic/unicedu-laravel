@@ -1,4 +1,4 @@
-<?php $pageTitle = "Admin Panel" ?>
+    <?php $pageTitle = "Admin Panel" ?>
 @extends("layouts.student")
 
 @section('main-content')
@@ -35,10 +35,11 @@
                                                                     <label>{{$field->title != null ? $field->title : $field->field_name}}</label>
 
                                                                     <i class="ti ti-adjustments-alt panel-field-settings"></i>
-                                                                    <div class="checkboxes" id="checkboxes">
-                                                                        <label for="{{$field->field_name}}"><input type="checkbox" id="{{$field->field_name}}"
-                                                                                                                   value="{{$field->field_id}}"
-                                                                                                                   name="fields[]" {{ $field->field_category_id === $category->field_category_id ? 'checked' : '' }}>Is Active</label>
+                                                                    <div class="checkboxes" id="checkboxes-container">
+                                                                        <input type="checkbox" id="{{$field->field_name}}"
+                                                                               value="{{$field->field_id}}"
+                                                                               name="fields[]" {{ $field->field_category_id === $category->field_category_id ? 'checked' : '' }}>
+                                                                        <label for="{{$field->field_name}}">Is Active</label>
                                                                     </div>
                                                             </div>
                                                         </div>

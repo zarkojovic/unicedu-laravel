@@ -3,24 +3,53 @@ console.log("adminnnn")
 
 
 $(document).ready(function() {
-    let searchTimeout;
-    // Fetch initial data and populate the dropdown
-    fetchDropdownData("");
+    const icons = document.querySelectorAll('.panel-field-settings');
+    const checkboxesArray = document.querySelectorAll('.checkboxes');
+    let currentFieldIcon = null;
 
-    $("#search-fields").on("input", function() {
-        clearTimeout(searchTimeout);
-        let query = $(this).val();
-        searchTimeout = setTimeout(function() {
-            fetchDropdownData(query);
-        }, 400);
+    $('.panel-field-settings').click(function(event) {
+        const clickedFieldIcon = $(this);
+        console.log("clickd")
+
+        if (currentFieldIcon && currentFieldIcon.is(clickedFieldIcon)) {
+            currentFieldIcon.next('#search-dropdown').remove();
+            currentFieldIcon = null;
+            return;
+        }
+
+        if (currentFieldIcon && currentFieldIcon !== clickedFieldIcon) {
+            currentFieldIcon.next('#checkboxes-container').remove();
+            currentFieldIcon = null;
+        }
+
+        //IF DROPDOWN SEARCH DOESN'T ALREADY EXIST MAKE IT
+        if (!$('#checkboxes-container').length) {
+            if (clickedFieldIcon.next().attr('id') !== 'checkboxes-container') {
+                const html = `
+                        <div class="checkboxes" id="checkboxes-container">
+                            <input type="checkbox" id="{{$field->field_name}}"
+                                   value="{{$field->field_id}}"
+                                   name="fields[]" {{ $field->field_category_id === $category->field_category_id ? 'checked' : '' }}>
+                            <label for="{{$field->field_name}}">Is Active</label>
+                        </div>`;
+
+                clickedFieldIcon.after(html);
+                currentFieldIcon = clickedFieldIcon;
+
+                // Fetch initial data and populate the dropdown
+                fetchDropdownData("");
+            }
+        }
+        event.stopPropagation();
     });
 
-    //FILL IN INPUT TEXT
-    $("#search-list").on("change", function() {
-        let selectedText = $(this).find("option:selected").text();
-
-        $("#search-fields").val(selectedText);
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('#checkboxes-container').length) {
+            $('#checkboxes-container').remove();
+            currentFieldIcon = null
+        }
     });
+
 });
 
 function fetchDropdownData(query) {
@@ -44,22 +73,22 @@ function fetchDropdownData(query) {
         }
     });
 
-    const icons = document.querySelectorAll('.panel-field-settings');
-    const checkboxesArray = document.querySelectorAll('.checkboxes');
 
-    icons.forEach((icon, index) => {
-        icon.addEventListener('click', () => {
-            event.stopPropagation();
-            checkboxesArray[index].style.display = 'block';
-        });
-    });
+    // icons.forEach((icon, index) => {
+    //     icon.addEventListener('click', () => {
+    //         event.stopPropagation();
+    //         checkboxesArray[index].style.display = 'block';
+    //     });
+    // });
 
     // Close checkboxes when clicking outside
-    document.addEventListener('click', (event) => {
-        checkboxesArray.forEach((checkboxes) => {
-            if (!checkboxes.contains(event.target) && !icons[index].contains(event.target)) {
-                checkboxes.style.display = 'none';
-            }
-        });
-    });
-};
+    // document.addEventListener('click', (event) => {
+    //     checkboxesArray.forEach((checkboxes) => {
+    //         if (!checkboxes.contains(event.target) && !icons[index].contains(event.target)) {
+    //             checkboxes.style.display = 'none';
+    //         }
+    //     });
+    // });
+
+
+}

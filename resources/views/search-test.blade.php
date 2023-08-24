@@ -103,25 +103,29 @@
             });
         });
 
-        function fetchDropdownData(query) {
+        function ajaxCallback(route,method,data,success, error){
             $.ajax({
-                url: "/search-dropdown",
-                method: "get",
-                data: {"search": query},
-                success: function(result) {
-                    $("#search-list").html(result);
-
-                    let numOptions = $("#search-list option").length;
-                    numOptions = Math.max(Math.min(numOptions, 10), 2); // Limit to a maximum of 10 options and min 2
-                    $("#search-list").attr("size", numOptions);
-                },
-                error: function() {
-                    console.error("Failed to retrieve search results.");
-
-                    // Reset the dropdown to show all options
-                    $("#search-list").attr("size", $("#search-list option").length);
-                }
+                url: route,
+                method: method,
+                data: data,
+                success: success,
+                error: error
             });
+        }
+
+        function fetchDropdownData(query) {
+            ajaxCallback("/search-dropdown","get",{"search":query}, function(result) {
+                $("#search-list").html(result);
+
+                let numOptions = $("#search-list option").length;
+                numOptions = Math.max(Math.min(numOptions, 10), 2); // Limit to a maximum of 10 options and min 2
+                $("#search-list").attr("size", numOptions);
+            }, function() {
+                console.error("Failed to retrieve search results.");
+
+                // Reset the dropdown to show all options
+                $("#search-list").attr("size", $("#search-list option").length);
+            })
         }
     </script>
 @endsection

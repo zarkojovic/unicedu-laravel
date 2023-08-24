@@ -43,4 +43,20 @@ class AdminController extends RootController
             return "<option value='0'>No results found...</option>";
         }
     }
+
+    public function setFieldCategory(Request $request){
+        try {
+            $fieldId = $request->input('field_id');
+            $newCategoryId = $request->input('field_category_id');
+
+            $record = YourModel::findOrFail($fieldId);
+
+            $record->field_category_id = $newCategoryId;
+            $record->save();
+
+            return response()->json(['message' => 'Record updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error updating record'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

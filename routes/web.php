@@ -88,3 +88,5 @@ Route::get("/search", function () {
 
 Route::get("/search-dropdown", [AdminController::class, "search"]);
 
+Route::post("/search-update", [AdminController::class, "setFieldCategory"]);
+
