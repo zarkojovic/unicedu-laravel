@@ -49,7 +49,7 @@ class AdminController extends RootController
             $fieldId = $request->input('field_id');
             $newCategoryId = $request->input('field_category_id');
 
-            $record = YourModel::findOrFail($fieldId);
+            $record = Field::findOrFail($fieldId);
 
             $record->field_category_id = $newCategoryId;
             $record->save();
