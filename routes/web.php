@@ -29,10 +29,10 @@ Route::middleware(["auth"])->group(function () {
         Route::post("/update_user", [UserController::class, 'updateUserInfo']);
 
         Route::get('/', function () {
-            $user = Auth::user();
-            if ($user->role->role_name === "admin") {
-                return redirect()->route("admin_home");
-            }
+//            $user = Auth::user();
+//            if ($user->role->role_name === "admin") {
+//                return redirect()->route("admin_home");
+//            }
             return view('profile');
         })->name("home");
 
