@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class FieldController extends Controller
 {
-    public function getAvailableFields()
+    public function getAvailableFields(Request $request)
     {
+        $c_vals = $request->input('id');
 
-        $categories = \App\Models\FieldCategory::all();
+        $categories = \App\Models\FieldCategory::whereIn('field_category_id',$c_vals)->get();
         $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
 
         // Path to the public/js directory

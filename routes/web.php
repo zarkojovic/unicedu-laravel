@@ -4,7 +4,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FieldController;
+use App\Models\UserInfo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 //CUSTOM 404 REDIRECT
@@ -77,5 +79,4 @@ Route::middleware(['guest'])->group(function () {
     Route::post("/login", "\App\Http\Controllers\AuthController@auth");
 
 });
-
 

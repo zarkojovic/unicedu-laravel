@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use Kafka0238\Crest\Src;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-
+use Mockery\Exception;
 
 class UserController extends RootController
 {
@@ -127,51 +127,91 @@ class UserController extends RootController
 
     public function updateUserInfo(Request $request)
     {
-        $allData = $request->all();
-
+//        GET ALL OF THE DATA FROM REQUEST
+        $items = $request->all();
+//        GET AUTH-ED USER FOR UPDATING HIS DATA
         $user = Auth::user();
 
-        $array = [];
-        foreach ($allData as $item) {
-            $array[] = $item['key'];
-            $array[] = $item['values'];
+
+//        LOOPING THROUGH EACH ELEMENT IN REQUEST
+        foreach ($items as $key => $value) {
+            try {
+                DB::beginTransaction();
+//            GETTING THE FIELD_ID BASE ON FIELD_NAME FROM REQUEST
+                $field_id = DB::table('fields')->select('field_id')->where('field_name', $key)->first();
+//            CHECKING IF THE INFO ALREADY EXISTS IN TABLE
+                $user_info = UserInfo::where("user_id", (int)$user->user_id)->where("field_id", (int)$field_id->field_id)->first();
+//            CHECKING IF THE REQUEST IS FILE
+                if ($request->hasFile($key)) {
+//                GETTING THE INFO FROM FILE
+                    $storeFile = $request->file($key);
+                    $fileName = $storeFile->getClientOriginalName();
+                    // Store the uploaded file
+                    $storedPath = $storeFile->store('profile/documents', 'public');
+//                GETTING THE NEW NAME OF FILE
+                    $fileNewName = basename($storedPath);
+                }
+                //IF INFO DOESNT EXIST
+
+                if (!$user_info) {
+//                IF IT IS A FILE
+                    if ($request->hasFile($key)) {
+                        UserInfo::create([
+                            'user_id' => (int)$user->user_id,
+                            'field_id' => (int)$field_id->field_id,
+                            'file_name' => $fileName,
+                            'file_path' => $fileNewName
+                        ]);
+                    } else {
+//                    IF IT'S NOT FILE
+                        UserInfo::create([
+                            'user_id' => (int)$user->user_id,
+                            'field_id' => (int)$field_id->field_id,
+                            'value' => $value,
+                        ]);
+                    }
+                } else {
+//                IF ITS AN UPDATING
+                    if ($request->hasFile($key)) {
+                        #REMOVE OLD IMAGE FROM FOLDERS
+                        $oldProfileImage = $user_info->file_path;
+                        Storage::delete([
+                            "public/profile/documents/$oldProfileImage"
+                        ]);
+//                    UPDATE INFO
+                        $user_info->file_name = $fileName;
+                        $user_info->file_path = $fileNewName;
+                        $user_info->save();
+                    } else {
+//                    UPDATE INFO FOR NO FILE
+                        $user_info->value = $value;
+                        $user_info->save();
+                    }
+                }
+                DB::commit();
+            } catch (\Exception $ex) {
+                http_response_code(401);
+                return "Error occurred while updating information!";
+            }
+
         }
-
-
-//        $items = $allData['data'];
-//
-//        foreach ($items as $entry) {
-//
-//            $user_info = UserInfo::where("user_id", (int)$user->user_id)->where("field_id", (int)$entry['field_id'])->first();
-//
-//            if (!$user_info) {
-//                UserInfo::create([
-//                    'user_id' => (int)$user->user_id,
-//                    'field_id' => (int)$entry['field_id'],
-//                    'value' => $entry['value']
-//                ]);
-//            } else {
-//                $user_info->value = $entry['value'];
-//                $user_info->save();
-//            }
-//
-//        }
-        return response()->json($array);
     }
 
-    public function getUserInfo()
+    public
+    function getUserInfo()
     {
         $user = Auth::user();
         $info = Db::table("user_infos")
-            ->selectRaw("field_id, value")
+            ->selectRaw("`field_id`, `value`, `file_name`,`file_path`")
             ->where("user_id", $user->user_id)
-            ->groupBy("field_id", "value")
+            ->groupBy("field_id", "value", "file_name", 'file_path')
             ->get();
 
         echo json_encode($info);
     }
 
-    public function updateImage(Request $request)
+    public
+    function updateImage(Request $request)
     {
         #INPUTS
         if (!$request->hasFile('profile-image')) {
@@ -182,7 +222,8 @@ class UserController extends RootController
         $pathThumbnail = "public/profile/thumbnail";
         $pathTiny = "public/profile/tiny";
         $allowedMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
-        $maxFileSize = 2048; // 2MB in kilobytes
+        $numberOfMegabytes = 8;
+        $kilobyte = 1024; // 2MB in kilobytes
         $errors = [];
 
         $file = $request->file('profile-image');
@@ -198,15 +239,12 @@ class UserController extends RootController
             $errors[] = "Allowed file types are jpg, jpeg and png.";
         }
 
-        if ($fileSize > $maxFileSize * 1024) {
-            $errors[] = "File size should not exceed 2MB.";
+        if ($fileSize > $numberOfMegabytes * pow($kilobyte, 2)) {
+            $errors[] = "File size should not exceed 8MB.";
         }
 
         if (!empty($errors)) {
-            foreach ($errors as $error) {
-                echo $error;
-            }
-            return false;
+            return redirect()->route('profile')->with(["errors" => $errors]);
         }
 
         #QUESTION: DA LI SU OVDE PRISTUPACNE SLIKE? DA LI MOGU DA SE PRIKAZU IZ STORAGEA? MOZDA MORA SOFTLINK...
@@ -218,7 +256,8 @@ class UserController extends RootController
 
         $moved = Storage::putFileAs($pathOriginal, $file, $newFileName);
         if (!$moved) {
-            return "Error: Saving image on the server failed.";
+            return redirect()->route('profile')->with(["errors" => ['Saving image on the server failed.']]);
+//            return "Error: Saving image on the server failed.";
         }
 
         #MAKE SMALL IMAGES
@@ -234,7 +273,9 @@ class UserController extends RootController
             Storage::put($pathTiny . '/' . $newFileName, (string)$tinyImage->encode());
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'An error occurred while saving images and updating records.');
+
+            return redirect()->route('profile')->with(["errors" => ['An error occurred while saving images and updating records.']]);
+//            return back()->with('error', 'An error occurred while saving images and updating records.');
         }
 
         #INSERT INTO DATABASE
@@ -258,7 +299,8 @@ class UserController extends RootController
         } catch (\Exception $e) {
             DB::rollback();
             report($e);
-            return back()->with('error', 'An error occurred while updating.');
+            return redirect()->route('profile')->with(["errors" => ['An error occurred while updating.']]);
+//            return back()->with('error', 'An error occurred while updating.');
         }
 
         #UF_CRM_1667336320092 - polje za sliku
@@ -291,7 +333,8 @@ class UserController extends RootController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public
+    function destroy(string $id)
     {
         //
     }

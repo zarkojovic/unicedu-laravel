@@ -1,9 +1,7 @@
 import axios from "axios";
+import {hide} from "@popperjs/core";
 
 function printHTML(el, val = null) {
-    // if(el.type == "enumeration"){
-
-    // }
     let html = '';
     if (el.type == "crm_category" && el.field_name == "CATEGORY_ID") {
         html += `<label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
@@ -32,8 +30,8 @@ function printHTML(el, val = null) {
         html += `
                                     <label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
                                     <br>
-<!--                                    <label class="upload-document-label" for="${el.fieldName}"><span>Upload Document</span></label>-->
-                                    <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control ">
+                                    <label class="upload-document-label" for="${el.field_name}"><span>Upload Document</span></label>
+                                    <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control d-none">
 
                                 `
     } else if (el.type == "date") {
@@ -107,9 +105,6 @@ function printForm(category, fields, field_details, user_info, display = true) {
         element = element[0];
         element.field_id = field.field_id;
 
-        // if (!breakRow) {
-        //     html += `<div class="row my-2">`
-        // }
         html += `<div class="col-sm-6">`;
 
         // FUNCTION FOR PRINTING ITEM
@@ -117,8 +112,19 @@ function printForm(category, fields, field_details, user_info, display = true) {
         if (display) {
             html += `<div class="mb-3">
                             <label class="form-label">${displayName}</label>
-                            <p id="display${displayName}" class="form-control-static">
-                                ${info_elem.length > 0 ? info_elem[0].value : ""}
+                            <p id="display${displayName}" class="form-control-static">`;
+            if (info_elem.length > 0) {
+                // PRINTING INFO FOR FILES AND OTHER INPUTS
+                if (info_elem[0].value != null) {
+                    html += info_elem[0].value;
+                } else if (info_elem[0].file_name != null) {
+                    // URL TO GET FILES
+                    const fullURL = window.location.protocol + '//' + window.location.host
+                    html += `<a href="${fullURL + "/storage/profile/documents/" + info_elem[0].file_path}" target="_blank">${info_elem[0].file_name} </a>`;
+
+                }
+            }
+            html += `
                             </p>
                     </div>`;
         } else {
@@ -132,9 +138,7 @@ function printForm(category, fields, field_details, user_info, display = true) {
             }
         }
         html += `</div> `;
-        // if (breakRow) {
-        //     html += `</div>`;
-        // }
+
         i++;
     });
 
@@ -160,9 +164,10 @@ function showSpinner() {
     $("#preloader").removeClass("opacity-0", 2500);
 }
 
-function printElements() {
+function printElements(array = []) {
+    let data = {id: array};
 //GET ALL CATEGORY FIELDS, ACTIVE FIELDS AND DETAILS FOR PRINTING FIELDS FROM JSON
-    axios.post('/api/user_fields')
+    axios.post('/api/user_fields', data)
         .then(response => {
 
             // HIDE SPINNER ON LOAD
@@ -176,6 +181,7 @@ function printElements() {
             // GET INFORMATION FROM AUTH USER
             axios.post("/user_info")
                 .then(response => {
+
                     var user_info = response.data;
                     // HTML FOR PRINTING
                     var html = '';
@@ -199,6 +205,7 @@ function printElements() {
                                             class="btn btn-success btn-block m-1 btnSaveClass"
                                             id="btnSave${category.field_category_id}"
                                             data-category="${category.field_category_id}"
+                                            data-print="${array}"
                                         >
                                             Save
                                         </button>
@@ -225,6 +232,7 @@ function printElements() {
                             </div>
                         </div>
                         <div class="card-body">`;
+                        // PRINT BOTH OF FORMS
                         html += printForm(category, fields, field_details, user_info, false);
                         html += printForm(category, fields, field_details, user_info);
                         html += `
@@ -236,7 +244,7 @@ function printElements() {
                     });
                     // PRINT IN THE ELEMENT
                     $("#fieldsWrap").html(html);
-                    $("#fieldsWrap").slideDown();
+                    // $("#fieldsWrap").slideDown();
 
                 })
                 .catch(error => {
@@ -247,7 +255,6 @@ function printElements() {
             console.error(error);
         });
 }
-
 
 $(document).ready(function () {
 
@@ -276,6 +283,16 @@ $(document).ready(function () {
     $(document).on("click", ".btnSaveClass", function () {
         showSpinner();
         let id = $(this).data("category");
+        let print = $(this).data("print");
+        var numbersArray = [];
+        if (print.toString().includes(',')) {
+            numbersArray = print.split(',').map(Number);
+
+        } else {
+            numbersArray.push(parseInt(print))
+        }
+        // console.log(numbersArray);
+
         let forma = document.forms['userForm' + id];
 
         var inputElements = forma.elements; // Get all input elements within the form
@@ -285,9 +302,14 @@ $(document).ready(function () {
         var elems = [];
         var formEl = document.getElementById('userForm' + id);
         var formObj = new FormData(formEl);
-        for (const pair of formObj.entries()) {
-            console.log(pair[0], pair[1]);
-        }
+
+
+        // THIS IS OLD WAY WITHOUT FORM DAYA THAT I TRIED TO USE, I WILL LEAVE IT JUST IN CASE :)
+
+
+        // for (const pair of formObj.entries()) {
+        //     console.log(pair[0], pair[1]);
+        // }
 
         // Loop through the input elements and access their properties
         // for (var i = 0; i < inputElements.length; i++) {
@@ -307,18 +329,24 @@ $(document).ready(function () {
         //         elems.push(elemObj);
         //     }
         // }
-        sendObj.data = formObj;
-        sendObj._token = $('meta[name="csrf-token"]').attr('content');
-        console.log(formObj);
-        axios.post("/update_user", sendObj, {
+        // sendObj.data = formObj;
+        // sendObj._token = $('meta[name="csrf-token"]').attr('content');
+
+        // SEND DATA FOR UPDATING USER INFORMATION
+        axios.post("/update_user", formObj, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
         }).then(response => {
-            console.log(response)
-            printElements();
+            $('#myAlert').removeClass("bg-danger text-white").fadeIn().html("Profile Updated!").delay(3000).fadeOut();
+            printElements(numbersArray);
         })
             .catch(error => {
+                setTimeout(function () {
+                    hideSpinner();
+                    $('#myAlert').addClass("bg-danger text-white").fadeIn().html("An error occurred, try again later!").delay(3000).fadeOut();
+                }, 3000);
+
                 console.error('Error:', error);
             });
     });
@@ -356,8 +384,15 @@ $(document).ready(function () {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    printElements();
+    let path = window.location.pathname;
 
+    if (path === '/profile' || path === '/') {
+        printElements([1]);
+    } else if (path === '/documents') {
+        printElements([3]);
+    } else {
+        printElements();
+    }
 
     const userForm = document.getElementById('userForm');
     const displayForm = document.getElementById('displayForm');

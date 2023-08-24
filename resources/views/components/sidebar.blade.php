@@ -1,7 +1,12 @@
 @php
-    $user = \Illuminate\Support\Facades\Auth::user();
+//    use App\Models\Page;
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+//        $pagesWithRole = Page::whereHas('roles', function ($query,$user) {
+//            $query->where('role_id', (int)$user->role_id);
+//        })->get();
 @endphp
-<!-- Sidebar Start -->
+    <!-- Sidebar Start -->
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
     <div>
@@ -37,22 +42,24 @@
                             "icon" => "ti ti-files"
                         ]
                     ];
-                    foreach ($menuItems as $item) :
                 @endphp
-                <li class="sidebar-item">
-                    <a
-                        class="sidebar-link {{ "/".request()->path() === $item["route"] ? "active" : "" }} {{ request()->path() === "admin" && $item["route"] === "/profile" ? "active" : "" }}
+                @foreach ($menuItems as $item)
+
+                    <li class="sidebar-item">
+                        <a
+                            class="sidebar-link {{ "/".request()->path() === $item["route"] ? "active" : "" }} {{ request()->path() === "admin" && $item["route"] === "/profile" ? "active" : "" }}
                         {{ request()->path() === '/' && $item["route"] === "/profile" ? "active" : "" }}"
-                        href="{{ $item["route"] }}"
-                        aria-expanded="false"
-                    >
+                            href="{{ $item["route"] }}"
+                            aria-expanded="false"
+                        >
                   <span>
                     <i class="{{ $item["icon"] }}"></i>
                   </span>
-                        <span class="hide-menu">{{ $user->role->role_name === "admin" && $item["name"] === "My profile" ? "Admin" : $item["name"] }}</span>
-                    </a>
-                </li>
-                @php endforeach; @endphp
+                            <span
+                                class="hide-menu">{{ $user->role->role_name === "admin" && $item["name"] === "My profile" ? "Admin" : $item["name"] }}</span>
+                        </a>
+                    </li>
+                @endforeach
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

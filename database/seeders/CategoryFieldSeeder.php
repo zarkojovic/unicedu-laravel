@@ -13,7 +13,7 @@ class CategoryFieldSeeder extends Seeder
      */
     public function run(): void
     {
-        $category_names = ['personal','address','documents','deals'];
+        $category_names = ['Personal Information','Address','Documents','Deals'];
 
         foreach ($category_names as $category_name){
             $category = FieldCategory::create([

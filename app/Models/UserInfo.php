@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class UserInfo extends Model
 {
@@ -25,9 +26,9 @@ class UserInfo extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
-    protected function field(): BelongsTo
+    protected function field(): hasOne
     {
-        return $this->belongsTo(Field::class, 'field_id');
+        return $this->hasOne(Field::class, 'field_id');
     }
 
 }

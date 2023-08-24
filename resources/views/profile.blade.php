@@ -6,7 +6,7 @@
         $user = \Illuminate\Support\Facades\Auth::user();
     @endphp
     {{-- Student profile--}}
-    <div class="container-fluid">
+    <div class="container-fluid pt-0">
         <!--  Student Profile -->
         <div class="row">
             <div class="col-lg-12 d-flex align-items-strech">
@@ -35,25 +35,45 @@
                                     <span class="text">PLATINUM</span>
                                 </div>
                                 <div class="mt-3">
-                                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.image.update') }}">
+                                    <form method="POST" enctype="multipart/form-data"
+                                          action="{{ route('user.image.update') }}">
                                         @csrf
                                         @method('PUT')
-                                        <label class="text-primary text-hover t05 profile-image-label" for="profile-image-input">Change Profile Picture</label>
-                                        <input type="file" class="d-none" name="profile-image" id="profile-image-input"/>
+                                        <label class="text-primary text-hover t05 profile-image-label"
+                                               for="profile-image-input">Change Profile Picture</label>
+                                        <input type="file" class="d-none" name="profile-image"
+                                               id="profile-image-input"/>
                                     </form>
                                 </div>
                             </div>
                         </div>
+                        @if(isset($errors))
+                            @if(count($errors) > 0)
+                                <div class="row mt-4">
+                                    <div class="alert alert-danger mb-0" role="alert">
+                                        <ul class="m-0">
+                                            @foreach($errors as $err)
+                                                <li>{{$err}}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div id="fieldsWrap" class="container-fluid pt-0"></div>
+
+
 @endsection
 
 @section('scripts')
-    @vite('resources/js/profile.js');
+{{--    <script>--}}
+{{--        printElements();--}}
+{{--    </script>--}}
 
 @endsection
 

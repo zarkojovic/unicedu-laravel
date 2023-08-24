@@ -29,6 +29,11 @@
     </div>
 
 
+    <div id="myAlert"
+         class="alert top-0 toast-notification mt-3 alert-notification alert-success fade show position-fixed px-5"
+         role="alert">
+    </div>
+
     <script src='https://salebot.pro/js/salebot.js' charset='utf-8'></script>
     <script>
         SaleBotPro.init({
