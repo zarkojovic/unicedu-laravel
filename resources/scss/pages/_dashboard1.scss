@@ -5,6 +5,10 @@
     font-size: 20px;
     cursor: pointer;
 
+    &:hover{
+        color: $primary;
+    }
+
 }
 
 .checkboxes {
@@ -16,7 +20,6 @@
     background-color: white;
     border: 1px solid #ccc;
     padding: 10px;
-    display: none;
     z-index: 100;
     border-radius: 0px 5px 5px 5px;
 }

@@ -34,11 +34,11 @@
                                                             <div class="d-flex justify-content-between">
                                                                     <label>{{$field->title != null ? $field->title : $field->field_name}}</label>
 
-                                                                    <i class="ti ti-adjustments-alt panel-field-settings"></i>
-                                                                    <div class="checkboxes" id="checkboxes-container">
+                                                                    <i class="ti ti-adjustments-alt panel-field-settings" id="icon-{{$field->field_id}}" data-field-name="{{$field->field_name}}"></i>
+                                                                    <div class="checkboxes d-none">
                                                                         <input type="checkbox" id="{{$field->field_name}}"
                                                                                value="{{$field->field_id}}"
-                                                                               name="fields[]" {{ $field->field_category_id === $category->field_category_id ? 'checked' : '' }}>
+                                                                               name="fields[]" checked="checked">
                                                                         <label for="{{$field->field_name}}">Is Active</label>
                                                                     </div>
                                                             </div>
@@ -50,8 +50,7 @@
                                     </div>
                                 </div>
                             </div>
-                {{--                    <input type="text" name="search-fields" id="search-fields" class="d-block w-100 form-control"/>--}}
-                {{--                    <select id="search-list" class="w-100 form-select" size="10"></select>--}}
+
 
             </form>
     </div>
