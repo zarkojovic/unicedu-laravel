@@ -30,10 +30,23 @@ class FieldController extends Controller
     public function setFieldCategory(Request $request)
     {
         $fields = $request->fields;
+        $category_id = $request->category_id;
+
+        $existingFields = Field::where('field_category_id', $category_id)->get();
+        $existingFieldIds = $existingFields->pluck('field_id')->toArray();
+
+        // Remove associations for fields that are no longer selected
+        $fieldsToRemove = array_diff($existingFieldIds, $fields);
+        foreach ($fieldsToRemove as $fieldToRemove) {
+            $field_update = Field::find($fieldToRemove);
+            $field_update->field_category_id = null;
+            $field_update->save();
+        }
+
+        // Associate fields with the new category
         foreach ($fields as $field) {
-            $f_id = (int)$field;
-            $field_update = Field::find($f_id);
-            $field_update->field_category_id = $request->category_id;
+            $field_update = Field::find($field);
+            $field_update->field_category_id = $category_id;
             $field_update->save();
         }
 
