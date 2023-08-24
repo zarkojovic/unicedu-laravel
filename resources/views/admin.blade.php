@@ -1,4 +1,4 @@
-    <?php $pageTitle = "Admin Panel" ?>
+<?php $pageTitle = "Admin Panel" ?>
 @extends("layouts.student")
 
 @section('main-content')
@@ -30,21 +30,36 @@
                                             <div class="row">
                                                 @foreach($fields as $field)
                                                     @if ($field->field_category_id === $category->field_category_id)
-                                                        <div class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded position-relative">
+                                                        <div
+                                                            class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded position-relative">
                                                             <div class="d-flex justify-content-between">
-                                                                    <label>{{$field->title != null ? $field->title : $field->field_name}}</label>
+                                                                <label>{{$field->title != null ? $field->title : $field->field_name}}</label>
 
-                                                                    <i class="ti ti-adjustments-alt panel-field-settings" id="icon-{{$field->field_id}}" data-field-name="{{$field->field_name}}"></i>
-                                                                    <div class="checkboxes d-none">
-                                                                        <input type="checkbox" id="{{$field->field_name}}"
-                                                                               value="{{$field->field_id}}"
-                                                                               name="fields[]" checked="checked">
-                                                                        <label for="{{$field->field_name}}">Is Active</label>
-                                                                    </div>
+                                                                <i class="ti ti-adjustments-alt panel-field-settings"
+                                                                   id="icon-{{$field->field_id}}"
+                                                                   data-field-name="{{$field->field_name}}"></i>
+                                                                <div class="checkboxes d-none">
+                                                                    <input type="checkbox" id="{{$field->field_name}}"
+                                                                           value="{{$field->field_id}}"
+                                                                           name="fields[]" checked="checked">
+                                                                    <label for="{{$field->field_name}}">Is
+                                                                        Active</label>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     @endif
                                                 @endforeach
+                                                <div class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded position-relative">
+                                                    <div class="add-category d-flex justify-content-between" id="{{ $category->field_category_id }}">
+                                                        <div class="add-category-text">
+                                                            <label>Add new field</label>
+                                                        </div>
+                                                        <div class="add-category-icon">
+                                                            <i class="ti ti-plus fs-4"></i>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
