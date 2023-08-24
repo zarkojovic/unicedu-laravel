@@ -23,13 +23,13 @@
                 class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
             >
                 @if(\Illuminate\Support\Facades\Auth::user()->role->role_name == "student")
-                <li>
-                    <a
-                        href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/"
-                        target="_blank"
-                        class="btn btn-primary"
-                    >Apply For University</a>
-                </li>
+                    <li>
+                        <a
+                            href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/"
+                            target="_blank"
+                            class="btn btn-primary"
+                        >Apply For University</a>
+                    </li>
                 @elseif(\Illuminate\Support\Facades\Auth::user()->role->role_name == "admin")
 
                 @elseif(\Illuminate\Support\Facades\Auth::user()->role->role_name == "agent")

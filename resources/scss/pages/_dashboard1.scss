@@ -2,6 +2,60 @@
 // Dashboard1 Style
 // ----------------------------------------------
 
+.panel-field-settings{
+    font-size: 20px;
+    cursor: pointer;
+
+}
+
+.checkboxes {
+    position: absolute;
+    width: 150px;
+    top: 50%; /* Position below the icon */
+    left: 115%; /* Center the checkboxes horizontally */
+    transform: translateX(-50%); /* Center adjustment */
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: none;
+    z-index: 100;
+    border-radius: 0px 5px 5px 5px;
+}
+
+.btn-edit{
+    border: 1px solid #5A6A85;
+    color: #5A6A85;
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+    &:hover {
+        background-color: $primary;
+        color: #fff;
+        border: 1px solid $primary;
+    }
+}
+
+.btn-save{
+    border: 1px solid #5A6A85;
+    color: #5A6A85;
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+    &:hover {
+        background-color: #33b249;
+        color: #fff;
+        border: 1px solid #33b249;
+
+    }
+}
+
+.btn-cancel{
+    border: 1px solid #5A6A85;
+    color: #5A6A85;
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+    &:hover {
+        background-color: #ED0800;
+        color: #fff;
+        border: 1px solid #ED0800;
+    }
+}
+
 .document-uploaded-label{
     border-radius: 10px;
     background-color: $primary;
