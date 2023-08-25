@@ -28,9 +28,9 @@
     <script>
         $(document).ready(function() {
             let currentCategory = null; // To keep track of the currently focused category
-
+            let clickedCategory = null;
             $('.add-category').click(function(event) {
-                const clickedCategory = $(this);
+                clickedCategory = $(this);
 
                 if (currentCategory && currentCategory.is(clickedCategory)) {
                     currentCategory.next('#search-dropdown').remove();
@@ -93,8 +93,15 @@
                 let selectedValue = selectedOption.val();
                 let selectedText = selectedOption.text();
 
-                console.log("Selected Value:", selectedValue);
-                console.log("Selected Text:", selectedText);
+                data = {
+                    "field_id": selectedValue,
+                    "field_category_id": clickedCategory.attr("id")
+                };
+                ajaxCallback("/search-update","post",data, function (result) {
+                    console.log("uspeh");
+                }), function (xhr,message,status) {
+                    console.log(message, status);
+                }
 
                 $("#search-fields").val(selectedText);
                 // Remove #search-dropdown
@@ -103,25 +110,33 @@
             });
         });
 
-        function fetchDropdownData(query) {
+        function ajaxCallback(route,method,data,success,error=null){
+            let csrfToken = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
-                url: "/search-dropdown",
-                method: "get",
-                data: {"search": query},
-                success: function(result) {
-                    $("#search-list").html(result);
-
-                    let numOptions = $("#search-list option").length;
-                    numOptions = Math.max(Math.min(numOptions, 10), 2); // Limit to a maximum of 10 options and min 2
-                    $("#search-list").attr("size", numOptions);
+                url: route,
+                method: method,
+                data: data,
+                headers: {
+                    "X-CSRF-Token": csrfToken // Include the CSRF token in the headers
                 },
-                error: function() {
-                    console.error("Failed to retrieve search results.");
-
-                    // Reset the dropdown to show all options
-                    $("#search-list").attr("size", $("#search-list option").length);
-                }
+                success: success,
+                error: error
             });
+        }
+
+        function fetchDropdownData(query) {
+            ajaxCallback("/search-dropdown","get",{"search":query}, function(result) {
+                $("#search-list").html(result);
+
+                let numOptions = $("#search-list option").length;
+                numOptions = Math.max(Math.min(numOptions, 10), 2); // Limit to a maximum of 10 options and min 2
+                $("#search-list").attr("size", numOptions);
+            }, function() {
+                console.error("Failed to retrieve search results.");
+
+                // Reset the dropdown to show all options
+                $("#search-list").attr("size", $("#search-list option").length);
+            })
         }
     </script>
 @endsection
