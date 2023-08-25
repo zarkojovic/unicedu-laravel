@@ -29,6 +29,7 @@ Route::middleware(["verified"])->group(function () {
             ->where('pages.route', '=', $route->route)
             ->first();
 
+        if(!empty($role->role_name)){
         switch ($role->role_name) {
             case 'admin':
                 Route::middleware(["admin"])->group(function () use ($route) {
@@ -46,7 +47,7 @@ Route::middleware(["verified"])->group(function () {
                 });
                 break;
         }
-
+        }
     }
 
 });
