@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Field;
 use App\Models\FieldCategory;
+use App\Models\Page;
 use Illuminate\Http\Request;
 
 class AdminController extends RootController
@@ -22,13 +23,14 @@ class AdminController extends RootController
         return view("category_fields", ["fields" => $fields, "categories" => $categories]);
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         if ($request->ajax()) {
             $searchQuery = $request->input('search');
 
             $rows = Field::whereNull("field_category_id")->where(function ($query) use ($searchQuery) {
-                            $query->where('title', 'LIKE', '%' . $searchQuery . '%')
-                            ->orWhere('field_name', 'LIKE', '%' . $searchQuery . '%');
+                $query->where('title', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('field_name', 'LIKE', '%' . $searchQuery . '%');
             })->get();
 
             if (count($rows) > 0) {
@@ -43,4 +45,6 @@ class AdminController extends RootController
             return "<option value='0'>No results found...</option>";
         }
     }
+
+
 }

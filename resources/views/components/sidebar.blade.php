@@ -1,10 +1,16 @@
 @php
-//    use App\Models\Page;
-        $user = \Illuminate\Support\Facades\Auth::user();
+    $user = \Illuminate\Support\Facades\Auth::user();
+    $role_id = (int)$user->role_id;
 
-//        $pagesWithRole = Page::whereHas('roles', function ($query,$user) {
-//            $query->where('role_id', (int)$user->role_id);
-//        })->get();
+
+    $pagesWithRole = DB::table('pages')
+        ->join('role_page', 'pages.page_id', '=', 'role_page.page_id')
+        ->select('pages.*', 'role_page.role_id')
+        ->where('role_page.role_id', '=', $role_id)
+        ->get();
+
+    $isAdmin = $user->role->role_name === 'admin';
+
 @endphp
     <!-- Sidebar Start -->
 <aside class="left-sidebar">
@@ -18,7 +24,7 @@
                     src="{{ asset("images/logos/polandstudylogo.png") }}"
                     width="180"
                     class="mt-4"
-                    alt=""
+                    alt="logo"
                 />
             </a>
         </div>
@@ -29,34 +35,18 @@
                 <li class="nav-small-cap">
                     <span class="hide-menu">Student Platform</span>
                 </li>
-                @php
-                    $menuItems = [
-                        [
-                            "name" => "My profile",
-                            "route" => "/profile",
-                            "icon" => "ti ti-user"
-                        ],
-                        [
-                            "name" => "Documents",
-                            "route" => "/documents",
-                            "icon" => "ti ti-files"
-                        ]
-                    ];
-                @endphp
-                @foreach ($menuItems as $item)
-
+                @foreach($pagesWithRole as $page)
                     <li class="sidebar-item">
                         <a
-                            class="sidebar-link {{ "/".request()->path() === $item["route"] ? "active" : "" }} {{ request()->path() === "admin" && $item["route"] === "/profile" ? "active" : "" }}
-                        {{ request()->path() === '/' && $item["route"] === "/profile" ? "active" : "" }}"
-                            href="{{ $item["route"] }}"
+                            class="sidebar-link {{'/'.request()->path() == $page->route ? "active" : ""}}"
+                            href="{{$isAdmin ? '/admin' : ''}}{{ $page->route }}"
                             aria-expanded="false"
                         >
                   <span>
-                    <i class="{{ $item["icon"] }}"></i>
+                    <i class="{{ $page->icon }}"></i>
                   </span>
                             <span
-                                class="hide-menu">{{ $user->role->role_name === "admin" && $item["name"] === "My profile" ? "Admin" : $item["name"] }}</span>
+                                class="hide-menu">{{$page->title}}</span>
                         </a>
                     </li>
                 @endforeach

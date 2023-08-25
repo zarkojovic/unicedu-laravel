@@ -31,8 +31,8 @@
                             <div class="col-6 col-lg-10 col-md-9 col-sm-8">
                                 <h5 class="fw-semibold">{{ $user->first_name }} {{ $user->last_name }}</h5>
                                 <h6 class="fw-semibold text-muted">{{ $user->email }}</h6>
-                                <div class="platinum-package">
-                                    <span class="text">PLATINUM</span>
+                                <div class="platinum-package bg-gradient">
+                                    <span class="text">BRONZE</span>
                                 </div>
                                 <div class="mt-3">
                                     <form method="POST" enctype="multipart/form-data"

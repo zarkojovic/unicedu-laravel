@@ -386,13 +386,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let path = window.location.pathname;
 
-    if (path === '/profile' || path === '/') {
-        printElements([1]);
-    } else if (path === '/documents') {
-        printElements([3]);
-    } else {
-        printElements();
-    }
+    if (path === '/') path = '/profile';
+    axios.post("/page_category", {name: path}).then(response => {
+        let res = response.data;
+        const idArray = res.map(item => item.field_category_id);
+        if (idArray.length > 0) {
+            printElements(idArray);
+        } else {
+            hideSpinner();
+        }
+    });
+
+
+    // if (path === '/profile' || path === '/') {
+    //     printElements([1]);
+    // } else if (path === '/documents') {
+    //     printElements([3]);
+    // } else {
+    //     printElements();
+    // }
 
     const userForm = document.getElementById('userForm');
     const displayForm = document.getElementById('displayForm');

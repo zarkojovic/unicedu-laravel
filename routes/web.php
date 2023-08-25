@@ -1,18 +1,56 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FieldController;
+use App\Models\Page;
 use App\Models\UserInfo;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 //CUSTOM 404 REDIRECT
 Route::fallback(function () {
     return view('notification', ['type' => '404']);
 });
+
+Route::middleware(["verified"])->group(function () {
+    $routeNames = Page::all();
+    foreach ($routeNames as $route) {
+
+        $role = DB::table('pages')
+            ->join('role_page', 'pages.page_id', '=', 'role_page.page_id')
+            ->join('roles', 'role_page.role_id', '=', 'roles.role_id')
+            ->select('roles.role_id', 'roles.role_name')
+            ->where('pages.route', '=', $route->route)
+            ->first();
+
+        switch ($role->role_name) {
+            case 'admin':
+                Route::middleware(["admin"])->group(function () use ($route) {
+                    //ADMIN ROUTES
+                    Route::prefix('admin')->group(function () use ($route) {
+                        Route::get($route->route, function () use ($route) {
+                            return view('templates.student', ['pageTitle' => $route->title]);
+                        });
+                    });
+                });
+                break;
+            default :
+                Route::get($route->route, function () use ($route) {
+                    return view('templates.student', ['pageTitle' => $route->title]);
+                });
+                break;
+        }
+
+    }
+
+});
+
 
 //ROUTES FOR AUTHORIZED USERS
 Route::middleware(["auth"])->group(function () {
@@ -59,6 +97,8 @@ Route::middleware(["auth"])->group(function () {
             Route::prefix('admin')->group(function () {
                 Route::get('/', [AdminController::class, "home"])->name("admin_home");
                 Route::get("/category_fields", [AdminController::class, "fieldSelect"]);
+                Route::get('/pages', [PageController::class, 'showPages']);
+                Route::get('/pages/{id}/edit', [PageController::class, 'editPages'])->name('edit_pages');
             });
         });
     });
@@ -80,6 +120,30 @@ Route::middleware(['guest'])->group(function () {
 
 });
 
+//TEST ROUTE FOR GETTING CATEGORIES FOR PAGE
+Route::post('/page_category', [\App\Http\Controllers\PageController::class, 'pageCategories']);
+
+
+#TEST
+Route::get("/page_icons", function () {
+
+    echo asset('resources/css/icons/tabler-icons/tabler-icons.css');
+
+    $cssContent = file_get_contents(asset('resources/css/icons/tabler-icons/tabler-icons.css'));
+
+    var_dump($cssContent);
+
+//    $pattern = '/\.([a-zA-Z0-9_-]+)/'; // Regular expression to match class names
+//
+//    preg_match_all($pattern, $cssContent, $matches);
+//
+//    $classNames = $matches[1];
+//    $jsonData = json_encode($classNames, JSON_PRETTY_PRINT);
+//
+//    file_put_contents(asset('resources/js/icons.json'), $jsonData);
+
+
+});
 
 #TEST
 Route::get("/search", function () {
