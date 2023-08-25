@@ -44,6 +44,11 @@
                                                                            name="fields[]" checked="checked">
                                                                     <label for="{{$field->field_name}}">Is
                                                                         Active</label>
+                                                                    <input type="checkbox" id="{{$field->field_name}}"
+                                                                           value="{{$field->field_id}}"
+                                                                           name="fields[]" checked="checked">
+                                                                    <label for="{{$field->field_name}}">Is
+                                                                        Active</label>
                                                                 </div>
                                                             </div>
                                                         </div>

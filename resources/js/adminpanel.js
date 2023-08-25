@@ -12,6 +12,7 @@ $(document).ready(function() {
         if (currentFieldIcon && currentFieldIcon.is(clickedFieldIcon)) {
             currentFieldIcon.next().removeClass("d-block");
             currentFieldIcon.next().addClass("d-none");
+            clickedFieldIcon.removeClass("primary-color");
             currentFieldIcon = null;
             return;
         }
@@ -27,7 +28,7 @@ $(document).ready(function() {
         clickedFieldIcon.next().addClass("d-block");
 
         // OVDE BOJI
-
+        clickedFieldIcon.addClass("primary-color");
 
         // clickedFieldIcon.after(html);
         currentFieldIcon = clickedFieldIcon;
@@ -46,6 +47,7 @@ $(document).ready(function() {
         if (!$(event.target).closest('.checkboxes').length) {
             clickedFieldIcon.next().removeClass("d-block"); //OVDE IZLAZI ERROR ALI RADI
             clickedFieldIcon.next().addClass("d-none");
+            clickedFieldIcon.removeClass("primary-color");
             currentFieldIcon = null;
         }
     });
