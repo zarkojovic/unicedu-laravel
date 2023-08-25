@@ -31,24 +31,32 @@ class FieldController extends Controller
     {
         $fields = $request->fields;
         $category_id = $request->category_id;
+        $requiredFields = $request->requiredFields ?? [];
+
+        $requiredFieldsFromDatabase = Field::where('is_required', 1)->get();
+        $requiredFieldsFromDatabaseIDs = $requiredFieldsFromDatabase->pluck('field_id')->toArray();
 
         $existingFields = Field::where('field_category_id', $category_id)->get();
         $existingFieldIds = $existingFields->pluck('field_id')->toArray();
 
-        // Remove associations for fields that are no longer selected
+// Remove fields that are no longer selected
         $fieldsToRemove = array_diff($existingFieldIds, $fields);
-        foreach ($fieldsToRemove as $fieldToRemove) {
-            $field_update = Field::find($fieldToRemove);
-            $field_update->field_category_id = null;
-            $field_update->save();
-        }
+        Field::whereIn('field_id', $fieldsToRemove)->update([
+            'field_category_id' => null,
+        ]);
 
-        // Associate fields with the new category
-        foreach ($fields as $field) {
-            $field_update = Field::find($field);
-            $field_update->field_category_id = $category_id;
-            $field_update->save();
-        }
+// Update required fields
+        Field::whereIn('field_id', $requiredFields)->update([
+            'is_required' => true,
+        ]);
+        Field::whereIn('field_id', array_diff($requiredFieldsFromDatabaseIDs, $requiredFields))->update([
+            'is_required' => false,
+        ]);
+
+// Associate fields with the new category
+        Field::whereIn('field_id', $fields)->update([
+            'field_category_id' => $category_id,
+        ]);
 
         return redirect()->back();
     }

@@ -33,7 +33,7 @@
                                                         <div
                                                             class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded position-relative">
                                                             <div class="d-flex justify-content-between">
-                                                                <label>{{$field->title != null ? $field->title : $field->field_name}}</label>
+                                                                <label class="{{ $field->is_required ? 'primary-color' : '' }}">{{$field->title != null ? $field->title : $field->field_name}}</label>
 
                                                                 <i class="ti ti-adjustments-alt panel-field-settings"
                                                                    id="icon-{{$field->field_id}}"
@@ -43,12 +43,12 @@
                                                                            value="{{$field->field_id}}"
                                                                            name="fields[]" checked="checked">
                                                                     <label for="{{$field->field_name}}">Is
-                                                                        Active</label>
-                                                                    <input type="checkbox" id="{{$field->field_name}}"
+                                                                        Active</label><br>
+                                                                    <input type="checkbox" id="required_{{$field->field_name}}"
                                                                            value="{{$field->field_id}}"
-                                                                           name="fields[]" checked="checked">
-                                                                    <label for="{{$field->field_name}}">Is
-                                                                        Active</label>
+                                                                           name="requiredFields[]"
+                                                                        {{$field->is_required ? 'checked' : ''}}>
+                                                                    <label for="required_{{$field->field_name}}">Is Required</label>
                                                                 </div>
                                                             </div>
                                                         </div>

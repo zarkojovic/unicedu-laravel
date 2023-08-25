@@ -28,6 +28,7 @@ Route::middleware(["verified"])->group(function () {
             ->select('roles.role_id', 'roles.role_name')
             ->where('pages.route', '=', $route->route)
             ->first();
+
         if (!empty($role->role_name)) {
             switch ($role->role_name) {
                 case 'admin':
@@ -131,6 +132,22 @@ Route::post('/page_category', [\App\Http\Controllers\PageController::class, 'pag
 #TEST
 Route::get("/page_icons", function () {
 
+//    echo asset('resources/css/icons/tabler-icons/tabler-icons.css');
+//
+//    $cssContent = file_get_contents(asset('resources/css/icons/tabler-icons/tabler-icons.css'));
+//
+//    var_dump($cssContent);
+
+//    $pattern = '/\.([a-zA-Z0-9_-]+)/'; // Regular expression to match class names
+//
+//    preg_match_all($pattern, $cssContent, $matches);
+//
+//    $classNames = $matches[1];
+//    $jsonData = json_encode($classNames, JSON_PRETTY_PRINT);
+//
+//    file_put_contents(asset('resources/js/icons.json'), $jsonData);
+
+
     // Path to the resource/js directory
     $jsPath = resource_path('css/icons/tabler-icons');
     //Gets content from json file
@@ -147,6 +164,7 @@ Route::get("/page_icons", function () {
     $jsPath = resource_path('js');
 
     file_put_contents($jsPath . "/tabler.json", $jsonData);
+
 
 });
 
