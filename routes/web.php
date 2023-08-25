@@ -28,23 +28,24 @@ Route::middleware(["verified"])->group(function () {
             ->select('roles.role_id', 'roles.role_name')
             ->where('pages.route', '=', $route->route)
             ->first();
-
-        switch ($role->role_name) {
-            case 'admin':
-                Route::middleware(["admin"])->group(function () use ($route) {
-                    //ADMIN ROUTES
-                    Route::prefix('admin')->group(function () use ($route) {
-                        Route::get($route->route, function () use ($route) {
-                            return view('templates.student', ['pageTitle' => $route->title]);
+        if (!empty($role->role_name)) {
+            switch ($role->role_name) {
+                case 'admin':
+                    Route::middleware(["admin"])->group(function () use ($route) {
+                        //ADMIN ROUTES
+                        Route::prefix('admin')->group(function () use ($route) {
+                            Route::get($route->route, function () use ($route) {
+                                return view('templates.student', ['pageTitle' => $route->title]);
+                            });
                         });
                     });
-                });
-                break;
-            default :
-                Route::get($route->route, function () use ($route) {
-                    return view('templates.student', ['pageTitle' => $route->title]);
-                });
-                break;
+                    break;
+                default :
+                    Route::get($route->route, function () use ($route) {
+                        return view('templates.student', ['pageTitle' => $route->title]);
+                    });
+                    break;
+            }
         }
 
     }
@@ -99,6 +100,9 @@ Route::middleware(["auth"])->group(function () {
                 Route::get("/category_fields", [AdminController::class, "fieldSelect"]);
                 Route::get('/pages', [PageController::class, 'showPages']);
                 Route::get('/pages/{id}/edit', [PageController::class, 'editPages'])->name('edit_pages');
+                Route::post('/pages/update', [PageController::class, 'updatePage'])->name('updatePage');
+                Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPages');
+                Route::post('/pages/create', [PageController::class, 'addNew'])->name('createNew');
             });
         });
     });
@@ -127,21 +131,22 @@ Route::post('/page_category', [\App\Http\Controllers\PageController::class, 'pag
 #TEST
 Route::get("/page_icons", function () {
 
-    echo asset('resources/css/icons/tabler-icons/tabler-icons.css');
+    // Path to the resource/js directory
+    $jsPath = resource_path('css/icons/tabler-icons');
+    //Gets content from json file
+    $cssContent = file_get_contents($jsPath . "/tabler-icons.css");
+    $pattern = '/\.([a-zA-Z0-9_-]+)/'; // Regular expression to match class names
 
-    $cssContent = file_get_contents(asset('resources/css/icons/tabler-icons/tabler-icons.css'));
+    preg_match_all($pattern, $cssContent, $matches);
 
-    var_dump($cssContent);
+    $classNames = $matches[1];
+    $jsonData = json_encode($classNames, JSON_PRETTY_PRINT);
 
-//    $pattern = '/\.([a-zA-Z0-9_-]+)/'; // Regular expression to match class names
-//
-//    preg_match_all($pattern, $cssContent, $matches);
-//
-//    $classNames = $matches[1];
-//    $jsonData = json_encode($classNames, JSON_PRETTY_PRINT);
-//
-//    file_put_contents(asset('resources/js/icons.json'), $jsonData);
 
+    // Path to the public/js directory
+    $jsPath = resource_path('js');
+
+    file_put_contents($jsPath . "/tabler.json", $jsonData);
 
 });
 

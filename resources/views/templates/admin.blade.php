@@ -1,8 +1,10 @@
 @extends("layouts.student")
 @section('main-content')
     <div class="container-fluid">
-        <h1>{{$pageTitle}} {{url()->current()}}
-        </h1>
+        <div class="row">
+            <div class="col"><h1>{{$pageTitle}}</h1></div>
+            <div class="col"><a href="{{route('insertPages')}}" class="text-end btn btn-primary">Insert new</a></div>
+        </div>
         <table class="table">
             <thead>
             <tr>
@@ -26,7 +28,7 @@
                         @endif
                     @endforeach
                     <th scope="col">
-                        <a class="btn btn-save" href="{{  url()->current().'/'.$page->page_id.'/edit'}}">
+                        <a class="btn btn-save" href="{{url()->current().'/'.$page->page_id.'/edit'}}">
                             Edit
                         </a>
                     </th>
@@ -37,5 +39,6 @@
             @endforeach
             </tbody>
         </table>
+
     </div>
 @endsection
