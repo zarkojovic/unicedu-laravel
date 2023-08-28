@@ -7,22 +7,27 @@
 @section('main-content')
     <div class="container-fluid">
         <h1>{{$pageTitle}}</h1>
-        <form action="{{$isUpdate ? route('updatePage') : route('createNew')}}" method="post">
+        <form action="{{$isUpdate ? route('update'.$name) : route('create'.$name)}}" method="post">
             @csrf
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="title">Title</label>
-                <input name="title" id="title" value="{{$isUpdate ? $page->title : ''}}" required class="form-control"/>
+                <input name="title" id="title"
+                       value="{{$isUpdate ? $page->title : ''}} {{!$isUpdate ? old('title') : ''}} " required
+                       class="form-control"/>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="route">Route</label>
-                <input name="route" id="route" required value="{{$isUpdate ? $page->route : ''}}" class="form-control"/>
+                <input name="route" id="route" required
+                       value="{{$isUpdate ? $page->route : ''}}  {{!$isUpdate ? old('route') : ''}}"
+                       class="form-control"/>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="icon">Icon</label>
                 <div class="container">
-                    <div class="row icon-selection p-2 bg-light">
+                    <input type="text" placeholder="Search icons..." id="iconSearch" class="form-control my-3">
+                    <div class="row icon-selection p-2 bg-light" id="iconsWrap">
                         @foreach($icons as $icon)
-                            <div class="col my-1">
+                            <div class="col-1 my-1">
                                 <div class="p-4 bg-primary h3 text-center m-0 rounded icon-item"
                                      data-value="{{'ti '.$icon}}"><i
                                         class="text-white ti {{ $icon }}"></i></div>
@@ -32,18 +37,42 @@
                 </div>
                 <input type="hidden" required value="ti ti-at" name="icon" id="icon">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="roles" class="fw-bold text-black">Roles</label> <br>
-                @foreach($roles as $role)
-                    <input type="checkbox" name="roles[]" id="roles" value="{{$role->role_id}}"> {{$role->role_name}}
-                    <br>
+
+                @foreach ($roles as $role)
+                    @if($isUpdate)
+                        @php
+                            $check = $selectedRoles->contains('role_id', $role->role_id);
+                        @endphp
+                    @else
+                        @php
+                            $check = false;
+                        @endphp
+                    @endif
+                    <input type="checkbox" name="roles[]" {{ $check ? 'checked' : '' }} id="roles-{{ $role->role_id }}"
+                           value="{{ $role->role_id }}"> {{ $role->role_name }}<br>
                 @endforeach
+
+
             </div>
             <div class="form-group">
                 <label for="categories" class="fw-bold text-black">Categories</label> <br>
-                @foreach($categories as $category)
-                    <input type="checkbox" name="categories[]" value="{{$category->field_category_id}}"
-                           id="categories"> {{$category->category_name}} <br>
+
+
+                @foreach ($categories as $category)
+                    @if($isUpdate)
+                        @php
+                            $check = $selectedCategories->contains('field_category_id', $category->field_category_id);
+                        @endphp
+                    @else
+                        @php
+                            $check = false;
+                        @endphp
+                    @endif
+                    <input type="checkbox" name="categories[]"
+                           {{ $check ? 'checked' : '' }} id="categories-{{ $category->role_id }}"
+                           value="{{ $category->field_category_id }}"> {{ $category->category_name }}<br>
                 @endforeach
             </div>
             @if($isUpdate)
