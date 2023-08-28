@@ -42,10 +42,12 @@ input[type="checkbox"] {
 
 }
 
+
 .search-dropdown {
     left: 0;
     position: absolute;
 }
+
 
 .primary-color{
     color: $primary;
@@ -291,4 +293,19 @@ input[type="checkbox"] {
     left: 50%;
     transform: translateX(-50%);
     display: none;
+}
+
+.icon-selection {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.icon-item{
+    transition: all 0.2s;
+}
+
+.icon-item:hover{
+    background-color: #FFAE1F !important;
+
+    cursor: pointer;
 }

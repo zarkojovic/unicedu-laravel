@@ -386,6 +386,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let path = window.location.pathname;
 
+    if (path.includes('pages') && path.includes('edit') || path.includes('pages') && path.includes('insert') ) {
+
+        $(document).on('click', '.icon-item', function () {
+
+            $('.icon-item').each(function () {
+                $(this).removeClass('bg-dark');
+            });
+
+            $(this).addClass('bg-dark');
+            let value = $(this).data('value');
+            $('#icon').val(value);
+
+        });
+
+
+    }
+
+
     if (path === '/') path = '/profile';
     axios.post("/page_category", {name: path}).then(response => {
         let res = response.data;
