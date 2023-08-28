@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\FieldCategoryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FieldController;
+use App\Models\FieldCategory;
 use App\Models\Page;
 use App\Models\UserInfo;
 use Illuminate\Database\Eloquent\Builder;
@@ -90,20 +92,37 @@ Route::middleware(["auth"])->group(function () {
 
         //ADMIN PERMISSIONS
         Route::middleware(["admin"])->group(function () {
-//            ROUTES FOR ADMIN FIELD DATA
+
+            // ROUTES FOR ADMIN FIELD DATA
             Route::post("/add_fields", [FieldController::class, "setFieldCategory"]);
-//                REFRESH ALL FIELDS FROM API
+
+            // REFRESH ALL FIELDS FROM API
             Route::post("/field/check", [FieldController::class, "updateFields"]);
 
             //ADMIN ROUTES
             Route::prefix('admin')->group(function () {
+
                 Route::get('/', [AdminController::class, "home"])->name("admin_home");
                 Route::get("/category_fields", [AdminController::class, "fieldSelect"]);
+
+                //pages routes
                 Route::get('/pages', [PageController::class, 'showPages']);
                 Route::get('/pages/{id}/edit', [PageController::class, 'editPages'])->name('edit_pages');
                 Route::post('/pages/update', [PageController::class, 'updatePage'])->name('updatePage');
-                Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPages');
-                Route::post('/pages/create', [PageController::class, 'addNew'])->name('createNew');
+                Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPage');
+                Route::post('/pages/create', [PageController::class, 'addNewPage'])->name('createPage');
+                Route::post('/pages/remove', [PageController::class, 'deletePage'])->name('deletePage');
+
+                //categories routes
+                Route::get('/categories', [FieldCategoryController::class, 'showCategories'])->name('showCategories');
+                Route::get('/categories/{id}/edit', [FieldCategoryController::class, 'editCategories'])->name('edit_categories');
+                Route::post('/categories/update', [FieldCategoryController::class, 'updateCategories'])->name('updateCategories');
+                Route::get('/categories/insert', [FieldCategoryController::class, 'insertCategories'])->name('insertCategories');
+                Route::post('/categories/create', [FieldCategoryController::class, 'addNewCategories'])->name('createCategories');
+                Route::post('/categories/remove', [FieldCategoryController::class, 'deleteCategories'])->name('deleteCategories');
+
+                //fields routes
+                Route::get('/fields', [AdminController::class, "home"])->name('showFields');
             });
         });
     });

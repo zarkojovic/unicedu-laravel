@@ -386,7 +386,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let path = window.location.pathname;
 
-    if (path.includes('pages') && path.includes('edit') || path.includes('pages') && path.includes('insert') ) {
+    // CHECK IF THE PAGE IS FOR PAGE EDITING OR INSERT
+    if (path.includes('pages') && path.includes('edit') || path.includes('pages') && path.includes('insert')) {
+
+        var searchTimeout;
+        // EVENT FOR INPUTING TEXT
+        $(document).on('keyup', '#iconSearch', function () {
+            var icon = $(this).val();
+
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function () {
+                if (icon.length >= 3 || icon.length == 0) {
+                    axios.post('/api/get_icons', {name: icon})
+                        .then(response => {
+                            var data = response.data;
+                            var html = '';
+                            for (const item in data) {
+                                html += `<div class="col-1 my-1">
+                                        <div class="p-4 bg-primary h3 text-center m-0 rounded icon-item"
+                                             data-value="ti ${data[item]}"><i
+                                                class="text-white ti ${data[item]}"></i></div>
+                                    </div>`;
+                            }
+                            $("#iconsWrap").html(html);
+                        });
+
+                }
+            }, 400);
+        });
 
         $(document).on('click', '.icon-item', function () {
 
