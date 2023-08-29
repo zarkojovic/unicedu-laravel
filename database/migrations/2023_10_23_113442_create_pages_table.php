@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('route');
             $table->string('title');
             $table->string('icon');
+            $table->unsignedBigInteger('role_id');
             $table->timestamps();
         });
 
