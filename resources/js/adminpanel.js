@@ -142,15 +142,15 @@ $(document).ready(function() {
 
     //DRAG AND DROP FIELDS
     $(".row-sortable").sortable({
-        start: function (event, ui) {
-            // Get the initial cursor position
-            const initialCursorPos = ui.helper.offset();
-
-            // Store the initial cursor position in data attribute
-            ui.helper.data("initialCursorPos", initialCursorPos);
-
-            console.log(initialCursorPos, ui.helper.data("initialCursorPos"))
-        },
+        // start: function (event, ui) {
+        //     // Get the initial cursor position
+        //     const initialCursorPos = ui.helper.offset();
+        //
+        //     // Store the initial cursor position in data attribute
+        //     ui.helper.data("initialCursorPos", initialCursorPos);
+        //
+        //     console.log(ui.helper.offset())
+        // },
         // change: function (event, ui) {
         //     // Calculate the difference between initial cursor position and placeholder position
         //     const initialCursorPos = ui.helper.data("initialCursorPos");
@@ -164,6 +164,39 @@ $(document).ready(function() {
         //         left: ui.position.left + diffLeft,
         //     });
         // },
+
+        //OVO RADI SAMO ZA PRVI ELEMENT
+        // start: function (event,ui){
+        //     ui.helper.css({
+        //         position: 'absolute',
+        //         top: event.clientY,
+        //         left: event.clientX,
+        //     });
+        //
+        // },
+
+        start: function (event, ui) {
+            // Create a clone of the helper and position it at the cursor
+            ui.helperClone = ui.helper.clone().appendTo('body').css({
+                position: 'absolute',
+                top: event.clientY,
+                left: event.clientX,
+            });
+            // Hide the original helper
+            ui.helper.hide();
+        },
+        sort: function (event, ui) {
+            // Update the position of the clone based on the cursor
+            ui.helperClone.css({
+                top: event.clientY,
+                left: event.clientX,
+            });
+        },
+        stop: function (event, ui) {
+            // Remove the clone and show the original helper
+            ui.helperClone.remove();
+            ui.helper.show();
+        },
         update: function (event,ui){
             console.log("dropped");
         },

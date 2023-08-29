@@ -27,7 +27,7 @@
                                 <div class="container-fluid">
 {{--                                    <div class="row">--}}
 {{--                                        <div class="col-lg-10 col-sm-12">--}}
-                                            <div class="row row-sortable">
+                                            <div class="row row-sortable position-relative">
                                                 @foreach($fields as $field)
                                                     @if ($field->field_category_id === $category->field_category_id)
                                                         <div
