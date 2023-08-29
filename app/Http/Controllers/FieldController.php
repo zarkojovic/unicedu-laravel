@@ -12,7 +12,7 @@ class FieldController extends Controller
     {
         $c_vals = $request->input('id');
 
-        $categories = \App\Models\FieldCategory::whereIn('field_category_id',$c_vals)->get();
+        $categories = \App\Models\FieldCategory::whereIn('field_category_id', $c_vals)->get();
         $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
 
         // Path to the public/js directory
@@ -29,6 +29,7 @@ class FieldController extends Controller
 
     public function setFieldCategory(Request $request)
     {
+
         $fields = $request->fields;
         $category_id = $request->category_id;
         $requiredFields = $request->requiredFields ?? [];

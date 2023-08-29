@@ -11,10 +11,12 @@
 
 }
 
+
 .search-dropdown {
     left: 0;
     position: absolute;
 }
+
 
 .primary-color{
     color: $primary;
@@ -262,17 +264,17 @@
     display: none;
 }
 
-.row-sortable > .sortable-item {
-    cursor: grab;
-    background-color: #fff;
+.icon-selection {
+    height: 300px;
+    overflow-y: scroll;
 }
 
-.row-sortable > .sortable-item:active {
-    cursor: grabbing;
+.icon-item{
+    transition: all 0.2s;
 }
 
-.row-sortable .ui-sortable-placeholder {
-    display: none;
+.icon-item:hover{
+    background-color: #FFAE1F !important;
+
+    cursor: pointer;
 }
-
-

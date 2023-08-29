@@ -1,8 +1,11 @@
 @extends("layouts.student")
 @section('main-content')
     <div class="container-fluid">
-        <h1>{{$pageTitle}} {{url()->current()}}
-        </h1>
+        <div class="row">
+            <div class="col"><h1>{{$pageTitle}}</h1></div>
+            <div class="col"><p class="text-end"><a href="{{route('insert'.$name)}}" class="text-end btn btn-primary">Insert
+                        new</a></p></div>
+        </div>
         <table class="table">
             <thead>
             <tr>
@@ -14,28 +17,35 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($pages as $page)
+            @foreach($data as $item)
                 <tr>
                     @foreach($columns as $col)
                         @if($col == 'created_at' || $col == 'updated_at')
-                            <td>{{\Carbon\Carbon::parse($page[$col])->diffForHumans()}}</td>
+                            <td>{{\Carbon\Carbon::parse($item[$col])->diffForHumans()}}</td>
                         @elseif(str_contains($col,'icon'))
-                            <td><i class="{{$page[$col]}}"></i></td>
+                            <td><i class="{{$item[$col]}}"></i></td>
                         @else
-                            <td>{{$page[$col]}}</td>
+                            <td>{{$item[$col]}}</td>
                         @endif
                     @endforeach
                     <th scope="col">
-                        <a class="btn btn-save" href="{{  url()->current().'/'.$page->page_id.'/edit'}}">
+                        <a class="btn btn-save" href="{{url()->current().'/'.$item->id.'/edit'}}">
                             Edit
                         </a>
                     </th>
                     <th scope="col">
-                        <button class="btn btn-danger">Delete</button>
+                        <form action="{{route('delete'.$name)}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item->id }}">
+                            <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete
+                            </button>
+                        </form>
                     </th>
                 </tr>
             @endforeach
             </tbody>
         </table>
+
     </div>
 @endsection
