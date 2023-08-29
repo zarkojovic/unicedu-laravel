@@ -261,3 +261,18 @@
     transform: translateX(-50%);
     display: none;
 }
+
+.row-sortable > .sortable-item {
+    cursor: grab;
+    background-color: #fff;
+}
+
+.row-sortable > .sortable-item:active {
+    cursor: grabbing;
+}
+
+.row-sortable .ui-sortable-placeholder {
+    display: none;
+}
+
+
