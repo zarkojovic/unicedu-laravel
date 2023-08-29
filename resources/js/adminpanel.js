@@ -142,6 +142,7 @@ $(document).ready(function() {
 
     //DRAG AND DROP FIELDS
     $(".row-sortable").sortable({
+        items: ".sortable-item",
         // start: function (event, ui) {
         //     // Get the initial cursor position
         //     const initialCursorPos = ui.helper.offset();
@@ -175,28 +176,13 @@ $(document).ready(function() {
         //
         // },
 
-        start: function (event, ui) {
-            // Create a clone of the helper and position it at the cursor
-            ui.helperClone = ui.helper.clone().appendTo('body').css({
-                position: 'absolute',
-                top: event.clientY,
-                left: event.clientX,
-            });
-            // Hide the original helper
-            ui.helper.hide();
-        },
-        sort: function (event, ui) {
-            // Update the position of the clone based on the cursor
-            ui.helperClone.css({
-                top: event.clientY,
-                left: event.clientX,
-            });
-        },
-        stop: function (event, ui) {
-            // Remove the clone and show the original helper
-            ui.helperClone.remove();
-            ui.helper.show();
-        },
+        // change: function(event, ui) {
+        //     ui.helper.css({
+        //         position: 'absolute',
+        //         top: 0,
+        //         left: 0,
+        //     });
+        // },
         update: function (event,ui){
             console.log("dropped");
         },
