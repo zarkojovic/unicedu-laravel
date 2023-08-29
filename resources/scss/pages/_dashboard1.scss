@@ -264,6 +264,19 @@
     display: none;
 }
 
+.row-sortable > .sortable-item {
+    cursor: grab;
+    background-color: #fff;
+}
+
+.row-sortable > .sortable-item:active {
+    cursor: grabbing;
+}
+
+.row-sortable .ui-sortable-placeholder {
+    display: none;
+}
+
 .icon-selection {
     height: 300px;
     overflow-y: scroll;
