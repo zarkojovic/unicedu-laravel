@@ -142,6 +142,28 @@ $(document).ready(function() {
 
     //DRAG AND DROP FIELDS
     $(".row-sortable").sortable({
+        start: function (event, ui) {
+            // Get the initial cursor position
+            const initialCursorPos = ui.helper.offset();
+
+            // Store the initial cursor position in data attribute
+            ui.helper.data("initialCursorPos", initialCursorPos);
+
+            console.log(initialCursorPos, ui.helper.data("initialCursorPos"))
+        },
+        // change: function (event, ui) {
+        //     // Calculate the difference between initial cursor position and placeholder position
+        //     const initialCursorPos = ui.helper.data("initialCursorPos");
+        //     const placeholderPos = ui.placeholder.offset();
+        //     const diffTop = initialCursorPos.top - placeholderPos.top;
+        //     const diffLeft = initialCursorPos.left - placeholderPos.left;
+        //
+        //     // Adjust the position of the helper element
+        //     ui.helper.css({
+        //         top: ui.position.top + diffTop,
+        //         left: ui.position.left + diffLeft,
+        //     });
+        // },
         update: function (event,ui){
             console.log("dropped");
         },
