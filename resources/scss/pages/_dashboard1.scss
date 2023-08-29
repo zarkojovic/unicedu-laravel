@@ -46,16 +46,26 @@ input[type="checkbox"] {
 .search-parent {
     margin-top: -20px;
 }
+.scrollbar::-webkit-scrollbar-thumb{
+    background-color: $primary;
+    border-radius: 0px 5px 5px 0px;
 
+}
 
+.scrollbar::-webkit-scrollbar {
+    border-radius: 0px 5px 5px 0px;
+    background-color: #ebf1f6;
+}
 .search-dropdown {
     left: 0;
     position: absolute;
 
     input{
         border: 0px;
-        padding: 12px 25px;
+        padding: 10px 20px;
     }
+
+
 }
 
 
