@@ -401,12 +401,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         .then(response => {
                             var data = response.data;
                             var html = '';
+                            var i = 0;
                             for (const item in data) {
+                                i++;
                                 html += `<div class="col-1 my-1">
                                         <div class="p-4 bg-primary h3 text-center m-0 rounded icon-item"
                                              data-value="ti ${data[item]}"><i
                                                 class="text-white ti ${data[item]}"></i></div>
                                     </div>`;
+
+                            }
+                            if (i === 0) {
+                                html += `<div><h3 class="mt-3 text-center">No results for your search!</h3></div>`
                             }
                             $("#iconsWrap").html(html);
                         });

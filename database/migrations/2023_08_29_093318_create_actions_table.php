@@ -10,14 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->id('log_id');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('action_id');
-            $table->string('ip_address')->nullable();
-            $table->string('description')->nullable();
+        Schema::create('actions', function (Blueprint $table) {
+            $table->id('action_id');
+            $table->string('action_name');
             $table->timestamps();
         });
+
+
+        Artisan::call('db:seed', [
+            '--class' => 'ActionSeeder',
+        ]);
     }
 
     /**
@@ -25,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('actions');
     }
 };

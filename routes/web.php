@@ -6,14 +6,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FieldController;
-use App\Models\FieldCategory;
+use App\Models\Log;
 use App\Models\Page;
-use App\Models\UserInfo;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
 
 //CUSTOM 404 REDIRECT
 Route::fallback(function () {
@@ -24,15 +20,8 @@ Route::middleware(["verified"])->group(function () {
     $routeNames = Page::all();
     foreach ($routeNames as $route) {
 
-        $role = DB::table('pages')
-            ->join('role_page', 'pages.page_id', '=', 'role_page.page_id')
-            ->join('roles', 'role_page.role_id', '=', 'roles.role_id')
-            ->select('roles.role_id', 'roles.role_name')
-            ->where('pages.route', '=', $route->route)
-            ->first();
-
-        if (!empty($role->role_name)) {
-            switch ($role->role_name) {
+        if (!empty($route->role->role_name)) {
+            switch ($route->role->role_name) {
                 case 'admin':
                     Route::middleware(["admin"])->group(function () use ($route) {
                         //ADMIN ROUTES
@@ -106,7 +95,7 @@ Route::middleware(["auth"])->group(function () {
                 Route::get("/category_fields", [AdminController::class, "fieldSelect"]);
 
                 //pages routes
-                Route::get('/pages', [PageController::class, 'showPages']);
+                Route::get('/pages', [PageController::class, 'showPages'])->name('showPages');
                 Route::get('/pages/{id}/edit', [PageController::class, 'editPages'])->name('edit_pages');
                 Route::post('/pages/update', [PageController::class, 'updatePage'])->name('updatePage');
                 Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPage');
@@ -123,7 +112,15 @@ Route::middleware(["auth"])->group(function () {
 
                 //fields routes
                 Route::get('/fields', [AdminController::class, "home"])->name('showFields');
+
+                //user routes
+                Route::get('/users', [UserController::class, 'showUsers'])->name('showUsers');
+                Route::get('/users/{id}/edit', [UserController::class, 'editUsers'])->name('edit_users');
+
+                //action routes
+                Route::get('/actions', [\App\Http\Controllers\ActionController::class, 'showActions'])->name('showActions');
             });
+
         });
     });
 });
@@ -149,6 +146,13 @@ Route::post('/page_category', [\App\Http\Controllers\PageController::class, 'pag
 
 
 #TEST
+
+Route::get('/log_test', function () {
+
+    Log::errorLog('Missed credentials!');
+});
+
+
 Route::get("/page_icons", function () {
 
 //    echo asset('resources/css/icons/tabler-icons/tabler-icons.css');

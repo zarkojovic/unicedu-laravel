@@ -40,9 +40,12 @@ return new class extends Migration {
             $table->foreign('page_id')->references('page_id')->on('pages')->onDelete('cascade');
         });
 
-        Schema::table('role_page', function (Blueprint $table) {
+        Schema::table('pages', function (Blueprint $table) {
             $table->foreign('role_id')->references('role_id')->on('roles')->onDelete('cascade');
-            $table->foreign('page_id')->references('page_id')->on('pages')->onDelete('cascade');
+        });
+
+        Schema::table('logs', function (Blueprint $table) {
+            $table->foreign('action_id')->references('action_id')->on('actions')->onDelete('cascade');
         });
 
 

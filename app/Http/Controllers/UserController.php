@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FieldCategory;
+use App\Models\Log;
+use App\Models\Page;
 use App\Models\UserInfo;
 use CRest;
 use Illuminate\Http\Request;
@@ -337,5 +340,21 @@ class UserController extends RootController
     function destroy(string $id)
     {
         //
+    }
+
+    public function showUsers()
+    {
+        $users = User::select('first_name', 'last_name', 'email', 'phone', 'email_verified_at', 'profile_image', 'contact_id', 'created_at', 'updated_at', 'user_id as id')->get();
+        $columns = DB::getSchemaBuilder()->getColumnListing('users');
+        $columns = ['id', 'profile_image', 'first_name', 'last_name', 'email', 'phone', 'email_verified_at', 'contact_id', 'created_at', 'updated_at'];
+        return view("templates.admin", ['pageTitle' => 'User', 'data' => $users, 'columns' => $columns, 'name' => 'Users']);
+    }
+
+    public function editUsers(string $id)
+    {
+        $users = User::select('first_name', 'last_name', 'email_verified_at', 'profile_image', 'contact_id', 'created_at', 'phone', 'updated_at', "user_id as id")
+            ->findOrFail($id);
+        $history = Log::where('user_id', $id)->get();
+        return view('admin.users.edit', ['pageTitle' => 'User Info', 'history' => $history, 'data' => $users, 'name' => 'Users']);
     }
 }

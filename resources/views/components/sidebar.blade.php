@@ -3,11 +3,7 @@
     $role_id = (int)$user->role_id;
 
 
-    $pagesWithRole = DB::table('pages')
-        ->join('role_page', 'pages.page_id', '=', 'role_page.page_id')
-        ->select('pages.*', 'role_page.role_id')
-        ->where('role_page.role_id', '=', $role_id)
-        ->get();
+    $pagesWithRole = \App\Models\Page::where('role_id',$role_id)->get();
 
     $isAdmin = $user->role->role_name === 'admin';
 

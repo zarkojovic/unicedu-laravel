@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\VerifyEmail;
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -59,10 +60,12 @@ class AuthController extends Controller
             $new->contact_id = $contact_id;
 
             if ($new->save()) {
+                Log::authLog('User registered!(Not verified)', $new->user_id);
                 event(new Registered($new));
                 Auth::login($new);
                 return redirect()->route("verification.notice");
             } else {
+                Log::errorsLog('Tried to register! Failed attempt!');
                 return redirect()->back();
             }
 
@@ -84,18 +87,24 @@ class AuthController extends Controller
             $credentials = $validator->safe(["email", "password"]);
 
             if (Auth::attempt($credentials)) {
+
                 $user = Auth()->user();
                 // Check if the verification column is not null (verified)
                 if ($user->email_verified_at !== null) {
+
+                    Log::authLog('User logged in!', $user->user_id);
                     // Authentication successful
                     return redirect()->intended('/');
                 } else {
+
+                    Log::authLog('User logged in! (Not verified yet)', $user->user_id);
                     // User is not verified
                     return redirect()->route('verification.notice');
 
                 } // Redirect to the dashboard or the intended URL
             } else {
                 // Authentication failed
+                Log::errorsLog('Tried to login! Wrong credentials!');
                 return redirect()->back()->withErrors(['password' => 'Invalid credentials'])->withInput();
             }
 
@@ -111,12 +120,14 @@ class AuthController extends Controller
     public function resendVerification(Request $request)
     {
         $request->user()->sendEmailVerificationNotification();
+        Log::authLog('Verification code resended to user!', $request->user()->user_id);
         return back()->with('message', 'Verification link sent!');
     }
 
 
     public function logout()
     {
+        Log::authLog('User logged out!', Auth::user()->user_id);
         Auth::logout();
         return redirect()->route("login");
     }
@@ -128,6 +139,7 @@ class AuthController extends Controller
 
         //NOTIFICATION ONLY IF LOGGED IN BUT NOT YET VERIFIED
         if ($user->email_verified_at === null) {
+            Log::errorLog('Unverified user try to access home!', $user->user_id);
             return view('notification', ['type' => 'success_registration']);
         }
 
@@ -138,6 +150,7 @@ class AuthController extends Controller
     public function successVerification(EmailVerificationRequest $request)
     {
         $request->fulfill();
+        Log::authLog('User is verified now!', Auth::user()->user_id);
         return view('notification', ['type' => 'profile_activated']);
     }
 }
