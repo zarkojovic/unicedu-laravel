@@ -65,7 +65,7 @@ class AuthController extends Controller
                 Auth::login($new);
                 return redirect()->route("verification.notice");
             } else {
-                Log::errorsLog('Tried to register! Failed attempt!');
+                Log::errorLog('Tried to register! Failed attempt!');
                 return redirect()->back();
             }
 
@@ -104,7 +104,7 @@ class AuthController extends Controller
                 } // Redirect to the dashboard or the intended URL
             } else {
                 // Authentication failed
-                Log::errorsLog('Tried to login! Wrong credentials!');
+                Log::errorLog('Tried to login! Wrong credentials!');
                 return redirect()->back()->withErrors(['password' => 'Invalid credentials'])->withInput();
             }
 
