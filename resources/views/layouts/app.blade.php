@@ -10,6 +10,7 @@
         type="image/png"
         href="{{asset("images/logos/polandstudylogo.png")}}"
     />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
     @vite(['resources/scss/styles.scss'])
 </head>
 
@@ -23,7 +24,8 @@
             'resources/js/dashboard.js',
             'resources/js/main.js',
             'resources/libs/apexcharts/dist/apexcharts.min.js',
-            'resources/libs/simplebar/dist/simplebar.js'])
+            'resources/libs/simplebar/dist/simplebar.js',
+            'resources/js/jquery.ui_1.13.2.js'])
 
 @yield('scripts')
 

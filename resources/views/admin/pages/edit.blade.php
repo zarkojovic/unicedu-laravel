@@ -50,8 +50,8 @@
                             $check = false;
                         @endphp
                     @endif
-                    <input type="radio" name="role_id" {{ $check ? 'checked' : '' }} id="roles-{{ $role->role_id }}"
-                           value="{{ $role->role_id }}"> {{ $role->role_name }}<br>
+                        <input type="radio" name="role_id" {{ $check ? 'checked' : '' }} id="roles-{{ $role->role_id }}"
+                               value="{{ $role->role_id }}"> {{ $role->role_name }}<br>
                 @endforeach
 
 
@@ -70,9 +70,10 @@
                             $check = false;
                         @endphp
                     @endif
-                    <input type="checkbox" name="categories[]"
-                           {{ $check ? 'checked' : '' }} id="categories-{{ $category->role_id }}"
-                           value="{{ $category->field_category_id }}"> {{ $category->category_name }}<br>
+                    <label class="d-flex align-items-center">
+                        <input type="checkbox" name="categories[]"
+                               {{ $check ? 'checked' : '' }} id="categories-{{ $category->role_id }}"
+                               value="{{ $category->field_category_id }}"> {{ $category->category_name }}</label><br>
                 @endforeach
             </div>
             @if($isUpdate)

@@ -1,6 +1,5 @@
-console.log("adminnnn")
-
-
+// import 'jquery';
+// import 'jquery-ui';
 
 $(document).ready(function() {
     let currentFieldIcon = null;
@@ -46,11 +45,13 @@ $(document).ready(function() {
     $(document).on('click', function (event) {
         const clickedFieldIcon = currentFieldIcon; // Assuming currentFieldIcon is defined elsewhere
 
-        if (!$(event.target).closest('.checkboxes').length) {
-            clickedFieldIcon.next().removeClass("d-block"); //OVDE IZLAZI ERROR ALI RADI
-            clickedFieldIcon.next().addClass("d-none");
-            clickedFieldIcon.removeClass("primary-color");
-            currentFieldIcon = null;
+        if (clickedFieldIcon){
+            if (!$(event.target).closest('.checkboxes').length) {
+                clickedFieldIcon.next().removeClass("d-block"); //OVDE IZLAZI ERROR ALI RADI
+                clickedFieldIcon.next().addClass("d-none");
+                clickedFieldIcon.removeClass("primary-color");
+                currentFieldIcon = null;
+            }
         }
     });
 
@@ -77,10 +78,10 @@ $(document).ready(function() {
                 const html = `
                         <div class="container d-block" id="search-dropdown">
                             <div class="row justify-content-center">
-                                <div class="col-12">
-                                    <form action="search-dropdown" class="search-dropdown">
+                                <div class="col-12 search-parent">
+                                    <form action="search-dropdown" class="search-dropdown w-100">
                                         <input type="text" name="search-fields" id="search-fields" class="d-block w-100 form-control"/>
-                                        <select id="search-list" class="w-100 form-select" size="10"></select>
+                                        <select id="search-list" class="w-100 form-select scrollbar" size="10"></select>
                                     </form>
                                 </div>
                             </div>
@@ -138,6 +139,56 @@ $(document).ready(function() {
         currentCategory.next('#search-dropdown').remove();
         currentCategory = null;
     });
+
+    //DRAG AND DROP FIELDS
+    $(".row-sortable").sortable({
+        items: ".sortable-item",
+        // start: function (event, ui) {
+        //     // Get the initial cursor position
+        //     const initialCursorPos = ui.helper.offset();
+        //
+        //     // Store the initial cursor position in data attribute
+        //     ui.helper.data("initialCursorPos", initialCursorPos);
+        //
+        //     console.log(ui.helper.offset())
+        // },
+        // change: function (event, ui) {
+        //     // Calculate the difference between initial cursor position and placeholder position
+        //     const initialCursorPos = ui.helper.data("initialCursorPos");
+        //     const placeholderPos = ui.placeholder.offset();
+        //     const diffTop = initialCursorPos.top - placeholderPos.top;
+        //     const diffLeft = initialCursorPos.left - placeholderPos.left;
+        //
+        //     // Adjust the position of the helper element
+        //     ui.helper.css({
+        //         top: ui.position.top + diffTop,
+        //         left: ui.position.left + diffLeft,
+        //     });
+        // },
+
+        //OVO RADI SAMO ZA PRVI ELEMENT
+        // start: function (event,ui){
+        //     ui.helper.css({
+        //         position: 'absolute',
+        //         top: event.clientY,
+        //         left: event.clientX,
+        //     });
+        //
+        // },
+
+        // change: function(event, ui) {
+        //     ui.helper.css({
+        //         position: 'absolute',
+        //         top: 0,
+        //         left: 0,
+        //     });
+        // },
+        update: function (event,ui){
+            console.log("dropped");
+        },
+        // helper: "clone",
+    });
+    $( ".row-sortable" ).disableSelection();
 });
 
 

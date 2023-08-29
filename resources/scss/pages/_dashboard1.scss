@@ -1,6 +1,38 @@
 // ----------------------------------------------
 // Dashboard1 Style
 // ----------------------------------------------
+$input-checkbox-size: 1.15em;
+
+input[type="checkbox"] {
+    appearance: none;
+    background-color: #fff;
+    margin-right: 5px;
+    font: inherit;
+    color: currentColor;
+    width: $input-checkbox-size;
+    height: $input-checkbox-size;
+    border: 0.15em solid currentColor;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    &:before {
+        content: "";
+        width: 0.5em;
+        height: 0.5em;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        border-radius: 2px;
+        box-shadow: inset 0.5em 0.5em 0.5em 0.5em rgba(248, 105, 35, 0.8); // Adjust shadow values
+    }
+
+    &:checked::before {
+        transform: scale(1);
+    }
+}
+
 .panel-field-settings{
     font-size: 20px;
     cursor: pointer;
@@ -11,10 +43,29 @@
 
 }
 
+.search-parent {
+    margin-top: -20px;
+}
+.scrollbar::-webkit-scrollbar-thumb{
+    background-color: $primary;
+    border-radius: 0px 5px 5px 0px;
 
+}
+
+.scrollbar::-webkit-scrollbar {
+    border-radius: 0px 5px 5px 0px;
+    background-color: #ebf1f6;
+}
 .search-dropdown {
     left: 0;
     position: absolute;
+
+    input{
+        border: 0px;
+        padding: 10px 20px;
+    }
+
+
 }
 
 
@@ -263,6 +314,19 @@
     transform: translateX(-50%);
     display: none;
 }
+
+.row-sortable > .sortable-item {
+    cursor: grab;
+    background-color: #fff;
+}
+
+.row-sortable > .sortable-item:active {
+    cursor: grabbing;
+}
+
+//.row-sortable .ui-sortable-placeholder {
+//    display: none;
+//}
 
 .icon-selection {
     height: 300px;
