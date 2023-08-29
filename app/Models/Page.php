@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Page extends Model
 {
@@ -20,9 +21,9 @@ class Page extends Model
         return $this->belongsToMany(FieldCategory::class, 'field_category_page');
     }
 
-    public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function roles(): BelongsTo
     {
-        return $this->belongsToMany(Role::class, 'role_page');
+        return $this->BelongsTo(Role::class);
     }
 
 }

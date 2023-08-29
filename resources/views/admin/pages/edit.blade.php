@@ -43,16 +43,15 @@
                 @foreach ($roles as $role)
                     @if($isUpdate)
                         @php
-                            $check = $selectedRoles->contains('role_id', $role->role_id);
+                            $check = $page->role_id == $role->role_id;
                         @endphp
                     @else
                         @php
                             $check = false;
                         @endphp
                     @endif
-                    <label class="d-flex align-items-center">
-                    <input type="checkbox" name="roles[]" {{ $check ? 'checked' : '' }} id="roles-{{ $role->role_id }}"
-                           value="{{ $role->role_id }}">{{ $role->role_name }}</label> <br>
+                        <input type="radio" name="role_id" {{ $check ? 'checked' : '' }} id="roles-{{ $role->role_id }}"
+                               value="{{ $role->role_id }}"> {{ $role->role_name }}<br>
                 @endforeach
 
 
@@ -72,9 +71,9 @@
                         @endphp
                     @endif
                     <label class="d-flex align-items-center">
-                    <input type="checkbox" name="categories[]"
-                           {{ $check ? 'checked' : '' }} id="categories-{{ $category->role_id }}"
-                           value="{{ $category->field_category_id }}"> {{ $category->category_name }}</label><br>
+                        <input type="checkbox" name="categories[]"
+                               {{ $check ? 'checked' : '' }} id="categories-{{ $category->role_id }}"
+                               value="{{ $category->field_category_id }}"> {{ $category->category_name }}</label><br>
                 @endforeach
             </div>
             @if($isUpdate)

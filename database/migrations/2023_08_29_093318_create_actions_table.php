@@ -10,16 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
-            $table->id('page_id');
-            $table->string('route');
-            $table->string('title');
-            $table->string('icon');
+        Schema::create('actions', function (Blueprint $table) {
+            $table->id('action_id');
+            $table->string('action_name');
             $table->timestamps();
         });
 
+
         Artisan::call('db:seed', [
-            '--class' => 'PageSeeder',
+            '--class' => 'ActionSeeder',
         ]);
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('actions');
     }
 };

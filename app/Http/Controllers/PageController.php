@@ -61,9 +61,9 @@ class PageController extends Controller
 
         $selectedCategories = DB::table('field_category_page')->select('field_category_id')->where('page_id', $id)->get();
 
-        $selectedRoles = DB::table('role_page')->select('role_id')->where('page_id', $id)->get();
+//        $selectedRoles = DB::table('role_page')->select('role_id')->where('page_id', $id)->get();
 
-        return view('admin.pages.edit', ['pageTitle' => 'Edit Page', 'selectedCategories' => $selectedCategories, 'selectedRoles' => $selectedRoles,
+        return view('admin.pages.edit', ['pageTitle' => 'Edit Page', 'selectedCategories' => $selectedCategories,
             'page' => $page, 'name' => 'Page', 'icons' => $icons, 'roles' => $roles, 'categories' => $categories]);
     }
 
@@ -129,27 +129,28 @@ class PageController extends Controller
             $update->title = $request->title;
             $update->route = $request->route;
             $update->icon = $request->icon;
+            $update->role_id = $request->role_id;
 
 
             if ($update->save()) {
 
                 // Delete existing role-page relationships for the specified page
-                DB::table('role_page')->where('page_id', $request->id)->delete();
+//                DB::table('role_page')->where('page_id', $request->id)->delete();
 
-// Delete existing field-category-page relationships for the specified page
+                // Delete existing field-category-page relationships for the specified page
                 DB::table('field_category_page')->where('page_id', $request->id)->delete();
 
-// Insert new role-page relationships if roles are provided
-                if (!empty($request->roles)) {
-                    foreach ($request->roles as $role) {
-                        DB::table('role_page')->insert([
-                            'role_id' => $role,
-                            'page_id' => $update->page_id,
-                        ]);
-                    }
-                }
+                // Insert new role-page relationships if roles are provided
+//                if (!empty($request->roles)) {
+//                    foreach ($request->roles as $role) {
+//                        DB::table('role_page')->insert([
+//                            'role_id' => $role,
+//                            'page_id' => $update->page_id,
+//                        ]);
+//                    }
+//                }
 
-// Insert new field-category-page relationships if categories are provided
+                // Insert new field-category-page relationships if categories are provided
                 if (!empty($request->categories)) {
                     foreach ($request->categories as $category) {
                         DB::table('field_category_page')->insert([
@@ -159,10 +160,10 @@ class PageController extends Controller
                     }
                 }
 
-// Redirect back after updating relationships
-                return redirect()->back();
+                // Redirect back after updating relationships
+                return redirect()->route('showPages');
             } else {
-                return redirect()->back();
+                return redirect()->route('showPages');
             }
 
         }
@@ -187,19 +188,20 @@ class PageController extends Controller
             $new->title = $request->title;
             $new->route = $request->route;
             $new->icon = $request->icon;
+            $new->role_id = $request->role_id;
 
 
             if ($new->save()) {
-                if (!empty($request->roles)) {
-                    if (count($request->roles) > 0) {
-                        foreach ($request->roles as $role) {
-                            DB::table('role_page')->insert([
-                                'role_id' => $role,
-                                'page_id' => $new->page_id,
-                            ]);
-                        }
-                    }
-                }
+//                if (!empty($request->roles)) {
+//                    if (count($request->roles) > 0) {
+//                        foreach ($request->roles as $role) {
+//                            DB::table('role_page')->insert([
+//                                'role_id' => $role,
+//                                'page_id' => $new->page_id,
+//                            ]);
+//                        }
+//                    }
+//                }
 
                 if (!empty($request->categories)) {
                     if (count($request->categories) > 0) {
@@ -212,9 +214,9 @@ class PageController extends Controller
                     }
                 }
 
-                return redirect()->back();
+                return redirect()->route('showPages');
             } else {
-                return redirect()->back();
+                return redirect()->route('showPages');
             }
 
         }

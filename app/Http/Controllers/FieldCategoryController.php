@@ -45,9 +45,9 @@ class FieldCategoryController extends Controller
             $update->category_name = $request->category_name;
 
             if ($update->save()) {
-                return redirect()->back();
+                return redirect()->route('showCategories');
             } else {
-                return redirect()->back();
+                return redirect()->route('showCategories');
             }
 
         }
@@ -74,9 +74,9 @@ class FieldCategoryController extends Controller
             $new->category_name = $request->category_name;
 
             if ($new->save()) {
-                return redirect()->back();
+                return redirect()->route('showCategories');
             } else {
-                return redirect()->back();
+                return redirect()->route('showCategories');
             }
 
         }

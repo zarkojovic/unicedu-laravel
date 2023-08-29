@@ -4,19 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('role_page', function (Blueprint $table) {
-            $table->id('role_page_id');
+        Schema::create('pages', function (Blueprint $table) {
+            $table->id('page_id');
+            $table->string('route');
+            $table->string('title');
+            $table->string('icon');
             $table->unsignedBigInteger('role_id');
-            $table->unsignedBigInteger('page_id');
             $table->timestamps();
         });
+
+        Artisan::call('db:seed', [
+            '--class' => 'PageSeeder',
+        ]);
     }
 
     /**
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_page');
+        Schema::dropIfExists('pages');
     }
 };

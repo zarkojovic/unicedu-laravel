@@ -142,15 +142,16 @@ $(document).ready(function() {
 
     //DRAG AND DROP FIELDS
     $(".row-sortable").sortable({
-        start: function (event, ui) {
-            // Get the initial cursor position
-            const initialCursorPos = ui.helper.offset();
-
-            // Store the initial cursor position in data attribute
-            ui.helper.data("initialCursorPos", initialCursorPos);
-
-            console.log(initialCursorPos, ui.helper.data("initialCursorPos"))
-        },
+        items: ".sortable-item",
+        // start: function (event, ui) {
+        //     // Get the initial cursor position
+        //     const initialCursorPos = ui.helper.offset();
+        //
+        //     // Store the initial cursor position in data attribute
+        //     ui.helper.data("initialCursorPos", initialCursorPos);
+        //
+        //     console.log(ui.helper.offset())
+        // },
         // change: function (event, ui) {
         //     // Calculate the difference between initial cursor position and placeholder position
         //     const initialCursorPos = ui.helper.data("initialCursorPos");
@@ -162,6 +163,24 @@ $(document).ready(function() {
         //     ui.helper.css({
         //         top: ui.position.top + diffTop,
         //         left: ui.position.left + diffLeft,
+        //     });
+        // },
+
+        //OVO RADI SAMO ZA PRVI ELEMENT
+        // start: function (event,ui){
+        //     ui.helper.css({
+        //         position: 'absolute',
+        //         top: event.clientY,
+        //         left: event.clientX,
+        //     });
+        //
+        // },
+
+        // change: function(event, ui) {
+        //     ui.helper.css({
+        //         position: 'absolute',
+        //         top: 0,
+        //         left: 0,
         //     });
         // },
         update: function (event,ui){
