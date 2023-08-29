@@ -79,8 +79,8 @@ $(document).ready(function() {
                         <div class="container d-block" id="search-dropdown">
                             <div class="row justify-content-center">
                                 <div class="col-12 search-parent">
-                                    <form action="search-dropdown" class="search-dropdown w-100">
-                                        <input type="text" name="search-fields" id="search-fields" class="d-block w-100 form-control"/>
+                                    <form action="search-dropdown" class="search-dropdown w-100" autocomplete="off">
+                                        <input type="text" name="search-fields" id="search-fields" autocomplete="off" class="d-block w-100 form-control"/>
                                         <select id="search-list" class="w-100 form-select scrollbar" size="10"></select>
                                     </form>
                                 </div>
@@ -170,6 +170,22 @@ $(document).ready(function() {
         // helper: "clone",
     });
     $( ".row-sortable" ).disableSelection();
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][name^="fields["]');
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+            const parentDiv = this.closest(".sortable-item");
+            if (parentDiv) {
+                if (this.checked) {
+                    parentDiv.classList.remove("to-remove");
+                } else {
+                    parentDiv.classList.add("to-remove");
+                }
+            }
+        });
+    });
+
+
 });
 
 

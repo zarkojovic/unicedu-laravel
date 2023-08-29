@@ -4,7 +4,7 @@
 @section('main-content')
 
     <div class="container-fluid pt-0">
-        <h1>Admin panel</h1>
+        <h1 class="fs-6 mb-5">Admin panel</h1>
 
         @foreach($categories as $category)
             <form action="/add_fields" method="POST" id="form-{{$category->field_category_id}}">

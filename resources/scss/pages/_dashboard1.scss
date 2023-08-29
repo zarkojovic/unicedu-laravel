@@ -1,8 +1,16 @@
 // ----------------------------------------------
 // Dashboard1 Style
 // ----------------------------------------------
-$input-checkbox-size: 1.15em;
 
+
+.to-remove{
+    background-color: #ebf1f6!important;
+    label:first-line{
+        text-decoration-line: line-through;
+    }
+}
+
+$input-checkbox-size: 1.15em;
 input[type="checkbox"] {
     appearance: none;
     background-color: #fff;
@@ -48,17 +56,23 @@ input[type="checkbox"] {
 }
 .scrollbar::-webkit-scrollbar-thumb{
     background-color: $primary;
-    border-radius: 0px 5px 5px 0px;
+    border-radius: 2px;
+}
 
+.scrollbar::-webkit-scrollbar-track {
+    margin: 5px 0px;
 }
 
 .scrollbar::-webkit-scrollbar {
     border-radius: 0px 5px 5px 0px;
     background-color: #ebf1f6;
+    padding: 10px;
+
 }
 .search-dropdown {
     left: 0;
     position: absolute;
+    overflow: hidden;
 
     input{
         border: 0px;
