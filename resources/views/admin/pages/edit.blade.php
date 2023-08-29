@@ -50,8 +50,9 @@
                             $check = false;
                         @endphp
                     @endif
+                    <label class="d-flex align-items-center">
                     <input type="checkbox" name="roles[]" {{ $check ? 'checked' : '' }} id="roles-{{ $role->role_id }}"
-                           value="{{ $role->role_id }}"> {{ $role->role_name }}<br>
+                           value="{{ $role->role_id }}">{{ $role->role_name }}</label> <br>
                 @endforeach
 
 
@@ -70,9 +71,10 @@
                             $check = false;
                         @endphp
                     @endif
+                    <label class="d-flex align-items-center">
                     <input type="checkbox" name="categories[]"
                            {{ $check ? 'checked' : '' }} id="categories-{{ $category->role_id }}"
-                           value="{{ $category->field_category_id }}"> {{ $category->category_name }}<br>
+                           value="{{ $category->field_category_id }}"> {{ $category->category_name }}</label><br>
                 @endforeach
             </div>
             @if($isUpdate)

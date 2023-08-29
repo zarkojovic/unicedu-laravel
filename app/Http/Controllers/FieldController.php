@@ -41,7 +41,7 @@ class FieldController extends Controller
         $existingFieldIds = $existingFields->pluck('field_id')->toArray();
 
 // Remove fields that are no longer selected
-        $fieldsToRemove = array_diff($existingFieldIds, $fields);
+        $fieldsToRemove = array_diff($existingFieldIds, $fields ?? []);
         Field::whereIn('field_id', $fieldsToRemove)->update([
             'field_category_id' => null,
         ]);
@@ -55,7 +55,7 @@ class FieldController extends Controller
         ]);
 
 // Associate fields with the new category
-        Field::whereIn('field_id', $fields)->update([
+        Field::whereIn('field_id', $fields ?? [])->update([
             'field_category_id' => $category_id,
         ]);
 

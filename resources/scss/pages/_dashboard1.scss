@@ -12,19 +12,20 @@ input[type="checkbox"] {
     width: $input-checkbox-size;
     height: $input-checkbox-size;
     border: 0.15em solid currentColor;
-    border-radius: 0.2em;
-    display: grid;
-    place-content: center;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 
     &:before {
         content: "";
-        width: 0.65em;
-        height: 0.65em;
+        width: 0.5em;
+        height: 0.5em;
         transform: scale(0);
         transition: 120ms transform ease-in-out;
         border-radius: 2px;
-        box-shadow: inset 0.2em 0.2em 0.2em 0.4em rgb(248, 105, 35); // Adjust shadow values
+        box-shadow: inset 0.5em 0.5em 0.5em 0.5em rgba(248, 105, 35, 0.8); // Adjust shadow values
     }
 
     &:checked::before {
