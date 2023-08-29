@@ -78,7 +78,7 @@ $(document).ready(function() {
                 const html = `
                         <div class="container d-block" id="search-dropdown">
                             <div class="row justify-content-center">
-                                <div class="col-12">
+                                <div class="col-12 search-parent">
                                     <form action="search-dropdown" class="search-dropdown">
                                         <input type="text" name="search-fields" id="search-fields" class="d-block w-100 form-control"/>
                                         <select id="search-list" class="w-100 form-select" size="10"></select>

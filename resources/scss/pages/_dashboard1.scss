@@ -43,10 +43,19 @@ input[type="checkbox"] {
 
 }
 
+.search-parent {
+    margin-top: -20px;
+}
+
 
 .search-dropdown {
     left: 0;
     position: absolute;
+
+    input{
+        border: 0px;
+        padding: 12px 25px;
+    }
 }
 
 
