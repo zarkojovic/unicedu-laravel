@@ -39,16 +39,18 @@
                                                                    id="icon_{{$field->field_id}}"
                                                                    data-field-name="{{$field->field_name}}"></i>
                                                                 <div class="checkboxes d-none">
+                                                                    <label class="d-flex align-items-center mb-1" for="{{$field->field_name}}">
                                                                     <input type="checkbox" id="{{$field->field_name}}"
                                                                            value="{{$field->field_id}}"
                                                                            name="fields[]" checked="checked">
-                                                                    <label for="{{$field->field_name}}">Is
-                                                                        Active</label><br>
+                                                                        Is
+                                                                        Active</label>
+                                                                    <label class="d-flex align-items-center" for="required_{{$field->field_name}}">
                                                                     <input type="checkbox" id="required_{{$field->field_name}}"
                                                                            value="{{$field->field_id}}"
                                                                            name="requiredFields[]"
                                                                         {{$field->is_required ? 'checked' : ''}}>
-                                                                    <label for="required_{{$field->field_name}}">Is Required</label>
+                                                                    Is Required</label>
                                                                 </div>
                                                             </div>
                                                         </div>
