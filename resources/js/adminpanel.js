@@ -1,6 +1,5 @@
-console.log("adminnnn")
-
-
+// import 'jquery';
+// import 'jquery-ui';
 
 $(document).ready(function() {
     let currentFieldIcon = null;
@@ -46,11 +45,13 @@ $(document).ready(function() {
     $(document).on('click', function (event) {
         const clickedFieldIcon = currentFieldIcon; // Assuming currentFieldIcon is defined elsewhere
 
-        if (!$(event.target).closest('.checkboxes').length) {
-            clickedFieldIcon.next().removeClass("d-block"); //OVDE IZLAZI ERROR ALI RADI
-            clickedFieldIcon.next().addClass("d-none");
-            clickedFieldIcon.removeClass("primary-color");
-            currentFieldIcon = null;
+        if (clickedFieldIcon){
+            if (!$(event.target).closest('.checkboxes').length) {
+                clickedFieldIcon.next().removeClass("d-block"); //OVDE IZLAZI ERROR ALI RADI
+                clickedFieldIcon.next().addClass("d-none");
+                clickedFieldIcon.removeClass("primary-color");
+                currentFieldIcon = null;
+            }
         }
     });
 
@@ -138,6 +139,15 @@ $(document).ready(function() {
         currentCategory.next('#search-dropdown').remove();
         currentCategory = null;
     });
+
+    //DRAG AND DROP FIELDS
+    $(".row-sortable").sortable({
+        update: function (event,ui){
+            console.log("dropped");
+        },
+        // helper: "clone",
+    });
+    $( ".row-sortable" ).disableSelection();
 });
 
 

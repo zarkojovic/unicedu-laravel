@@ -7,7 +7,7 @@
         <h1>Admin panel</h1>
 
         @foreach($categories as $category)
-            <form action="/add_fields" method="POST">
+            <form action="/add_fields" method="POST" id="form-{{$category->field_category_id}}">
                 <div class="row">
                     <div class="col-lg-12 d-flex align-items-stretch">
                         <div class="card w-100">
@@ -25,18 +25,18 @@
                             <input type="hidden" value="{{$category->field_category_id}}" name="category_id">
                             <div class="card-body">
                                 <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-lg-10 col-sm-12">
-                                            <div class="row">
+{{--                                    <div class="row">--}}
+{{--                                        <div class="col-lg-10 col-sm-12">--}}
+                                            <div class="row row-sortable">
                                                 @foreach($fields as $field)
                                                     @if ($field->field_category_id === $category->field_category_id)
                                                         <div
-                                                            class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded position-relative">
+                                                            class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded position-relative sortable-item">
                                                             <div class="d-flex justify-content-between">
                                                                 <label class="{{ $field->is_required ? 'primary-color' : '' }}">{{$field->title != null ? $field->title : $field->field_name}}</label>
 
                                                                 <i class="ti ti-adjustments-alt panel-field-settings"
-                                                                   id="icon-{{$field->field_id}}"
+                                                                   id="icon_{{$field->field_id}}"
                                                                    data-field-name="{{$field->field_name}}"></i>
                                                                 <div class="checkboxes d-none">
                                                                     <label class="d-flex align-items-center mb-1" for="{{$field->field_name}}">
@@ -68,16 +68,14 @@
 
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+{{--                                        </div>--}}
+{{--                                    </div>--}}
                                 </div>
                             </div>
-
-
+                        </div>
+                    </div>
+                </div>
             </form>
-    </div>
-    </div>
-    </div>
     @endforeach
     </div>
 @endsection
