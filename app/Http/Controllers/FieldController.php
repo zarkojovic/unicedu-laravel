@@ -29,10 +29,12 @@ class FieldController extends Controller
 
     public function setFieldCategory(Request $request)
     {
-
         $fields = $request->fields;
         $category_id = $request->category_id;
         $requiredFields = $request->requiredFields ?? [];
+        $fieldsPriorities = json_decode($request->category_order, true);
+
+
 
         $requiredFieldsFromDatabase = Field::where('is_required', 1)->get();
         $requiredFieldsFromDatabaseIDs = $requiredFieldsFromDatabase->pluck('field_id')->toArray();
@@ -44,6 +46,7 @@ class FieldController extends Controller
         $fieldsToRemove = array_diff($existingFieldIds, $fields ?? []);
         Field::whereIn('field_id', $fieldsToRemove)->update([
             'field_category_id' => null,
+            'priority' => null
         ]);
 
 // Update required fields
@@ -58,6 +61,21 @@ class FieldController extends Controller
         Field::whereIn('field_id', $fields ?? [])->update([
             'field_category_id' => $category_id,
         ]);
+
+        //UPDATE PRIORITIES IN DATABASE BASED ON ORDER
+        if ($fieldsPriorities){
+            foreach ($fieldsPriorities as $order) {
+                $fieldId = $order['fieldId'];
+                $priority = $order['order'];
+
+                // Update the field priority
+                Field::where('field_id', $fieldId)
+                    ->where('field_category_id', $category_id)
+                    ->update(['priority' => $priority]);
+            }
+        }
+
+
 
         return redirect()->back();
     }

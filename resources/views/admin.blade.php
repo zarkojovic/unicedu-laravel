@@ -7,7 +7,7 @@
         <h1 class="fs-6 mb-5">Admin panel</h1>
 
         @foreach($categories as $category)
-            <form action="/add_fields" method="POST" id="form-{{$category->field_category_id}}">
+            <form action="/add_fields" method="POST" class="form-sortable" id="form-{{$category->field_category_id}}">
                 <div class="row">
                     <div class="col-lg-12 d-flex align-items-stretch">
                         <div class="card w-100">
@@ -17,12 +17,13 @@
                                         <h5>{{$category->category_name}}</h5>
                                     </div>
                                     <div class="col-4 text-end">
-                                        <input type="submit" value="Submit" class="btn btn-primary">
+                                        <input type="submit" value="Submit" name="submit-btn" class="btn btn-primary submit-btn"/>
                                     </div>
                                 </div>
                             </div>
                             @csrf
-                            <input type="hidden" value="{{$category->field_category_id}}" name="category_id">
+                            <input type="hidden" value="{{$category->field_category_id}}" name="category_id"/>
+                            <input type="hidden" name="category_order" class="category-order-input"/>
                             <div class="card-body">
                                 <div class="container-fluid">
 {{--                                    <div class="row">--}}
@@ -31,10 +32,9 @@
                                                 @foreach($fields as $field)
                                                     @if ($field->field_category_id === $category->field_category_id)
                                                         <div
-                                                            class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded sortable-item">
+                                                            class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded sortable-item" data-field-id="{{$field->field_id}}">
                                                             <div class="d-flex justify-content-between position-relative">
-                                                                <label class="{{ $field->is_required ? 'primary-color' : '' }}">{{$field->title != null ? $field->title : $field->field_name}}</label>
-
+                                                                <label class="field-name {{ $field->is_required ? 'primary-color' : '' }}">{{$field->title != null ? $field->title : $field->field_name}}</label>
                                                                 <i class="ti ti-adjustments-alt panel-field-settings"
                                                                    id="icon_{{$field->field_id}}"
                                                                    data-field-name="{{$field->field_name}}"></i>
@@ -42,14 +42,14 @@
                                                                     <label class="d-flex align-items-center mb-1" for="{{$field->field_name}}">
                                                                     <input type="checkbox" id="{{$field->field_name}}"
                                                                            value="{{$field->field_id}}"
-                                                                           name="fields[]" checked="checked">
+                                                                           name="fields[]" checked="checked"/>
                                                                         Is
                                                                         Active</label>
                                                                     <label class="d-flex align-items-center" for="required_{{$field->field_name}}">
                                                                     <input type="checkbox" id="required_{{$field->field_name}}"
                                                                            value="{{$field->field_id}}"
                                                                            name="requiredFields[]"
-                                                                        {{$field->is_required ? 'checked' : ''}}>
+                                                                        {{$field->is_required ? 'checked' : ''}}/>
                                                                     Is Required</label>
                                                                 </div>
                                                             </div>

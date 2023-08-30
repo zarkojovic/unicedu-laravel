@@ -342,6 +342,13 @@ input[type="checkbox"] {
 //    display: none;
 //}
 
+.field-name {
+    cursor: grab;
+}
+.field-name:active {
+    cursor: grabbing;
+}
+
 .icon-selection {
     height: 300px;
     overflow-y: scroll;

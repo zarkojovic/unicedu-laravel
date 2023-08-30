@@ -1,6 +1,3 @@
-// import 'jquery';
-// import 'jquery-ui';
-
 $(document).ready(function() {
     let currentFieldIcon = null;
 
@@ -58,8 +55,10 @@ $(document).ready(function() {
     //ADD NEW FIELD
     let currentCategory = null; // To keep track of the currently focused category
     let clickedCategory = null;
+    let form = null;
     $('.add-category').click(function(event) {
         clickedCategory = $(this);
+        form = $(this).closest("form");
 
         if (currentCategory && currentCategory.is(clickedCategory)) {
             currentCategory.next('#search-dropdown').remove();
@@ -121,15 +120,17 @@ $(document).ready(function() {
         let selectedOption = $(this).find("option:selected");
         let selectedValue = selectedOption.val();
         let selectedText = selectedOption.text();
+        let categoryList = form.find(".row-sortable");
+        let newPriority = categoryList.find(".sortable-item").length + 1;
 
         let data = {
             "field_id": selectedValue,
-            "field_category_id": clickedCategory.attr("id")
+            "field_category_id": clickedCategory.attr("id"),
+            "priority": newPriority
         };
 
         ajaxCallback("/search-update","post",data, function (result) {
             location.reload();
-            console.log("uspeh");
         }), function (xhr,message,status) {
             console.log(message, status);
         }
@@ -141,72 +142,60 @@ $(document).ready(function() {
     });
 
     //DRAG AND DROP FIELDS
-    $(".row-sortable").sortable({
-        items: ".sortable-item",
-        // start: function (event, ui) {
-        //     // Get the initial cursor position
-        //     const initialCursorPos = ui.helper.offset();
-        //
-        //     // Store the initial cursor position in data attribute
-        //     ui.helper.data("initialCursorPos", initialCursorPos);
-        //
-        //     console.log(ui.helper.offset())
-        // },
-        // change: function (event, ui) {
-        //     // Calculate the difference between initial cursor position and placeholder position
-        //     const initialCursorPos = ui.helper.data("initialCursorPos");
-        //     const placeholderPos = ui.placeholder.offset();
-        //     const diffTop = initialCursorPos.top - placeholderPos.top;
-        //     const diffLeft = initialCursorPos.left - placeholderPos.left;
-        //
-        //     // Adjust the position of the helper element
-        //     ui.helper.css({
-        //         top: ui.position.top + diffTop,
-        //         left: ui.position.left + diffLeft,
-        //     });
-        // },
+    // $(".row-sortable").sortable({
+    //     items: ".sortable-item",
+    //     update: function (event,ui){
+    //
+    //     },
+    // }).disableSelection();
+    $(".form-sortable").each(function() {
+        let form = $(this);
+        let categoryList = form.find(".row-sortable");
 
-        //OVO RADI SAMO ZA PRVI ELEMENT
-        // start: function (event,ui){
-        //     ui.helper.css({
-        //         position: 'absolute',
-        //         top: event.clientY,
-        //         left: event.clientX,
-        //     });
-        //
-        // },
+        //INITIAL FIELDS AND PRIORITIES(ORDER)
+        updateFieldOrder(form, categoryList)
 
-        // change: function(event, ui) {
-        //     ui.helper.css({
-        //         position: 'absolute',
-        //         top: 0,
-        //         left: 0,
-        //     });
-        // },
-        update: function (event,ui){
-            console.log("dropped");
-        },
-        // helper: "clone",
+        categoryList.sortable({
+            items: ".sortable-item",
+            update: function(event, ui) {
+                updateFieldOrder(form, categoryList);
+            },
+        }).disableSelection();
     });
-    $( ".row-sortable" ).disableSelection();
 
-    const checkboxes = document.querySelectorAll('input[type="checkbox"][name^="fields["]');
-    checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener("change", function () {
-            const parentDiv = this.closest(".sortable-item");
-            if (parentDiv) {
-                if (this.checked) {
-                    parentDiv.classList.remove("to-remove");
-                } else {
-                    parentDiv.classList.add("to-remove");
-                }
+    //FIELD SETTINGS POPUP
+    $('input[type="checkbox"][name^="fields["]').on('change', function () {
+        const parentDiv = $(this).closest('.sortable-item');
+        const form = parentDiv.closest('form'); // Get the form element using jQuery
+        const categoryList = form.find('.row-sortable'); // Get the category list element
+
+        if (parentDiv.length) {
+            if (this.checked) {
+                parentDiv.removeClass('to-remove');
+                updateFieldOrder(form, categoryList);
+            } else {
+                parentDiv.addClass('to-remove');
+                updateFieldOrder(form, categoryList);
             }
-        });
+        }
     });
-
-
 });
 
+function updateFieldOrder(form, categoryList){
+    let fieldOrders = [];
+    let orderNumber = 1;
+
+    categoryList.find(".sortable-item").each(function() {
+        if (!$(this).hasClass("to-remove")) {
+            let fieldId = $(this).data('field-id'); // Get the field ID from data attribute
+            fieldOrders.push({ fieldId: fieldId, order: orderNumber });
+
+            orderNumber++;
+        }
+    });
+
+    form.find('.category-order-input').val(JSON.stringify(fieldOrders));
+}
 
 function ajaxCallback(route,method,data,success,error=null){
     let csrfToken = $('meta[name="csrf-token"]').attr('content');

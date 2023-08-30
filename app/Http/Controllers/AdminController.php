@@ -12,8 +12,9 @@ class AdminController extends RootController
     public function home()
     {
         $categories = FieldCategory::all();
-        $fields = Field::where('is_active', '1')->get();
-        return view("admin", ["fields" => $fields, "categories" => $categories]);
+        //$fields = Field::where('is_active', '1')->get();//->where('priority', '<>', NULL)
+        $sortedFields = Field::where('is_active', '1')->orderBy("priority","asc")->get();
+        return view("admin", ["fields" => $sortedFields, "categories" => $categories]);
     }
 
     public function fieldSelect()
@@ -49,10 +50,12 @@ class AdminController extends RootController
         try {
             $fieldId = $request->input('field_id');
             $newCategoryId = $request->input('field_category_id');
+            $priority = $request->input('priority');
 
             $record = Field::findOrFail($fieldId);
 
             $record->field_category_id = $newCategoryId;
+            $record->priority = $priority;
             $record->save();
 
             return response()->json(['message' => 'Record updated successfully']);
