@@ -142,12 +142,6 @@ $(document).ready(function() {
     });
 
     //DRAG AND DROP FIELDS
-    // $(".row-sortable").sortable({
-    //     items: ".sortable-item",
-    //     update: function (event,ui){
-    //
-    //     },
-    // }).disableSelection();
     $(".form-sortable").each(function() {
         let form = $(this);
         let categoryList = form.find(".row-sortable");
