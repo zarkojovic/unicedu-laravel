@@ -5,6 +5,9 @@
     @if(isset($success))
         <div class="alert alert-success">{{$success}}</div>
     @endif
+    @php
+        $user = \Illuminate\Support\Facades\Auth::user();
+    @endphp
     <div class="vh-100 vw-100 bg-gradient d-flex align-items-center justify-content-center ">
         <div class="container">
             <div
@@ -16,19 +19,21 @@
                     @switch($type)
                         @case("success_registration")
                             <h1 class="text-center">Just one more step!</h1>
-                            <h5 class="text-center text-muted">We sent you a confirmation link to activate your account!</h5>
-                            <form action="{{route("logout")}}" method="POST">
-                                @csrf
-                                <button type="submit"
-                                        class="btn btn-outline-primary mx-auto mt-2 d-block">Logout
-                                </button>
-                            </form>
+                            <h5 class="text-center text-muted">Hi {{ $user->first_name }},</h5>
+                            <h5 class="text-center text-muted">We have sent you a confirmation link to activate your account on email!</h5>
+
                             <form action="{{route("verification.send")}}" method="POST">
                                 @csrf
                                 <button type="submit"
-                                        class="btn btn-outline-primary mx-auto mt-2 d-block">Resend Verification Email
+                                        class="btn btn-outline-primary mx-auto mt-4  d-block">Resend Verification Email
                                 </button>
                                 <p class="text-center pt-2">{{ session("message") }}</p>
+                            </form>
+                            <form action="{{route("logout")}}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                        class="btn btn-outline-primary mx-auto d-block">Logout
+                                </button>
                             </form>
 {{--                            <p class="text-center"><a href="{{route("logout")}}">Logout</a></p>--}}
                             @break
