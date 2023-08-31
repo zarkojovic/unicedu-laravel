@@ -13,8 +13,8 @@ class AdminController extends RootController
     public function home()
     {
         $categories = FieldCategory::all();
-        //$fields = Field::where('is_active', '1')->get();//->where('priority', '<>', NULL)
-        $sortedFields = Field::where('is_active', '1')->orderBy("priority","asc")->get();
+        //$fields = Field::where('is_active', '1')->get();//->where('order', '<>', NULL)
+        $sortedFields = Field::where('is_active', '1')->orderBy("order","asc")->get();
         return view("admin", ["fields" => $sortedFields, "categories" => $categories]);
     }
 
@@ -53,12 +53,12 @@ class AdminController extends RootController
         try {
             $fieldId = $request->input('field_id');
             $newCategoryId = $request->input('field_category_id');
-            $priority = $request->input('priority');
+            $order = $request->input('order');
 
             $record = Field::findOrFail($fieldId);
 
             $record->field_category_id = $newCategoryId;
-            $record->priority = $priority;
+            $record->order = $order;
             $record->save();
             $displayName = $record->title != null ? $record->title : $record->field_name;
             Log::apiLog("Added '" . $displayName . "' field to " . $record->category->category_name);

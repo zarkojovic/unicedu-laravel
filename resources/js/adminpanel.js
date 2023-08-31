@@ -121,12 +121,12 @@ $(document).ready(function() {
         let selectedValue = selectedOption.val();
         let selectedText = selectedOption.text();
         let categoryList = form.find(".row-sortable");
-        let newPriority = categoryList.find(".sortable-item").length + 1;
+        let newOrder = categoryList.find(".sortable-item").length + 1;
 
         let data = {
             "field_id": selectedValue,
             "field_category_id": clickedCategory.attr("id"),
-            "priority": newPriority
+            "order": newOrder
         };
 
         ajaxCallback("/search-update","post",data, function (result) {
