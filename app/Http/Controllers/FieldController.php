@@ -34,6 +34,7 @@ class FieldController extends Controller
         $fields = $request->fields;
         $category_id = $request->category_id;
         $requiredFields = $request->requiredFields ?? [];
+        $fieldsPriorities = json_decode($request->category_order, true);
 
         $requiredFieldsFromDatabase = Field::where('is_required', 1)->get();
         $requiredFieldsFromDatabaseIDs = $requiredFieldsFromDatabase->pluck('field_id')->toArray();
@@ -45,6 +46,7 @@ class FieldController extends Controller
         $fieldsToRemove = array_diff($existingFieldIds, $fields ?? []);
         Field::whereIn('field_id', $fieldsToRemove)->update([
             'field_category_id' => null,
+            'priority' => null
         ]);
 
 // Update required fields
@@ -59,14 +61,28 @@ class FieldController extends Controller
         Field::whereIn('field_id', $fields ?? [])->update([
             'field_category_id' => $category_id,
         ]);
+        //UPDATE PRIORITIES IN DATABASE BASED ON ORDER
+        if ($fieldsPriorities) {
+            foreach ($fieldsPriorities as $order) {
+                $fieldId = $order['fieldId'];
+                $priority = $order['order'];
+
+                // Update the field priority
+                Field::where('field_id', $fieldId)
+                    ->where('field_category_id', $category_id)
+                    ->update(['priority' => $priority]);
+            }
+        }
 
         Log::apiLog('Fields updated in admin panel!', Auth::user()->user_id);
+
 
         return redirect()->back();
     }
 
     public function updateFields()
     {
+
         // Path to the public/js directory
         $jsPath = resource_path('js');
         //Gets content from json file
@@ -74,12 +90,15 @@ class FieldController extends Controller
         //Make it in php array
         $jsonData = json_decode($json, true);
 
+        echo "<pre>";
         //getting all fields from API
         $fields = \CRest::call('crm.deal.fields');
         //simulating new input
 //    $fields['result']['new_field'] = ['type' => 'string', 'field_name' => "new_field", 'formLabel' => 'Novo polje'];
         //get the names of all fileds in response
         $keys = array_keys($fields["result"]);
+
+        echo "<h1>API</h1>";
 
         //getting all keys from api
         $jsonKeys = array_map(function ($el) {
@@ -159,6 +178,7 @@ class FieldController extends Controller
             }
         }
 
+
         // updating the json file back
         $json = json_encode($jsonData, JSON_PRETTY_PRINT);
 
@@ -166,10 +186,10 @@ class FieldController extends Controller
         $jsPath = resource_path('js');
 
         file_put_contents($jsPath . "/fields.json", $json);
-
         Log::apiLog('Fields from bitrix are updated to latest one!', Auth::user()->user_id);
 
         return redirect()->route('admin_home')->with('fieldMessage', "Fields are updated now!");
+
     }
 
 }
