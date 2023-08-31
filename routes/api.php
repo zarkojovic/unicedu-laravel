@@ -25,3 +25,4 @@ Route::post("/user_fields", "\App\Http\Controllers\FieldController@getAvailableF
 
 Route::post("/get_icons", [\App\Http\Controllers\PageController::class, 'getIconsByName']);
 
+

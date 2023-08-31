@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Field;
 use App\Models\FieldCategory;
+use App\Models\Log;
 use App\Models\Page;
 use Illuminate\Http\Request;
 
@@ -12,8 +13,9 @@ class AdminController extends RootController
     public function home()
     {
         $categories = FieldCategory::all();
-        $fields = Field::where('is_active', '1')->get();
-        return view("admin", ["fields" => $fields, "categories" => $categories]);
+        //$fields = Field::where('is_active', '1')->get();//->where('priority', '<>', NULL)
+        $sortedFields = Field::where('is_active', '1')->orderBy("priority","asc")->get();
+        return view("admin", ["fields" => $sortedFields, "categories" => $categories]);
     }
 
     public function fieldSelect()
@@ -23,13 +25,14 @@ class AdminController extends RootController
         return view("category_fields", ["fields" => $fields, "categories" => $categories]);
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         if ($request->ajax()) {
             $searchQuery = $request->input('search');
 
             $rows = Field::whereNull("field_category_id")->where(function ($query) use ($searchQuery) {
-                            $query->where('title', 'LIKE', '%' . $searchQuery . '%')
-                            ->orWhere('field_name', 'LIKE', '%' . $searchQuery . '%');
+                $query->where('title', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('field_name', 'LIKE', '%' . $searchQuery . '%');
             })->get();
 
             if (count($rows) > 0) {
@@ -45,16 +48,20 @@ class AdminController extends RootController
         }
     }
 
-    public function setFieldCategory(Request $request){
+    public function setFieldCategory(Request $request)
+    {
         try {
             $fieldId = $request->input('field_id');
             $newCategoryId = $request->input('field_category_id');
+            $priority = $request->input('priority');
 
             $record = Field::findOrFail($fieldId);
 
             $record->field_category_id = $newCategoryId;
+            $record->priority = $priority;
             $record->save();
-
+            $displayName = $record->title != null ? $record->title : $record->field_name;
+            Log::apiLog("Added '" . $displayName . "' field to " . $record->category->category_name);
             return response()->json(['message' => 'Record updated successfully']);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error updating record'], Response::HTTP_INTERNAL_SERVER_ERROR);

@@ -25,7 +25,7 @@
         <h4 class="mt-4">User history</h4>
         <ul>
             @foreach($history as $log)
-                <li>{{$log->action->action_name}} - {{$log->description}}
+                <li> {{$log->description}}
                     - {{\Carbon\Carbon::parse($log->created_at)->diffForHumans()}}</li>
             @endforeach
         </ul>

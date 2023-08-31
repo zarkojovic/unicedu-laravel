@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,12 +15,13 @@ return new class extends Migration
             $table->id('field_id');
             $table->string('field_name');
             $table->string('title')->nullable();
-            $table->boolean('status')->default(false);
             $table->boolean('is_active')->default(true);
             $table->boolean('is_required')->default(false);
             $table->string('type')->nullable();
-            $table->integer('priority')->nullable();
+            $table->integer('order')->nullable();
             $table->unsignedBigInteger('field_category_id')->nullable();
+
+//            $table->unique(['field_category_id', 'order']);
             $table->timestamps();
         });
 

@@ -10,6 +10,7 @@ class Field extends Model
     use HasFactory;
 
     protected $primaryKey = 'field_id';
+
     protected $fillable = [
         'field_name',
         'type',
@@ -23,6 +24,6 @@ class Field extends Model
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(FieldCategory::class);
+        return $this->belongsTo(FieldCategory::class, 'field_category_id');
     }
 }

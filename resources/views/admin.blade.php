@@ -1,13 +1,27 @@
 <?php $pageTitle = "Admin Panel" ?>
 @extends("layouts.student")
-
+@section('adminBtn')
+    <li>
+        <form method="POST" action="{{route('updateApiFields')}}">
+            @csrf
+            <button type="submit"
+                    class="btn btn-primary"
+            >Refresh fields
+            </button>
+        </form>
+    </li>
+@endsection
 @section('main-content')
 
     <div class="container-fluid pt-0">
         <h1 class="fs-6 mb-5">Admin panel</h1>
-
+        @if(session('fieldMessage'))
+            <div class="alert alert-success" role="alert">
+                {{session('fieldMessage')}}
+            </div>
+        @endif
         @foreach($categories as $category)
-            <form action="/add_fields" method="POST" id="form-{{$category->field_category_id}}">
+            <form action="/add_fields" method="POST" id="form-{{$category->field_category_id}}" class="form-sortable">
                 <div class="row">
                     <div class="col-lg-12 d-flex align-items-stretch">
                         <div class="card w-100">
@@ -17,12 +31,13 @@
                                         <h5>{{$category->category_name}}</h5>
                                     </div>
                                     <div class="col-4 text-end">
-                                        <input type="submit" value="Submit" class="btn btn-primary">
+                                        <input type="submit" value="Submit" name="submit-btn" class="btn btn-primary submit-btn"/>
                                     </div>
                                 </div>
                             </div>
                             @csrf
                             <input type="hidden" value="{{$category->field_category_id}}" name="category_id">
+                            <input type="hidden" name="category_order" class="category-order-input"/>
                             <div class="card-body">
                                 <div class="container-fluid">
 {{--                                    <div class="row">--}}

@@ -6,9 +6,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FieldController;
+use App\Models\Field;
 use App\Models\Log;
 use App\Models\Page;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 //CUSTOM 404 REDIRECT
@@ -85,14 +86,14 @@ Route::middleware(["auth"])->group(function () {
             // ROUTES FOR ADMIN FIELD DATA
             Route::post("/add_fields", [FieldController::class, "setFieldCategory"]);
 
-            // REFRESH ALL FIELDS FROM API
-            Route::post("/field/check", [FieldController::class, "updateFields"]);
 
             //ADMIN ROUTES
             Route::prefix('admin')->group(function () {
 
                 Route::get('/', [AdminController::class, "home"])->name("admin_home");
                 Route::get("/category_fields", [AdminController::class, "fieldSelect"]);
+                // REFRESH ALL FIELDS FROM API
+                Route::post("/field/check", [FieldController::class, "updateFields"])->name('updateApiFields');
 
                 //pages routes
                 Route::get('/pages', [PageController::class, 'showPages'])->name('showPages');
@@ -148,8 +149,7 @@ Route::post('/page_category', [\App\Http\Controllers\PageController::class, 'pag
 #TEST
 
 Route::get('/log_test', function () {
-
-    Log::errorLog('Missed credentials!');
+    #test
 });
 
 

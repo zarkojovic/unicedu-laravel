@@ -19,29 +19,6 @@ use Mockery\Exception;
 
 class UserController extends RootController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -54,77 +31,6 @@ class UserController extends RootController
             return redirect()->route("admin_home");
         }
         return view('profile');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit()
-    {
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        #POTENTIAL PROBLEM 1: WHEN USER UPDATES ONLY SOME OF THE FIELDS, NOT ALL OF THEM
-        #POTENTIAL SOLUTION: THROUGH AJAX SEND AN ARRAY OF DATA IN THE RIGHT FORMAT AND MAKE A FUNCTION THAT ACCEPTS IT
-        #AND SENDS THAT ARRAY TO THE TRANSACTION
-
-        #POTENTIAL PROBLEM 2: MAYBE IT WON'T WORK WHEN THE USER TRIES TO EDIT SOME INFORMATION FOR THE FIRST TIME,
-        #LIKE WHEN INPUTTING INFORMATION FOR THE FIRST TIME, HE MAY BE REQUIRED TO FILL IN ALL INFORMATION AT ONCE
-
-        #INPUTS
-        $firstName = $request->input('first-name');
-        $lastName = $request->input('last-name');
-
-        $errors = [];
-
-        #VALIDATE INPUTS
-        if (empty($firstName) || empty($lastName)) {
-            $errors[] = "No field can be empty.";
-        }
-
-        if (count($errors) == 0) {
-            try {
-                $data = [
-                    'first_name' => $firstName,
-                    'last_name' => $lastName
-                ];
-
-                DB::transaction(function () use ($id, $data) {
-                    $user = new User();
-
-                    #UPDATE DATABASE
-                    $updatedRows = $user->updateUser($id, $data);
-
-                    if (!$updatedRows) {
-                        throw new \Exception('Updating information failed.');
-                    }
-
-                    #IF UPDATED IN DATABASE, CALL CREST METHOD
-//                    CRest::call("crm.contact.update", [
-//                        'ID' => '3025',//contact for test deal
-//                        'FIELDS' => [
-//                            'NAME' => $data["first_name"],
-//                            'LAST_NAME' => $data["last_name"]
-//                        ]
-//                    ]);
-                });
-
-                return redirect()->route('show', ['user' => $id])->with("success", "Profile information updated successfully.");
-            } catch (\Exception $e) {
-                return "Error: " . $e->getMessage();
-            }
-        } else {
-            foreach ($errors as $error) {
-                echo $error;
-            }
-
-            return false;
-        }
     }
 
 
@@ -165,6 +71,7 @@ class UserController extends RootController
                             'file_name' => $fileName,
                             'file_path' => $fileNewName
                         ]);
+                        Log::informationLog("User ID:'" . $user->user_id . "', updated $key.");
                     } else {
 //                    IF IT'S NOT FILE
                         UserInfo::create([
@@ -172,6 +79,7 @@ class UserController extends RootController
                             'field_id' => (int)$field_id->field_id,
                             'value' => $value,
                         ]);
+                        Log::informationLog("User ID:'" . $user->user_id . "', updated $key.");
                     }
                 } else {
 //                IF ITS AN UPDATING
@@ -193,6 +101,8 @@ class UserController extends RootController
                 }
                 DB::commit();
             } catch (\Exception $ex) {
+
+                Log::errorLog("Failed to updated user_info!", Auth::user()->user_id);
                 http_response_code(401);
                 return "Error occurred while updating information!";
             }
@@ -247,6 +157,7 @@ class UserController extends RootController
         }
 
         if (!empty($errors)) {
+            Log::errorLog("Bad file for profile image.", Auth::user()->user_id);
             return redirect()->route('profile')->with(["errors" => $errors]);
         }
 
@@ -259,6 +170,7 @@ class UserController extends RootController
 
         $moved = Storage::putFileAs($pathOriginal, $file, $newFileName);
         if (!$moved) {
+            Log::errorLog("Failed to update profile image on server.", Auth::user()->user_id);
             return redirect()->route('profile')->with(["errors" => ['Saving image on the server failed.']]);
 //            return "Error: Saving image on the server failed.";
         }
@@ -274,9 +186,11 @@ class UserController extends RootController
             $size = 35;
             $tinyImage = Image::make($file)->fit($size, $size, null, "top");
             Storage::put($pathTiny . '/' . $newFileName, (string)$tinyImage->encode());
+
         } catch (\Exception $e) {
             report($e);
 
+            Log::errorLog("Failed to resize file image.", Auth::user()->user_id);
             return redirect()->route('profile')->with(["errors" => ['An error occurred while saving images and updating records.']]);
 //            return back()->with('error', 'An error occurred while saving images and updating records.');
         }
@@ -298,9 +212,12 @@ class UserController extends RootController
             $user->profile_image = $newFileName;
             $user->save();
 
+            Log::informationLog("Profile image updated.", Auth::user()->user_id);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+
+            Log::errorLog("Failed to update profile image.", Auth::user()->user_id);
             report($e);
             return redirect()->route('profile')->with(["errors" => ['An error occurred while updating.']]);
 //            return back()->with('error', 'An error occurred while updating.');
@@ -329,7 +246,6 @@ class UserController extends RootController
 //        }
 
 
-        $user = Auth::user();
         return redirect()->route('profile')->with("success", "Profile image updated successfully.");
     }
 
