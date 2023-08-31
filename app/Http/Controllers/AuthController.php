@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VerifyEmail;
 use App\Models\Log;
 use App\Models\User;
+use CRest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+//use Kafka0238\Crest\Src\CRest;
+use Mockery\Exception;
 
 class AuthController extends Controller
 {
@@ -25,14 +28,6 @@ class AuthController extends Controller
     {
         return view("login");
     }
-
-//    public function sendVerificationEmail($email, $first_name, $auth_code)
-//    {
-//        $verificationLink = "http://127.0.0.1:8000/activate?code=".$auth_code;
-//        Mail::to($email)->send(new VerifyEmail($email, $first_name, $verificationLink));
-//
-//        return "Email sent successfully!";
-//    }
 
     public function check(Request $request)
     {
@@ -50,14 +45,12 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
             $validated = $validator->validated();
-            $contact_id = random_int(1000, 2000);
             $new = new User();
             $new->first_name = $request->first_name;
             $new->last_name = $request->last_name;
             $new->email = $request->email;
             $new->password = bcrypt($request->password);
             $new->phone = $request->phone;
-            $new->contact_id = $contact_id;
 
             if ($new->save()) {
                 Log::authLog('User registered!(Not verified)', $new->user_id);
@@ -139,7 +132,7 @@ class AuthController extends Controller
 
         //NOTIFICATION ONLY IF LOGGED IN BUT NOT YET VERIFIED
         if ($user->email_verified_at === null) {
-            Log::errorLog('Unverified user try to access home!', $user->user_id);
+            Log::errorLog('Unverified user tried to access home!', $user->user_id);
             return view('notification', ['type' => 'success_registration']);
         }
 
@@ -150,7 +143,44 @@ class AuthController extends Controller
     public function successVerification(EmailVerificationRequest $request)
     {
         $request->fulfill();
-        Log::authLog('User is verified now!', Auth::user()->user_id);
+
+        $user = Auth::user();
+
+        if (!$user || !$user->email_verified_at) {
+            return "user not logged in or not verified";
+        }
+
+        try {
+            $firstName = $user->first_name;
+            $lastName = $user->last_name;
+            $email = $user->email;
+            $phone = $user->phone;
+
+            //CREATE CONTACT IN BITRIX24
+            $result = CRest::call("crm.contact.add", [
+                'FIELDS' => [
+                    'NAME' => $firstName,
+                    'LAST_NAME' => $lastName,
+                    'PHONE' =>[
+                        ['VALUE' => $phone]
+                    ],
+                    'EMAIL' =>[
+                        ['VALUE' => $email]
+                    ]
+                ]
+            ]);
+
+            //UPDATE IN DATABASE AFTER WE RECEIVE CONTACT ID
+            if ($result) {
+                $user->update(['contact_id' => $result["result"]]);
+            }
+
+            Log::authLog('User verified.', $user->user_id);
+        } catch (Exception $e) {
+            Log::errorLog('Error during verification. Message: '.$e->getMessage(), $user->user_id);
+        }
+
+        //Log::authLog('User is verified now!', $user->user_id);
         return view('notification', ['type' => 'profile_activated']);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DealController;
 use App\Http\Controllers\FieldCategoryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
@@ -123,7 +124,6 @@ Route::middleware(["auth"])->group(function () {
 
                 //applications routes
                 Route::get('/applications', [\App\Http\Controllers\DealController::class, 'showDeals']);
-
             });
 
         });
@@ -203,4 +203,8 @@ Route::get("/search", function () {
 Route::get("/search-dropdown", [AdminController::class, "search"]);
 
 Route::post("/search-update", [AdminController::class, "setFieldCategory"]);
+
+
+#TEST
+Route::post("/apply", [DealController::class, "apply"]);
 
