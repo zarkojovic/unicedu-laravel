@@ -1,13 +1,28 @@
 @extends("layouts.student")
 @section('main-content')
+    {{-- PAGE FOR DYNAMICALLY SHOWING DATA FROM TABLE --}}
     <div class="container-fluid">
         <div class="row">
-            <div class="col"><h1>{{$pageTitle}}</h1></div>
+            <div class="col">
+                <h1>{{$pageTitle}}</h1>
+            </div>
             @if(Route::has('insert'.$name))
-                <div class="col"><p class="text-end"><a href="{{route('insert'.$name) }}"
-                                                        class="text-end btn btn-primary">Insert new</a></p></div>
+                <div class="col">
+                    <p class="text-end">
+                        <a href="{{route('insert'.$name) }}" class="text-end btn btn-primary">Insert new</a>
+                    </p>
+                </div>
             @endif
         </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="table-responsive">
             <table class="table ">
                 <thead>

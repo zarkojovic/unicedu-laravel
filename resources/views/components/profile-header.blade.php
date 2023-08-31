@@ -31,7 +31,7 @@
                         >Apply For University</a>
                     </li>
                 @elseif(\Illuminate\Support\Facades\Auth::user()->role->role_name == "admin")
-
+                    @yield('adminBtn')
                 @elseif(\Illuminate\Support\Facades\Auth::user()->role->role_name == "agent")
 
                 @endif
