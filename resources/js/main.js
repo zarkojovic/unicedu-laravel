@@ -182,14 +182,14 @@ function printElements(array = []) {
                             <div class="row">
                                 <div class="col-lg-12 d-flex align-items-stretch">
                                     <div class="card w-100">
-                                        <div class="card-header p-3">
-                                            <div class="row align-items-center">
+                                        <div class="card-header bg-white p-3">
+                                            <div class="row align-items-center ps-4 ps-4">
                                                 <div class="col-8">
                                                     <h5 class="card-title fw-semibold m-0">
                                                         ${category.category_name}
                                                     </h5>
                                                 </div>
-                                                <div class="col-4 text-end">
+                                                <div class="col-4 text-end pe-4">
                                                     <div id="userFormBtn${category.field_category_id}" class="d-none">
                                                         <button
                                                             type="button"
