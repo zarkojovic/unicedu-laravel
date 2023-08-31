@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->id('field_id');
             $table->string('field_name');
             $table->string('title')->nullable();
-            $table->boolean('status')->default(false);
             $table->boolean('is_active')->default(true);
             $table->boolean('is_required')->default(false);
             $table->string('type')->nullable();
