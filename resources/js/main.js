@@ -1,5 +1,4 @@
 import axios from "axios";
-import {hide} from "@popperjs/core";
 
 function printHTML(el, val = null) {
     let html = '';
@@ -18,10 +17,9 @@ function printHTML(el, val = null) {
     }
     // Handle CRM status field
     else if (el.type === "crm_status" && el.statusType === "DEAL_STAGE") {
-        html += `<label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}</label>
                 <select class="form-control" name="${el.field_name}">
                 <option value="0">Select</option>`;
-
         el.items.forEach(item => {
             html += `<option value="${item.STATUS_ID}">${item.NAME}</option>`;
         });
@@ -30,24 +28,24 @@ function printHTML(el, val = null) {
     }
     // Handle file input field
     else if (el.type === "file") {
-        html += `<label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}</label>
                 <br>
                 <label class="upload-document-label" for="${el.field_name}"><span>Upload Document</span></label>
                 <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control d-none">`;
     }
     // Handle date input field
     else if (el.type === "date") {
-        html += `<label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}</label>
                 <input type="date" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control">`;
     }
     // Handle datetime input field
     else if (el.type === "datetime") {
-        html += `<label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}</label>
                 <input type="datetime-local" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" name="${el.field_name}" class="form-control">`;
     }
     // Handle enumeration/select input field
     else if (el.type === "enumeration") {
-        html += `<label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}</label>
                 <select class="form-control" data-field-id="${el.field_id}" name="${el.field_name}">
                 <option value="0">Select</option>`;
 
@@ -58,10 +56,12 @@ function printHTML(el, val = null) {
 
         html += `</select>`;
     }
+
     // Handle text input field (default case)
     else {
-        html += `<label for="${el.fieldName}">${el.formLabel ? el.formLabel : el.title}</label>
-                <input class="form-control" ${el.isReadOnly ? "readonly" : ""} ${el.isRequired ? "required" : ""} value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" name="${el.field_name}" />`;
+        let checkVal = val != null && val.value != null;
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}</label>
+                <input class="form-control" ${el.isReadOnly ? "readonly" : ""} ${el.isRequired ? "required" : ""} value="${checkVal ? val.value : ""}" data-field-id="${el.field_id}" name="${el.field_name}" />`;
     }
 
     return html;
@@ -223,7 +223,6 @@ function printElements(array = []) {
                                             </div>
                                         </div>
                                         <div class="card-body">`;
-
                         // Generate HTML for printing both forms
                         html += printForm(category, fields, field_details, user_info, false);
                         html += printForm(category, fields, field_details, user_info);
@@ -269,6 +268,7 @@ $(document).ready(function () {
         $(document).find("#userFormBtn" + id).addClass("d-none");
 
     }
+
     $(document).on("click", ".btnSaveClass", function () {
         try {
             showSpinner();
@@ -322,140 +322,77 @@ $(document).ready(function () {
         showDisplayForm(id);
     });
 
-    const inputs = {
-        dob: document.getElementById('dobInput'),
-        citizenship: document.getElementById('citizenshipInput'),
-        phone: document.getElementById('phoneInput'),
-        passport: document.getElementById('passportInput'),
-        name: document.getElementById('nameInput'),
-        surname: document.getElementById('surnameInput')
-    };
-    const display = {
-        dob: document.getElementById('displayDOB'),
-        citizenship: document.getElementById('displayCitizenship'),
-        phone: document.getElementById('displayPhone'),
-        passport: document.getElementById('displayPassport'),
-        name: document.getElementById('displayName'),
-        surname: document.getElementById('displaySurname')
-    };
-
-    function updateDisplay() {
-        display.name.textContent = inputs.name.value;
-        display.surname.textContent = inputs.surname.value;
-        display.dob.textContent = inputs.dob.value;
-        display.citizenship.textContent = inputs.citizenship.value;
-        display.phone.textContent = inputs.phone.value;
-        display.passport.textContent = inputs.passport.value;
-    }
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+    try {
+        let path = window.location.pathname;
 
-    let path = window.location.pathname;
+        // Check if the page is for page editing or inserting
+        if (path.includes('pages') && (path.includes('edit') || path.includes('insert'))) {
 
-    // CHECK IF THE PAGE IS FOR PAGE EDITING OR INSERT
-    if (path.includes('pages') && path.includes('edit') || path.includes('pages') && path.includes('insert')) {
+            var searchTimeout;
 
-        var searchTimeout;
-        // EVENT FOR INPUTING TEXT
-        $(document).on('keyup', '#iconSearch', function () {
-            var icon = $(this).val();
+            // Event for inputting text
+            $(document).on('keyup', '#iconSearch', function () {
+                var icon = $(this).val();
 
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(function () {
-                if (icon.length >= 3 || icon.length == 0) {
-                    axios.post('/api/get_icons', {name: icon})
-                        .then(response => {
-                            var data = response.data;
-                            var html = '';
-                            var i = 0;
-                            for (const item in data) {
-                                i++;
-                                html += `<div class="col-1 my-1">
-                                        <div class="p-4 bg-primary h3 text-center m-0 rounded icon-item"
-                                             data-value="ti ${data[item]}"><i
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function () {
+                    if (icon.length >= 3 || icon.length === 0) {
+                        axios.post('/api/get_icons', {name: icon})
+                            .then(response => {
+                                var data = response.data;
+                                var html = '';
+                                var i = 0;
+
+                                for (const item in data) {
+                                    i++;
+                                    html += `<div class="col-1 my-1">
+                                            <div class="p-4 bg-primary h3 text-center m-0 rounded icon-item"
+                                                data-value="ti ${data[item]}"><i
                                                 class="text-white ti ${data[item]}"></i></div>
-                                    </div>`;
+                                        </div>`;
+                                }
 
-                            }
-                            if (i === 0) {
-                                html += `<div><h3 class="mt-3 text-center">No results for your search!</h3></div>`
-                            }
-                            $("#iconsWrap").html(html);
-                        });
+                                if (i === 0) {
+                                    html += `<div><h3 class="mt-3 text-center">No results for your search!</h3></div>`;
+                                }
 
-                }
-            }, 400);
-        });
-
-        $(document).on('click', '.icon-item', function () {
-
-            $('.icon-item').each(function () {
-                $(this).removeClass('bg-dark');
+                                $("#iconsWrap").html(html);
+                            });
+                    }
+                }, 400);
             });
 
-            $(this).addClass('bg-dark');
-            let value = $(this).data('value');
-            $('#icon').val(value);
-
-        });
-
-
-    }
-
-
-    if (path === '/') path = '/profile';
-    axios.post("/page_category", {name: path}).then(response => {
-        let res = response.data;
-        const idArray = res.map(item => item.field_category_id);
-        if (idArray.length > 0) {
-            printElements(idArray);
-        } else {
-            hideSpinner();
+            $(document).on('click', '.icon-item', function () {
+                $('.icon-item').removeClass('bg-dark');
+                $(this).addClass('bg-dark');
+                let value = $(this).data('value');
+                $('#icon').val(value);
+            });
         }
-    });
 
+        if (path === '/') {
+            path = '/profile';
+        }
 
-    // if (path === '/profile' || path === '/') {
-    //     printElements([1]);
-    // } else if (path === '/documents') {
-    //     printElements([3]);
-    // } else {
-    //     printElements();
-    // }
-
-    const userForm = document.getElementById('userForm');
-    const displayForm = document.getElementById('displayForm');
-    const btnEdit = document.getElementById('btnEdit');
-    const btnSave = document.getElementById('btnSave');
-    const btnCancel = document.getElementById('btnCancel');
-
-    const inputs = {
-        dob: document.getElementById('dobInput'),
-        citizenship: document.getElementById('citizenshipInput'),
-        phone: document.getElementById('phoneInput'),
-        passport: document.getElementById('passportInput'),
-        name: document.getElementById('nameInput'),
-        surname: document.getElementById('surnameInput')
-    };
-
-
-    // btnSave.addEventListener('click', function() {
-    //     userForm.classList.add('d-none');
-    //     displayForm.classList.remove('d-none');
-    //     btnCancel.classList.add('d-none');
-    //     btnSave.classList.add('d-none');
-    //     btnEdit.classList.remove('d-none');
-    //     updateDisplay();
-    // });
-
-    // btnEdit.addEventListener('click', function() {
-    //     userForm.classList.remove('d-none');
-    //     displayForm.classList.add('d-none');
-    //     btnCancel.classList.remove('d-none');
-    //     btnSave.classList.remove('d-none');
-    //     btnEdit.classList.add('d-none');
-    // });
-
-
+        // Fetch page category data and print elements
+        axios.post("/page_category", {name: path})
+            .then(response => {
+                let res = response.data;
+                const idArray = res.map(item => item.field_category_id);
+                if (idArray.length > 0) {
+                    printElements(idArray);
+                } else {
+                    hideSpinner();
+                }
+            })
+            .catch(error => {
+                alert(error);
+                console.error('Error fetching page category:', error);
+            });
+    } catch (error) {
+        console.error('Unexpected error:', error);
+    }
 });

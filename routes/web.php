@@ -120,6 +120,10 @@ Route::middleware(["auth"])->group(function () {
 
                 //action routes
                 Route::get('/actions', [\App\Http\Controllers\ActionController::class, 'showActions'])->name('showActions');
+
+                //applications routes
+                Route::get('/applications', [\App\Http\Controllers\DealController::class, 'showDeals']);
+
             });
 
         });

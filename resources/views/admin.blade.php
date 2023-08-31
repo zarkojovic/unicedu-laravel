@@ -46,7 +46,7 @@
                                                 @foreach($fields as $field)
                                                     @if ($field->field_category_id === $category->field_category_id)
                                                         <div
-                                                            class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded sortable-item">
+                                                            class="col-lg-5 col-sm-4 border mb-3 me-4 p-3 rounded sortable-item" data-field-id="{{$field->field_id}}">
                                                             <div class="d-flex justify-content-between position-relative">
                                                                 <label class="{{ $field->is_required ? 'primary-color' : '' }}">{{$field->title != null ? $field->title : $field->field_name}}</label>
 
