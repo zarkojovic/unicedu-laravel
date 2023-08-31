@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('profile_image')->default('profile.jpg');
             $table->string('phone');
-            $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('contact_id')->nullable();
             $table->unsignedBigInteger('role_id')->default('1');
             $table->unsignedBigInteger('agent_id')->nullable();
             $table->unsignedBigInteger('agency_id')->nullable();

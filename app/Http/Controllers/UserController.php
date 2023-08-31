@@ -72,18 +72,16 @@ class UserController extends RootController
                             'file_name' => $fileName,
                             'file_path' => $fileNewName
                         ]);
-                        Log::informationLog("User ID:'" . $user->user_id . "', updated $key.");
+                        Log::informationLog("User ID:'" . $user->user_id . "', updated $key.", Auth::user()->user_id);
                     } else {
 //                    IF IT'S NOT FILE
-                        if ($value != null || $value != '') {
-                            if ($fieldCheck->type != 'enumeration' && $value != 0) {
-                                UserInfo::create([
-                                    'user_id' => (int)$user->user_id,
-                                    'field_id' => (int)$field_id->field_id,
-                                    'value' => $value,
-                                ]);
-                            }
-                            Log::informationLog("User ID:'" . $user->user_id . "', updated $key.");
+                        if (!empty($value) && $value !== 'null' && $value != 0) {
+                            UserInfo::create([
+                                'user_id' => (int)$user->user_id,
+                                'field_id' => (int)$field_id->field_id,
+                                'value' => $value,
+                            ]);
+                            Log::informationLog("User ID:'" . $user->user_id . "', updated $key.", Auth::user()->user_id);
                         }
                     }
                 } else {
@@ -99,15 +97,13 @@ class UserController extends RootController
                         $user_info->file_path = $fileNewName;
                         $user_info->save();
                     } else {
-                        if ($value != null || $value != '') {
-//                    UPDATE INFO FOR NO FILE
-                            if ( $value != 0 && $value !== 'null') {
+                        if (!empty($value)) {
+                            if ($value != 0 && $value !== 'null') {
                                 $user_info->value = $value;
-                                $user_info->save();
                             } else {
                                 $user_info->value = null;
-                                $user_info->save();
                             }
+                            $user_info->save();
                         } else {
                             $user_info->value = null;
                             $user_info->save();

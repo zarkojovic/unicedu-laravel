@@ -82,7 +82,6 @@ class FieldController extends Controller
 
     public function updateFields()
     {
-
         // Path to the public/js directory
         $jsPath = resource_path('js');
         //Gets content from json file

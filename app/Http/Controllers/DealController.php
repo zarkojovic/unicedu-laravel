@@ -28,10 +28,11 @@ class DealController extends Controller
             ]);
         } catch (\Exception $e) {
             // Log the error
-            Log::errorLog("Error showing actions: " . $e->getMessage());
+            Log::errorLog("Error showing deals: " . $e->getMessage());
 
             // Redirect to the home route with an error message
             return redirect()->route('home')->withErrors(['error' => 'An error occurred while fetching actions.']);
         }
+
     }
 }
