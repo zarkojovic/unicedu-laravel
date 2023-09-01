@@ -11,6 +11,7 @@ use App\Models\Field;
 use App\Models\Log;
 use App\Models\Page;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 //CUSTOM 404 REDIRECT
@@ -152,7 +153,16 @@ Route::post('/page_category', [\App\Http\Controllers\PageController::class, 'pag
 
 #TEST
 
-Route::get('/log_test', function () {
+Route::get('/test-page', function () {
+    $user = Auth::user();
+    $info = Db::table("user_infos")
+        ->selectRaw("`field_id`, `value`, `display_value`, `file_name`,`file_path`")
+        ->where("user_id", '1')
+        ->groupBy("field_id", "value", "display_value","file_name", 'file_path')
+        ->get();
+
+
+    dd($info);
     #test
 });
 

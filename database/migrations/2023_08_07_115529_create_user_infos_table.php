@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,6 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('field_id');
             $table->string('value')->nullable();
+            $table->string('display_value')->nullable();
             $table->string('file_name')->nullable();
             $table->string('file_path')->nullable();
             $table->timestamps();
