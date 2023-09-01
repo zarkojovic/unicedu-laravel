@@ -24,11 +24,12 @@
             >
                 @if(\Illuminate\Support\Facades\Auth::user()->role->role_name == "student")
                     <li>
-                        <a
-                            href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/"
-                            target="_blank"
+                        <button
+                            data-bs-toggle="modal"
+                            data-bs-target="#dealModal"
                             class="btn btn-primary"
-                        >Apply For University</a>
+                        >Apply For University
+                        </button>
                     </li>
                 @elseif(\Illuminate\Support\Facades\Auth::user()->role->role_name == "admin")
                     @yield('adminBtn')

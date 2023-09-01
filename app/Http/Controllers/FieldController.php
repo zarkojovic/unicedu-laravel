@@ -6,6 +6,7 @@ use App\Models\Field;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Kafka0238\Crest\Src;
 
 class FieldController extends Controller
 {
@@ -82,6 +83,7 @@ class FieldController extends Controller
 
     public function updateFields()
     {
+
         // Path to the public/js directory
         $jsPath = resource_path('js');
         //Gets content from json file
@@ -89,15 +91,12 @@ class FieldController extends Controller
         //Make it in php array
         $jsonData = json_decode($json, true);
 
-        echo "<pre>";
         //getting all fields from API
         $fields = \CRest::call('crm.deal.fields');
         //simulating new input
 //    $fields['result']['new_field'] = ['type' => 'string', 'field_name' => "new_field", 'formLabel' => 'Novo polje'];
         //get the names of all fileds in response
         $keys = array_keys($fields["result"]);
-
-        echo "<h1>API</h1>";
 
         //getting all keys from api
         $jsonKeys = array_map(function ($el) {
@@ -107,6 +106,7 @@ class FieldController extends Controller
         //passing through all api keys
         foreach ($keys as $key) {
             $newItem = $fields['result'][$key];
+
             // checking if the type is dropdown list
             if ($newItem['type'] == 'enumeration') {
                 // gets the dropdown item from json, to check it's fields
@@ -143,12 +143,14 @@ class FieldController extends Controller
                     }
                 }
             }
+
             //checking if key from json is in array
             if (!in_array($key, $jsonKeys)) {
 //            var_dump($fields['result'][$key]);
-
+                $newItem['field_name'] = $newItem['title'];
                 //if not then add it to php array which goes to json
                 $jsonData[] = $newItem;
+
 //            adding it to the table in database
                 if (isset($newItem['formLabel'])) {
                     Field::create([
@@ -185,9 +187,6 @@ class FieldController extends Controller
         $jsPath = resource_path('js');
 
         file_put_contents($jsPath . "/fields.json", $json);
-        Log::apiLog('Fields from bitrix are updated to latest one!', Auth::user()->user_id);
-
-        return redirect()->route('admin_home')->with('fieldMessage', "Fields are updated now!");
 
     }
 

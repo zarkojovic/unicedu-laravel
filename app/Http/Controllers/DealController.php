@@ -41,9 +41,6 @@ class DealController extends Controller
 
     public function apply()
     {
-        #TEST DEAL RETRIEVE
-        $result = CRest::call("crm.deal.get", ["ID"=>"7635"]);
-        dd($result);
 
         $user = Auth::user();
 

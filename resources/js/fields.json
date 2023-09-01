@@ -3026,5 +3026,67 @@
             "LEAD": null
         },
         "field_name": "UF_CRM_1691072192"
+    },
+    {
+        "type": "file",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": true,
+        "isDynamic": true,
+        "title": "UF_CRM_1693525218569",
+        "listLabel": "CV job candidates",
+        "formLabel": "CV job candidates",
+        "filterLabel": "CV job candidates",
+        "settings": {
+            "SIZE": 20,
+            "LIST_WIDTH": 0,
+            "LIST_HEIGHT": 0,
+            "MAX_SHOW_SIZE": 0,
+            "MAX_ALLOWED_SIZE": 0,
+            "EXTENSIONS": [],
+            "TARGET_BLANK": "Y"
+        },
+        "field_name": "UF_CRM_1693525218569"
+    },
+    {
+        "type": "date",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1693525556872",
+        "listLabel": "Preferred start date",
+        "formLabel": "Preferred start date",
+        "filterLabel": "Preferred start date",
+        "settings": {
+            "DEFAULT_VALUE": {
+                "TYPE": "NONE",
+                "VALUE": ""
+            }
+        },
+        "field_name": "UF_CRM_1693525556872"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1693525586411",
+        "listLabel": "Desired salary or salary expectations",
+        "formLabel": "Desired salary or salary expectations",
+        "filterLabel": "Desired salary or salary expectations",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1693525586411"
     }
 ]
