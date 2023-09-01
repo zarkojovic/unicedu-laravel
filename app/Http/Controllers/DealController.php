@@ -42,49 +42,60 @@ class DealController extends Controller
     public function apply()
     {
         #TEST DEAL RETRIEVE
-        $result = CRest::call("crm.deal.get", ["ID"=>"7635"]);
-        dd($result);
+//        $result = CRest::call("crm.deal.get", ["ID"=>"7635"]);
+//        dd($result);
 
         $user = Auth::user();
 
         if (!$user || !$user->email_verified_at) {
-//            return "User not logged in or not verified.";
             Log::errorLog('Unauthenticated or unverified user tried to apply to university.', $user->user_id);
-            return false;
+            return redirect()->route("fallback");
         }
 
+//        if ($user->role_id !== 1) {
+//            Log::errorLog('Non-student user tried to apply for university.', $user->user_id);
+//            return redirect()->route("home")->with(["errors" => ["Only students can apply for universities."]]);
+//        }
+
         try {
-            $title = "TEST DEAL - University Application";
+            $title = "University Application from Platform";
 
             //GET FROM USERS TABLE
             $contactId = $user->contact_id;
             $profileImageName = $user->profile_image;
 
             // Get user info from the 'user_infos' table based on user_id
+            #OVO UZME VREDNOSTI IZABRANE ALI ZA DROPDOWNOWE MORA DA IDE VALUE ATRIBUT
             $userInfo = UserInfo::where('user_id', $user->user_id)->get();
 
             //IF NO FIELDS ARE FILLED
             if ($userInfo->isEmpty()) {
-//                return "User information not found.";
-                Log::errorLog('User info empty.', $user->user_id);
-                return false;
+                Log::errorLog('User information not found.', $user->user_id);
+                return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
             }
-            //IF NOT ALL REQUIRED FIELDS ARE FILLED
-            //ADD THIS VALIDATION!
 
+            //IF NOT ALL REQUIRED FIELDS ARE FILLED
             foreach ($userInfo as $info) {
                 $fields[] = $info->field_id;
             }
-            $fieldNames = Field::whereIn('field_id', $fields)->pluck('field_name', 'field_id');
+
+            $requiredFields = Field::where("is_required", 1)->pluck("field_id")->toArray();
+            $missing = array_filter($requiredFields, function ($fieldId) use ($userInfo) {
+                return empty($userInfo->where('field_id', $fieldId)->first()->value);
+            });
+
+            if (!empty($missing)){
+                return redirect()->route("home")->with(["errors" => ["You must fill in all required fields before applying to universities."]]);
+            }
 
             // Create a deal in Bitrix24 using CRest
+            $fieldNames = Field::whereIn('field_id', $fields)->pluck('field_name', 'field_id');
             $dealFields = [
                 'TITLE' => $title,
                 'CONTACT_ID' => $contactId,
             ];
 
             // Populate $dealFields with the field names and values
-            #MISLIM DA OVO ZAJEBE TITLE A MOZDA I CONTACT ID
             foreach ($userInfo as $info) {
                 $fieldId = $info->field_id;
                 $fieldName = $fieldNames[$fieldId];
@@ -125,14 +136,16 @@ class DealController extends Controller
 
                 $deal->save();
                 Log::informationLog('Deal inserted into Deals table.', $user->user_id);
-            } else {
-                // Deal creation failed
-                Log::errorLog('Failed to create deal in Bitrix24.', $user->user_id);
+                return redirect()->back()->with("success","Your application to university has been successfully created.");
             }
-            return redirect()->back();
-        } catch (\Exception $e) {
+
+            // Deal creation failed
+            Log::errorLog('Failed to create deal in Bitrix24.', $user->user_id);
+            return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."]]);
+        }
+        catch (\Exception $e) {
             Log::errorLog('Error during application creation: '.$e->getMessage(), $user->user_id);
-            return redirect()->back();
+            return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."]]);
         }
 //        return view('notification', ['type' => 'deal_created']);
     }

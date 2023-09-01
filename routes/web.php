@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 //CUSTOM 404 REDIRECT
 Route::fallback(function () {
     return view('notification', ['type' => '404']);
-});
+})->name("fallback");
 
 Route::middleware(["verified"])->group(function () {
     $routeNames = Page::all();
