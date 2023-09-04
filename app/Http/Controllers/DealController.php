@@ -39,7 +39,7 @@ class DealController extends Controller
         }
     }
 
-    public function apply()
+    public function apply(Request $request)
     {
         #TEST DEAL RETRIEVE
 //        $result = CRest::call("crm.deal.get", ["ID"=>"7635"]);
@@ -95,6 +95,9 @@ class DealController extends Controller
                 'CONTACT_ID' => $contactId,
             ];
 
+
+            #TODO: 4 OBAVEZNA POLJA ZA DEAL (UNIVERSITY, DEGREE...) NISU U USERINFO VISE, NEGO SE DOHVATAJU IZ REQUESTA
+            
             // Populate $dealFields with the field names and values
             foreach ($userInfo as $info) {
                 $fieldId = $info->field_id;
