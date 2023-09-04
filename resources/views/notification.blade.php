@@ -38,7 +38,7 @@
 {{--                            <p class="text-center"><a href="{{route("logout")}}">Logout</a></p>--}}
                             @break
                         @case("profile_activated")
-                            <h1 class="text-center">Congratulations! You activated your account.</h1>
+                            <h1 class="text-center">Congratulations! Your account is now activated.</h1>
                             <p class="text-center"><a href="{{route("profile")}}">Go to your profile</a></p>
                             @break
                         @case("activation_failed")

@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-lg-12 d-flex align-items-stretch">
                         <div class="card w-100">
-                            <div class="card-header p3">
+                            <div class="card-header bg-white p3">
                                 <div class="row align-items-center">
                                     <div class="col-8">
                                         <h5>{{$category->category_name}}</h5>
