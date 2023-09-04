@@ -85,6 +85,7 @@ class UserController extends RootController
 //                    IF IT'S NOT FILE
                         if (!empty($value) && $value !== 'null' && $value != 0) {
                             if (str_contains($value, '__')) {
+                            Log::informationLog("Information is " . $value);
                                 list($id, $display) = explode('__', $value);
                                 UserInfo::create([
                                     'user_id' => (int)$user->user_id,
