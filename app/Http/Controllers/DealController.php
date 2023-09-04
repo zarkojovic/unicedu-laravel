@@ -41,7 +41,6 @@ class DealController extends Controller
 
     public function apply()
     {
-
         $user = Auth::user();
 
         if (!$user || !$user->email_verified_at) {
@@ -91,7 +90,7 @@ class DealController extends Controller
             }
 
             // Make API call to create the deal in Bitrix24
-             $result = CRest::call("crm.deal.add", ['FIELDS' => $dealFields]);
+            $result = CRest::call("crm.deal.add", ['FIELDS' => $dealFields]);
 
             if (isset($result['result']) && $result['result'] > 0) {
                 // Deal created successfully
@@ -126,10 +125,10 @@ class DealController extends Controller
                 // Deal creation failed
                 Log::errorLog('Failed to create deal in Bitrix24.', $user->user_id);
             }
-            return redirect()->back();
+            return redirect()->route('home');
         } catch (\Exception $e) {
-            Log::errorLog('Error during application creation: '.$e->getMessage(), $user->user_id);
-            return redirect()->back();
+            Log::errorLog('Error during application creation: ' . $e->getMessage(), $user->user_id);
+            return redirect()->route('home');
         }
 //        return view('notification', ['type' => 'deal_created']);
     }

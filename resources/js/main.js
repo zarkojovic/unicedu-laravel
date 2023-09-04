@@ -70,15 +70,18 @@ function printHTML(el, val = null) {
 function printForm(category, fields, field_details, user_info, display = true, show) {
     // Determine form type and related attributes
     const formType = display ? 'display' : 'user';
-    const formId = `${formType}Form${category.field_category_id}`;
+    var formId = `${formType}Form${category.field_category_id}`;
+    var action;
     var formClass = display ? "" : "d-none";
-    if(show){
+    if (show) {
         formClass = "";
+        formId = "dealForm";
+        action = window.location.href + "apply";
     }
     const enctype = !display ? 'enctype="multipart/form-data"' : '';
     const emptySpan = `<span class='small text-muted fst-italic'>empty</span>`;
     let html = `
-        <form id="${formId}" class="${formClass}" ${enctype}>
+        <form id="${formId}" class="${formClass}" ${enctype} ${action ? 'action=' + action : ''} method="post">
             <div class="container-fluid">
                 <div class="row">
                     <div class="${show ? 'col-sm-12' : 'col-sm-8'}">
@@ -193,7 +196,7 @@ function printElements(array = [], modal = false) {
                                 <div class="col-lg-12 d-flex align-items-stretch">
                                     `;
                             // Generate HTML for printing both forms
-                            html += printForm(category, fields, field_details, user_info, false,true);
+                            html += printForm(category, fields, field_details, user_info, false, true);
 
                             html += `
                                 </div>
@@ -201,6 +204,19 @@ function printElements(array = [], modal = false) {
                         });
                         // Display the generated HTML
                         $("#fieldsModalWrap").html(html);
+
+                        var form = document.getElementById('dealForm');
+                        // Get the CSRF token from the meta tag
+                        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                        // Create a hidden input field for the CSRF token
+                        var csrfInput = document.createElement('input');
+                        csrfInput.type = 'hidden';
+                        csrfInput.name = '_token'; // This is the default name for Laravel's CSRF token field
+                        csrfInput.value = csrfToken;
+
+                        // Append the CSRF token input field to the form
+                        form.appendChild(csrfInput);
 
 
                     })
@@ -446,22 +462,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(error);
                 console.error('Error fetching page category:', error);
             });
-        // Fetch page category data and print elements
-        axios.post("/page_category", {name: '/applications'})
-            .then(response => {
-                let res = response.data;
-                const idArray = res.map(item => item.field_category_id);
-                if (idArray.length > 0) {
+        printElements([4], true);
 
-                    printElements(idArray, true);
-                } else {
-                    hideSpinner();
-                }
-            })
-            .catch(error => {
-                alert(error);
-                console.error('Error fetching page category:', error);
-            });
 
     } catch (error) {
         console.error('Unexpected error:', error);

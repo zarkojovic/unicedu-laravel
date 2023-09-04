@@ -44,10 +44,10 @@
                                         <input type="file" class="d-none" name="profile-image"
                                                id="profile-image-input"/>
                                     </form>
-                                    <form action="/apply" method="post">
-                                        @csrf
-                                        <input type="submit" value="Apply for unviersity"/>
-                                    </form>
+{{--                                    <form action="/apply" method="post">--}}
+{{--                                        @csrf--}}
+{{--                                        <input type="submit" value="Apply for unviersity"/>--}}
+{{--                                    </form>--}}
                                 </div>
                             </div>
                         </div>

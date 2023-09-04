@@ -43,6 +43,8 @@ class UserController extends RootController
         $user = Auth::user();
 
 
+        //provera za unos fajla??
+
 //        LOOPING THROUGH EACH ELEMENT IN REQUEST
         foreach ($items as $key => $value) {
             try {
@@ -55,6 +57,12 @@ class UserController extends RootController
                 if ($request->hasFile($key)) {
 //                GETTING THE INFO FROM FILE
                     $storeFile = $request->file($key);
+                    if ($storeFile->getSize() > 8 * 1024 * 1024) {
+                        // The file is over 8MB (8 * 1024 * 1024 bytes)
+//                        break;
+                        throw new Exception("File too big!");
+                        // Handle the validation error or other actions here
+                    }
                     $fileName = $storeFile->getClientOriginalName();
                     // Store the uploaded file
                     $storedPath = $storeFile->store('profile/documents', 'public');
@@ -129,7 +137,6 @@ class UserController extends RootController
                 }
                 DB::commit();
             } catch (\Exception $ex) {
-
                 Log::errorLog("Failed to updated user_info!", Auth::user()->user_id);
                 http_response_code(401);
                 return "Error occurred while updating information!";
@@ -144,7 +151,7 @@ class UserController extends RootController
         $user = Auth::user();
         $info = Db::table("user_infos")
             ->selectRaw("`field_id`, `value`, `display_value`, `file_name`,`file_path`")
-            ->where("user_id", '1')
+            ->where("user_id", $user->user_id)
             ->groupBy("field_id", "value", "display_value", "file_name", 'file_path')
             ->get();
 

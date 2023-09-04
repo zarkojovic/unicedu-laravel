@@ -101,7 +101,7 @@ Route::middleware(["auth"])->group(function () {
                 Route::get('/pages', [PageController::class, 'showPages'])->name('showPages');
                 Route::get('/pages/{id}/edit', [PageController::class, 'editPages'])->name('edit_pages');
                 Route::post('/pages/update', [PageController::class, 'updatePage'])->name('updatePage');
-                Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPage');
+                  Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPage');
                 Route::post('/pages/create', [PageController::class, 'addNewPage'])->name('createPage');
                 Route::post('/pages/remove', [PageController::class, 'deletePage'])->name('deletePage');
 
@@ -125,6 +125,8 @@ Route::middleware(["auth"])->group(function () {
 
                 //applications routes
                 Route::get('/applications', [\App\Http\Controllers\DealController::class, 'showDeals']);
+
+
             });
 
         });
@@ -216,5 +218,6 @@ Route::post("/search-update", [AdminController::class, "setFieldCategory"]);
 
 
 #TEST
-Route::post("/apply", [DealController::class, "apply"]);
+Route::post("/apply", [DealController::class, "apply"])->name('makeDeal');
+
 
