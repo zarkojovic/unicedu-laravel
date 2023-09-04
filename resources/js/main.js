@@ -76,7 +76,7 @@ function printForm(category, fields, field_details, user_info, display = true, s
     if (show) {
         formClass = "";
         formId = "dealForm";
-        action = window.location.href + "apply";
+        action = "/apply";
     }
     const enctype = !display ? 'enctype="multipart/form-data"' : '';
     const emptySpan = `<span class='small text-muted fst-italic'>empty</span>`;

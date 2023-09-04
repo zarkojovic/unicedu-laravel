@@ -56,18 +56,29 @@ class DealController extends Controller
             //GET FROM USERS TABLE
             $contactId = $user->contact_id;
             $profileImageName = $user->profile_image;
+
+            //GET FROM UNIVERSITY APPLICATION FORM SUBMIT
             $applicationFields = $request->all();
-            dd($applicationFields);
-            #TODO: 4 OBAVEZNA POLJA ZA DEAL (UNIVERSITY, DEGREE...) NISU U USERINFO VISE, NEGO SE DOHVATAJU IZ REQUESTA
+
+            if (!$applicationFields) {
+                return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
+            }
+
+            foreach ($applicationFields as $key=>$value) {
+                if (!$value){
+                    return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
+                }
+            }
 
             // Get user info from the 'user_infos' table based on user_id
             #OVO UZME VREDNOSTI IZABRANE ALI ZA DROPDOWNOWE MORA DA IDE VALUE ATRIBUT
             $userInfo = UserInfo::where('user_id', $user->user_id)->get();
 
             //IF NO FIELDS ARE FILLED
+            //OVO MOZDA NE TREBA, MOZDA SAMO OBAVEZNA POLJA
             if ($userInfo->isEmpty()) {
                 Log::errorLog('User information not found.', $user->user_id);
-                return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
+                return redirect()->route("home")->with(["errors" => ["You must fill in information on your profile before applying to universities."]]);
             }
 
             foreach ($userInfo as $info) {
