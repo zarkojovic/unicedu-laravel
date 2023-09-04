@@ -15,6 +15,7 @@ class UserInfo extends Model
         'user_id',
         'field_id',
         'value',
+        'display_value',
         'file_name',
         'file_path'
     ];
@@ -23,7 +24,7 @@ class UserInfo extends Model
 
     protected function user(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     protected function field(): hasOne
