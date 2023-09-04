@@ -158,12 +158,16 @@ function printForm(category, fields, field_details, user_info, display = true, s
 
 function hideSpinner() {
     $("#preloader").fadeOut();
-    $("#preloader").addClass("opacity-0", 2500);
+    // setTimeout(function () {
+    //     $("#preloader").addClass("opacity-0", 2500);
+    // }, 3000);
 }
 
 function showSpinner() {
     $("#preloader").fadeIn();
-    $("#preloader").removeClass("opacity-0", 2500);
+    // setTimeout(function () {
+    //     $("#preloader").removeClass("opacity-0", 2500);
+    // }, 3000);
 }
 
 function printElements(array = [], modal = false) {
@@ -238,10 +242,41 @@ function printElements(array = [], modal = false) {
                 var categories = response.data[0];
                 var fields = response.data[1];
                 var field_details = response.data[2];
+                categories.forEach(cat => {
+                    $("#fieldsWrap").append(`<div class="ph-item rounded">
+                                                <div class="ph-col-12">
+                                                    <div class="ph-row">
+                                                        <div class="ph-col-6 big rounded"></div>
+                                                        <div class="ph-col-6 empty big"></div>
+                                                        <div class="ph-col-12 empty big"></div>
+                                                        <div class="ph-col-12 empty big"></div>
+                                                    </div>
+                                                    <div class="ph-row mb-2">
+                                                        <div class="ph-col-4 me-3 big rounded"></div>
+                                                        <div class="ph-col empty big"></div>
+                                                        <div class="ph-col-4 big rounded"></div>
+                                                        <div class="ph-col-3 empty big"></div>
+                                                    </div>
+                                                    <div class="ph-row mb-2">
+                                                        <div class="ph-col-4 me-3 big rounded"></div>
+                                                        <div class="ph-col empty big"></div>
+                                                        <div class="ph-col-4 big rounded"></div>
+                                                        <div class="ph-col-3 empty big"></div>
+                                                    </div>
+                                                    <div class="ph-row mb-2">
+                                                        <div class="ph-col-4 me-3 big rounded"></div>
+                                                        <div class="ph-col empty big"></div>
+                                                        <div class="ph-col-4 big rounded"></div>
+                                                        <div class="ph-col-3 empty big"></div>
+                                                    </div>
 
+                                                </div>
+                                            </div>`);
+                });
                 // Get user information
                 axios.post("/user_info")
                     .then(response => {
+
                         var user_info = response.data;
 
                         // Generate HTML for each category
@@ -301,9 +336,10 @@ function printElements(array = [], modal = false) {
                                 </div>
                             </div>`;
                         });
-                        // Display the generated HTML
+                        // $("#fieldsWrap").hide();
+                        // // Display the generated HTML
                         $("#fieldsWrap").html(html);
-
+                        // $("#fieldsWrap").fadeIn();
 
                     })
                     .catch(error => {
@@ -313,10 +349,7 @@ function printElements(array = [], modal = false) {
             .catch(error => {
                 console.error(error);
             });
-
     }
-
-
 }
 
 $(document).ready(function () {

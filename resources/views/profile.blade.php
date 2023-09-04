@@ -76,7 +76,9 @@
             </div>
         </div>
     </div>
-    <div id="fieldsWrap" class="container-fluid pt-0"></div>
+    <div id="fieldsWrap" class="container-fluid pt-0">
+
+    </div>
 
 
 @endsection
