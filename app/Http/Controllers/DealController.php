@@ -51,11 +51,14 @@ class DealController extends Controller
         }
 
         try {
-            $title = "University Application from Platform";
+            $title = "University Application From Platform";
 
             //GET FROM USERS TABLE
             $contactId = $user->contact_id;
             $profileImageName = $user->profile_image;
+            $applicationFields = $request->all();
+            dd($applicationFields);
+            #TODO: 4 OBAVEZNA POLJA ZA DEAL (UNIVERSITY, DEGREE...) NISU U USERINFO VISE, NEGO SE DOHVATAJU IZ REQUESTA
 
             // Get user info from the 'user_infos' table based on user_id
             #OVO UZME VREDNOSTI IZABRANE ALI ZA DROPDOWNOWE MORA DA IDE VALUE ATRIBUT
@@ -66,8 +69,6 @@ class DealController extends Controller
                 Log::errorLog('User information not found.', $user->user_id);
                 return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
             }
-            //IF NOT ALL REQUIRED FIELDS ARE FILLED
-            //ADD THIS VALIDATION!
 
             foreach ($userInfo as $info) {
                 $fields[] = $info->field_id;
@@ -90,10 +91,7 @@ class DealController extends Controller
             ];
 
 
-            #TODO: 4 OBAVEZNA POLJA ZA DEAL (UNIVERSITY, DEGREE...) NISU U USERINFO VISE, NEGO SE DOHVATAJU IZ REQUESTA
-
             // Populate $dealFields with the field names and values
-            #MISLIM DA OVO ZAJEBE TITLE A MOZDA I CONTACT ID
             foreach ($userInfo as $info) {
                 $fieldId = $info->field_id;
                 $fieldName = $fieldNames[$fieldId];
