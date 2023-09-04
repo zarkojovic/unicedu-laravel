@@ -25,7 +25,6 @@ class FieldSeeder extends Seeder
             $arrayOfObjects[] = $values[$key];
         }
         $json = json_encode($arrayOfObjects, JSON_PRETTY_PRINT);
-//        file_put_contents("fields.json", $json);
 
         // Path to the public/js directory
         $jsPath = resource_path('js');
@@ -45,9 +44,7 @@ class FieldSeeder extends Seeder
                     'type' => $object['type']
                 ]);
             }
-            $i++;
 
-//            if($i > 10) break;
         }
 
         $randomRows = Field::inRandomOrder()->take(20)->get();

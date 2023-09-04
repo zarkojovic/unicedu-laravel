@@ -44,10 +44,10 @@
                                         <input type="file" class="d-none" name="profile-image"
                                                id="profile-image-input"/>
                                     </form>
-                                    <form action="/apply" method="post">
-                                        @csrf
-                                        <input type="submit" value="Apply for unviersity"/>
-                                    </form>
+{{--                                    <form action="/apply" method="post">--}}
+{{--                                        @csrf--}}
+{{--                                        <input type="submit" value="Apply for unviersity"/>--}}
+{{--                                    </form>--}}
                                 </div>
                             </div>
                         </div>
@@ -63,6 +63,13 @@
                                     </div>
                                 </div>
                             @endif
+                        @endif
+                        @if (session('success'))
+                            <div class="row mt-4">
+                                <div class="alert alert-success mb-0" role="alert">
+                                    <p class="m-0">{{ session('success') }}</p>
+                                </div>
+                            </div>
                         @endif
                     </div>
                 </div>

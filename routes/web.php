@@ -11,12 +11,13 @@ use App\Models\Field;
 use App\Models\Log;
 use App\Models\Page;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 //CUSTOM 404 REDIRECT
 Route::fallback(function () {
     return view('notification', ['type' => '404']);
-});
+})->name("fallback");
 
 Route::middleware(["verified"])->group(function () {
     $routeNames = Page::all();
@@ -100,7 +101,7 @@ Route::middleware(["auth"])->group(function () {
                 Route::get('/pages', [PageController::class, 'showPages'])->name('showPages');
                 Route::get('/pages/{id}/edit', [PageController::class, 'editPages'])->name('edit_pages');
                 Route::post('/pages/update', [PageController::class, 'updatePage'])->name('updatePage');
-                Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPage');
+                  Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPage');
                 Route::post('/pages/create', [PageController::class, 'addNewPage'])->name('createPage');
                 Route::post('/pages/remove', [PageController::class, 'deletePage'])->name('deletePage');
 
@@ -124,6 +125,8 @@ Route::middleware(["auth"])->group(function () {
 
                 //applications routes
                 Route::get('/applications', [\App\Http\Controllers\DealController::class, 'showDeals']);
+
+
             });
 
         });
@@ -152,7 +155,16 @@ Route::post('/page_category', [\App\Http\Controllers\PageController::class, 'pag
 
 #TEST
 
-Route::get('/log_test', function () {
+Route::get('/test-page', function () {
+    $user = Auth::user();
+    $info = Db::table("user_infos")
+        ->selectRaw("`field_id`, `value`, `display_value`, `file_name`,`file_path`")
+        ->where("user_id", '1')
+        ->groupBy("field_id", "value", "display_value","file_name", 'file_path')
+        ->get();
+
+
+    dd($info);
     #test
 });
 
@@ -206,5 +218,6 @@ Route::post("/search-update", [AdminController::class, "setFieldCategory"]);
 
 
 #TEST
-Route::post("/apply", [DealController::class, "apply"]);
+Route::post("/apply", [DealController::class, "apply"])->name('makeDeal');
+
 
