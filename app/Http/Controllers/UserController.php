@@ -42,27 +42,38 @@ class UserController extends RootController
 //        GET AUTH-ED USER FOR UPDATING HIS DATA
         $user = Auth::user();
 
-
-        //provera za unos fajla??
-
 //        LOOPING THROUGH EACH ELEMENT IN REQUEST
         foreach ($items as $key => $value) {
             try {
                 DB::beginTransaction();
 //            GETTING THE FIELD_ID BASE ON FIELD_NAME FROM REQUEST
-                $field_id = DB::table('fields')->select('field_id')->where('field_name', $key)->first();
+                $field_id = DB::table('fields')->select('field_name', 'title', 'field_id')->where('field_name', $key)->first();
 //            CHECKING IF THE INFO ALREADY EXISTS IN TABLE
                 $user_info = UserInfo::where("user_id", (int)$user->user_id)->where("field_id", (int)$field_id->field_id)->first();
 //            CHECKING IF THE REQUEST IS FILE
                 if ($request->hasFile($key)) {
 //                GETTING THE INFO FROM FILE
                     $storeFile = $request->file($key);
-                    if ($storeFile->getSize() > 8 * 1024 * 1024) {
+
+                    $extension = $storeFile->getClientOriginalExtension();
+
+                    // Check if the file extension is 'pdf'
+                    if ($extension !== 'pdf') {
+                        if ($field_id->title !== null) {
+                            $fieldName = $field_id->title;
+                        } else {
+                            $fieldName = $field_id->field_name;
+                        }
+                        throw new Exception("'$fieldName' File must be pdf!");
+                    }
+
+
+                    if ($storeFile->getSize() > 10 * 1024 * 1024) {
                         // The file is over 8MB (8 * 1024 * 1024 bytes)
-//                        break;
                         throw new Exception("File too big!");
                         // Handle the validation error or other actions here
                     }
+
                     $fileName = $storeFile->getClientOriginalName();
                     // Store the uploaded file
                     $storedPath = $storeFile->store('profile/documents', 'public');
@@ -93,6 +104,9 @@ class UserController extends RootController
                                     'display_value' => $display
                                 ]);
                             } else {
+                                if(is_string($value)){
+                                    $value = ucfirst($value);
+                                }
                                 UserInfo::create([
                                     'user_id' => (int)$user->user_id,
                                     'field_id' => (int)$field_id->field_id,
@@ -121,7 +135,10 @@ class UserController extends RootController
                                     list($id, $display) = explode('__', $value);
                                     $user_info->value = $id;
                                     $user_info->display_value = $display;
-                                }else{
+                                } else {
+                                    if(is_string($value)){
+                                        $value = ucfirst($value);
+                                    }
                                     $user_info->value = $value;
                                 }
                             } else {
@@ -139,9 +156,8 @@ class UserController extends RootController
                 }
                 DB::commit();
             } catch (\Exception $ex) {
-                Log::errorLog("Failed to updated user_info!", Auth::user()->user_id);
-                http_response_code(401);
-                return "Error occurred while updating information!";
+                Log::errorLog($ex->getMessage(), Auth::user()->user_id);
+                return response()->json(['error' => $ex->getMessage()], 500);
             }
 
         }

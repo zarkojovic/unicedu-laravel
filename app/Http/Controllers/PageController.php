@@ -265,7 +265,7 @@ class PageController extends Controller
                 foreach ($request->categories as $category) {
                     DB::table('field_category_page')->insert([
                         'field_category_id' => $category,
-                        'page_id' => $newPage->id,
+                        'page_id' => $newPage->page_id,
                     ]);
                 }
             }

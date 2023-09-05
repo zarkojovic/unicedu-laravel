@@ -74,6 +74,7 @@ class FieldCategoryController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             } else {
+
                 // Find the FieldCategory to update
                 $update = FieldCategory::find($request->id);
 

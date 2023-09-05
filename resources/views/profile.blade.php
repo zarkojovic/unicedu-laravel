@@ -10,7 +10,7 @@
         <!--  Student Profile -->
         <div class="row">
             <div class="col-lg-12 d-flex align-items-strech">
-                <div class="card w-100">
+                <div class="card w-100 mb-0">
                     <div class="card-body">
                         <div
                             class="d-sm-flex d-block align-items-center justify-content-between mb-9"
@@ -53,7 +53,7 @@
                         </div>
                         @if(isset($errors))
                             @if(count($errors) > 0)
-                                <div class="row mt-4">
+                                <div class="row mt-4 alertNotification">
                                     <div class="alert alert-danger mb-0" role="alert">
                                         <ul class="m-0">
                                             @foreach($errors as $err)
@@ -65,7 +65,7 @@
                             @endif
                         @endif
                         @if (session('success'))
-                            <div class="row mt-4">
+                            <div class="row mt-4 alertNotification">
                                 <div class="alert alert-success mb-0" role="alert">
                                     <p class="m-0">{{ session('success') }}</p>
                                 </div>
