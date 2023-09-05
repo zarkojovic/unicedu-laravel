@@ -68,7 +68,6 @@ function printHTML(el, val = null) {
 }
 
 function printForm(category, fields, field_details, user_info, display = true, show) {
-
     // Determine form type and related attributes
     const formType = display ? 'display' : 'user';
     var formId = `${formType}Form${category.field_category_id}`;
@@ -81,7 +80,6 @@ function printForm(category, fields, field_details, user_info, display = true, s
     }
     const enctype = !display ? 'enctype="multipart/form-data"' : '';
     const emptySpan = `<span class='small text-muted fst-italic'>empty</span>`;
-
     let html = `
         <form id="${formId}" class="${formClass}" ${enctype} ${action ? 'action=' + action : ''} method="post">
             <div class="container-fluid">
@@ -89,7 +87,6 @@ function printForm(category, fields, field_details, user_info, display = true, s
                     <div class="${show ? 'col-sm-12' : 'col-sm-8'}">
                         <div class="row">
             `;
-
     // Counter for row breaking
     let i = 0;
 
@@ -182,15 +179,14 @@ function showToast(message, type) {
 }
 
 function printElements(array = [], modal = false) {
-
     // Prepare data for the request
     let data = {id: array};
+
 
     if (modal) {
         // Request category fields, active fields, and details for printing
         axios.post('/api/user_fields', data)
             .then(response => {
-
                 // Hide the spinner on load
                 hideSpinner();
 
@@ -245,6 +241,11 @@ function printElements(array = [], modal = false) {
                 showToast(error, 'error');
             });
     } else {
+        // Request category fields, active fields, and details for printing
+        axios.post('/api/user_fields', data)
+            .then(response => {
+                // Hide the spinner on load
+                hideSpinner();
 
         array.forEach(el => {
             let placeholder = `<div class="ph-item rounded">
@@ -331,7 +332,7 @@ function printElements(array = [], modal = false) {
                                                     <div id="displayFormBtn${category.field_category_id}">
                                                         <button
                                                             type="button"
-                                                            class="btn btn-edit btn-block m-1 btnEditClass"
+                                                            class="btn btn-danger btn-block m-1 btnEditClass"
                                                             id="btnEdit${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                         >
@@ -358,11 +359,11 @@ function printElements(array = [], modal = false) {
 
                     })
                     .catch(error => {
-                        console.error(error.response);
+                        console.error(error);
                     });
             })
             .catch(error => {
-                console.error(error.response);
+                console.error(error);
             });
     }
 }
