@@ -15,12 +15,12 @@
                         <div
                             class="d-sm-flex d-block align-items-center justify-content-between mb-9"
                         >
-                            <div class="mb-3 mb-sm-0">
+                            <div class="mb-3 mb-sm-0 profile-info">
                                 <h4 class="card-title fw-semibold">Student Profile</h4>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6 col-lg-2 col-md-3 col-sm-4">
+                            <div class="col-12 col-lg-2 col-md-3 col-sm-4 profile-info">
                                 <div class="profile-picture border border-silver">
                                     <img src="{{ asset("storage/profile/thumbnail/{$user->profile_image}")  }}"
                                          alt="Profile Picture"
@@ -28,7 +28,7 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-6 col-lg-10 col-md-9 col-sm-8">
+                            <div class="col-12 col-lg-10 col-md-9 col-sm-8 profile-info">
                                 <h5 class="fw-semibold">{{ $user->first_name }} {{ $user->last_name }}</h5>
                                 <h6 class="fw-semibold text-muted">{{ $user->email }}</h6>
                                 <div class="platinum-package bg-gradient">
@@ -53,7 +53,7 @@
                         </div>
                         @if(isset($errors))
                             @if(count($errors) > 0)
-                                <div class="row mt-4 alertNotification">
+                                <div class="row mt-4">
                                     <div class="alert alert-danger mb-0" role="alert">
                                         <ul class="m-0">
                                             @foreach($errors as $err)
@@ -65,7 +65,7 @@
                             @endif
                         @endif
                         @if (session('success'))
-                            <div class="row mt-4 alertNotification">
+                            <div class="row mt-4">
                                 <div class="alert alert-success mb-0" role="alert">
                                     <p class="m-0">{{ session('success') }}</p>
                                 </div>
@@ -76,9 +76,7 @@
             </div>
         </div>
     </div>
-    <div id="fieldsWrap" class="container-fluid pt-0">
-
-    </div>
+    <div id="fieldsWrap" class="container-fluid pt-0"></div>
 
 
 @endsection

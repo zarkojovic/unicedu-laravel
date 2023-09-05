@@ -23,6 +23,7 @@
             'resources/libs/bootstrap/dist/js/bootstrap.bundle.min.js',
             'resources/js/dashboard.js',
             'resources/js/main.js',
+            'resources/js/app.min.js',
             'resources/libs/apexcharts/dist/apexcharts.min.js',
             'resources/libs/simplebar/dist/simplebar.js',
             'resources/js/jquery.ui_1.13.2.js'])

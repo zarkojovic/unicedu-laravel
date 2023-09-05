@@ -47,13 +47,164 @@ class FieldSeeder extends Seeder
 
         }
 
-        $randomRows = Field::inRandomOrder()->take(20)->get();
+        $personalCategory = [
+            [
+                "field_name" => 'UF_CRM_1667334040534',
+                "is_required" => '1',
+                "order" => '3',
+                "field_category_id" => '1'
+            ],
+            [
+                "field_name" => 'UF_CRM_1680032383794',
+                "is_required" => '1',
+                "order" => '1',
+                "field_category_id" => '1'
+            ],
+            [
+                "field_name" => 'UF_CRM_1680298400987',
+                "is_required" => '1',
+                "order" => '2',
+                "field_category_id" => '1'
+            ],
+            [
+                "field_name" => 'UF_CRM_1683816608395',
+                "is_required" => '0',
+                "order" => '4',
+                "field_category_id" => '1'
+            ],
+            [
+                "field_name" => 'UF_CRM_1683816650459',
+                "is_required" => '0',
+                "order" => '5',
+                "field_category_id" => '1'
+            ],
+            [
+                "field_name" => 'UF_CRM_1683816660119',
+                "is_required" => '0',
+                "order" => '6',
+                "field_category_id" => '1'
+            ],
+            [
+                "field_name" => 'UF_CRM_1683816693121',
+                "is_required" => '0',
+                "order" => '7',
+                "field_category_id" => '1'
+            ],
 
-        foreach ($randomRows as $row) {
-            $row->field_category_id = random_int(1, 4);
-            $row->save();
+        ];
+
+        $addressCategory = [
+            [
+                "field_name" => 'UF_CRM_1680032015767',
+                "is_required" => '0',
+                "order" => '1',
+                "field_category_id" => '2'
+            ],
+            [
+                "field_name" => 'UF_CRM_1680032052359',
+                "is_required" => '0',
+                "order" => '2',
+                "field_category_id" => '2'
+            ],
+            [
+                "field_name" => 'UF_CRM_1680032063562',
+                "is_required" => '0',
+                "order" => '3',
+                "field_category_id" => '2'
+            ],
+            [
+                "field_name" => 'UF_CRM_1680032097700',
+                "is_required" => '0',
+                "order" => '4',
+                "field_category_id" => '2'
+            ],
+            [
+                "field_name" => 'UF_CRM_1680032106247',
+                "is_required" => '0',
+                "order" => '5',
+                "field_category_id" => '2'
+            ],
+            [
+                "field_name" => 'UF_CRM_1680032120828',
+                "is_required" => '0',
+                "order" => '6',
+                "field_category_id" => '2'
+            ]
+        ];
+
+        $documentsCategory = [
+            [
+                "field_name" => 'UF_CRM_1668771731749',
+                "is_required" => '0',
+                "order" => '1',
+                "field_category_id" => '3'
+            ],
+            [
+                "field_name" => 'UF_CRM_1668771824662',
+                "is_required" => '0',
+                "order" => '2',
+                "field_category_id" => '3'
+            ],
+            [
+                "field_name" => 'UF_CRM_1668771835309',
+                "is_required" => '0',
+                "order" => '3',
+                "field_category_id" => '3'
+            ],
+            [
+                "field_name" => 'UF_CRM_1668771849100',
+                "is_required" => '0',
+                "order" => '4',
+                "field_category_id" => '3'
+            ],
+            [
+                "field_name" => 'UF_CRM_1668771875508',
+                "is_required" => '0',
+                "order" => '5',
+                "field_category_id" => '3'
+            ]
+        ];
+
+        $dealsCategory = [
+            [
+                "field_name" => 'UF_CRM_1667335624051',
+                "is_required" => '0',
+                "order" => '3',
+                "field_category_id" => '4'
+            ],
+            [
+                "field_name" => 'UF_CRM_1667335695035',
+                "is_required" => '0',
+                "order" => '4',
+                "field_category_id" => '4'
+            ],
+            [
+                "field_name" => 'UF_CRM_1667335742921',
+                "is_required" => '0',
+                "order" => '1',
+                "field_category_id" => '4'
+            ],
+            [
+                "field_name" => 'UF_CRM_1668001651504',
+                "is_required" => '0',
+                "order" => '2',
+                "field_category_id" => '4'
+            ]
+        ];
+
+        $allCategories = [$personalCategory, $addressCategory, $documentsCategory, $dealsCategory];
+
+        foreach ($allCategories as $category) {
+
+            foreach ($category as $item) {
+                $row = Field::where('field_name', $item["field_name"])->first();
+                $row->field_category_id = $item["field_category_id"];
+                $row->is_required = $item["is_required"];
+                $row->order = $item["order"];
+                $row->save();
+            }
+
         }
-
 
     }
 }

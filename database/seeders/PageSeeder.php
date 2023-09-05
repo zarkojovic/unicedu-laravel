@@ -40,7 +40,17 @@ class PageSeeder extends Seeder
                 'title' => 'Users',
                 'icon' => 'ti ti-users',
                 'role_id' => '3'
-            ],
+            ], [
+                'route' => '/deals',
+                'title' => 'My Applications',
+                'icon' => 'ti ti-school',
+                'role_id' => '1'
+            ], [
+                'route' => '/applications',
+                'title' => 'Applications',
+                'icon' => 'ti ti-api-app',
+                'role_id' => '3'
+            ]
         ];
 
         foreach ($pages as $page) {

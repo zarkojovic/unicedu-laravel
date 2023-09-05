@@ -104,7 +104,7 @@ class UserController extends RootController
                                     'display_value' => $display
                                 ]);
                             } else {
-                                if(is_string($value)){
+                                if (is_string($value)) {
                                     $value = ucfirst($value);
                                 }
                                 UserInfo::create([
@@ -136,7 +136,7 @@ class UserController extends RootController
                                     $user_info->value = $id;
                                     $user_info->display_value = $display;
                                 } else {
-                                    if(is_string($value)){
+                                    if (is_string($value)) {
                                         $value = ucfirst($value);
                                     }
                                     $user_info->value = $value;
@@ -253,12 +253,13 @@ class UserController extends RootController
 
             #REMOVE OLD IMAGE FROM FOLDERS
             $oldProfileImage = $user->profile_image;
-            Storage::delete([
-                "{$pathOriginal}/{$oldProfileImage}",
-                "{$pathThumbnail}/{$oldProfileImage}",
-                "{$pathTiny}/{$oldProfileImage}",
-            ]);
-
+            if ($oldProfileImage !== "profile.jpg") {
+                Storage::delete([
+                    "{$pathOriginal}/{$oldProfileImage}",
+                    "{$pathThumbnail}/{$oldProfileImage}",
+                    "{$pathTiny}/{$oldProfileImage}",
+                ]);
+            }
             $user->profile_image = $newFileName;
             if(!$user->save()){
                 DB::rollback();
