@@ -1,7 +1,7 @@
 @media (max-width: 340px) {
     .checkboxes {
         left: 50%; /* Adjust the left position for smaller screens */
-        border-radius: 5px 0px 5px 5px;
+        border-radius: 5px 0 5px 5px;
 
     }
 }
@@ -9,9 +9,20 @@
 @media (max-width: 576px) {
     .checkboxes {
         left: 70%; /* Adjust the left position for smaller screens */
-        border-radius: 5px 0px 5px 5px;
+        border-radius: 5px 0 5px 5px;
 
     }
+
+    .btnSaveClass, .btnCancelClass{
+        width: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0px!important;
+
+    }
+
+
 
     .profile-info {
         display: flex;
@@ -33,7 +44,7 @@
         display: flex;
     }
     .btn{
-        font-size: 12px;
+        font-size: 10px;
     }
 
 }
