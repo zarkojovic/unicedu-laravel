@@ -27,7 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $visible = [
-        'name', 'email', 'custom_attribute', // Example attributes to make visible
+        'email', 'first_name', 'last_name', 'user_id'
     ];
 
     protected $fillable = [

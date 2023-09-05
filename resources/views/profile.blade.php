@@ -53,7 +53,7 @@
                         </div>
                         @if(isset($errors))
                             @if(count($errors) > 0)
-                                <div class="row mt-4">
+                                <div class="row mt-4 alertNotification">
                                     <div class="alert alert-danger mb-0" role="alert">
                                         <ul class="m-0">
                                             @foreach($errors as $err)
@@ -65,7 +65,7 @@
                             @endif
                         @endif
                         @if (session('success'))
-                            <div class="row mt-4">
+                            <div class="row mt-4 alertNotification">
                                 <div class="alert alert-success mb-0" role="alert">
                                     <p class="m-0">{{ session('success') }}</p>
                                 </div>

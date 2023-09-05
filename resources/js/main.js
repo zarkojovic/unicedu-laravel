@@ -332,7 +332,7 @@ function printElements(array = [], modal = false) {
                                                     <div id="displayFormBtn${category.field_category_id}">
                                                         <button
                                                             type="button"
-                                                            class="btn btn-danger btn-block m-1 btnEditClass"
+                                                            class="btn btn-edit btn-block m-1 btnEditClass"
                                                             id="btnEdit${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                         >

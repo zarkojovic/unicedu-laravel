@@ -261,7 +261,7 @@ class UserController extends RootController
                 ]);
             }
             $user->profile_image = $newFileName;
-            if(!$user->save()){
+            if (!$user->save()) {
                 DB::rollback();
                 Log::errorLog("Profile image updating not saved.", Auth::user()->user_id);
                 return redirect()->route('profile')->with(["errors" => ['An error occurred while saving profile image.']]);
