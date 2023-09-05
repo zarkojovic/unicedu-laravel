@@ -1,32 +1,33 @@
 // ----------------------------------------------
 // Dashboard1 Style
 // ----------------------------------------------
-body{
+body {
     background-color: #f9f9f9;
 }
 
 
-#userFormBtn2{
-    display:flex;
+#userFormBtn2 {
+    display: flex;
     justify-content: end;
 }
 
-.btnEditClass{
+.btnEditClass {
     background-color: $primary;
     color: #fff;
     width: 85px;
 
 }
 
-.btnEditClass:hover{
+.btnEditClass:hover {
     background-color: #da591b;
     color: #fff;
 }
 
 
-.to-remove{
-    background-color: #ebf1f6!important;
-    label:first-line{
+.to-remove {
+    background-color: #ebf1f6 !important;
+
+    label:first-line {
         text-decoration-line: line-through;
     }
 }
@@ -62,11 +63,11 @@ input[type="checkbox"] {
     }
 }
 
-.panel-field-settings{
+.panel-field-settings {
     font-size: 20px;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
         color: $primary;
     }
 
@@ -75,7 +76,8 @@ input[type="checkbox"] {
 .search-parent {
     margin-top: -20px;
 }
-.scrollbar::-webkit-scrollbar-thumb{
+
+.scrollbar::-webkit-scrollbar-thumb {
     background-color: $primary;
     border-radius: 2px;
 }
@@ -90,12 +92,13 @@ input[type="checkbox"] {
     padding: 10px;
 
 }
+
 .search-dropdown {
     left: 0;
     position: absolute;
     overflow: hidden;
 
-    input{
+    input {
         border: 0px;
         padding: 10px 20px;
     }
@@ -104,7 +107,7 @@ input[type="checkbox"] {
 }
 
 
-.primary-color{
+.primary-color {
     color: $primary;
 }
 
@@ -122,8 +125,7 @@ input[type="checkbox"] {
 }
 
 
-
-.document-uploaded-label{
+.document-uploaded-label {
     border-radius: 10px;
     background-color: $primary;
     color: #fff;
@@ -133,7 +135,7 @@ input[type="checkbox"] {
     position: relative;
     padding: 10px 20px;
 
-    i{
+    i {
         font-size: 20px;
         margin-left: 5px;
     }
@@ -176,7 +178,7 @@ input[type="checkbox"] {
     &:hover {
         background-color: $primary;
         color: #fff;
-        cursor:pointer;
+        cursor: pointer;
         border-color: $primary;
 
         span {
@@ -191,7 +193,7 @@ input[type="checkbox"] {
 
 
 .profile-image-label {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 #profile-image-input {
@@ -199,20 +201,20 @@ input[type="checkbox"] {
 }
 
 .profile-picture {
-    width: 120px;   // Adjust the size as needed
-    height: 120px;  // Maintain aspect ratio
-    border-radius: 50%;  // Make it perfectly round
-    border: 10px solid silver;  // Add a silver border
-    overflow: hidden;  // Ensure the image stays within the rounded container
+    width: 120px; // Adjust the size as needed
+    height: 120px; // Maintain aspect ratio
+    border-radius: 50%; // Make it perfectly round
+    border: 10px solid silver; // Add a silver border
+    overflow: hidden; // Ensure the image stays within the rounded container
 
     img {
-      width: 100%;  // Make the image fill the container
-      height: 100%;  // Make the image fill the container
-      object-fit: cover;  // Fit the entire image within the container
+        width: 100%; // Make the image fill the container
+        height: 100%; // Make the image fill the container
+        object-fit: cover; // Fit the entire image within the container
     }
-  }
+}
 
-  .platinum-package {
+.platinum-package {
     display: inline-block; // Adjust width based on content
     position: relative;
     position: relative;
@@ -221,19 +223,19 @@ input[type="checkbox"] {
     border-radius: 0px 20px 20px 20px;
 
     .text {
-      color: white;
-      letter-spacing: 0.5px;
-      font-weight: 400;
+        color: white;
+        letter-spacing: 0.5px;
+        font-weight: 400;
     }
-  }
+}
 
-  .text-hover:hover {
-    color: #d3591e!important;
-  }
+.text-hover:hover {
+    color: #d3591e !important;
+}
 
-  .t05{
+.t05 {
     transition: 0.5s;
-  }
+}
 
 .timeline-widget {
     .timeline-item {
@@ -268,16 +270,18 @@ input[type="checkbox"] {
         }
     }
 }
+
 #registerForm {
-    label{
+    label {
         color: #2A3547 !important;
     }
 }
 
-.text-dark{
-    color:$gray-600 !important;
+.text-dark {
+    color: $gray-600 !important;
 }
-.form-control{
+
+.form-control {
     box-shadow: none !important;
 }
 
@@ -292,17 +296,20 @@ input[type="checkbox"] {
     justify-content: center;
     transition: all 0.5s;
     align-items: center;
+
     img {
-        width: 100px;
+        width: 200px;
         margin: 0 auto;
     }
 }
+
 #search-dropdown {
     position: absolute;
     top: 25px;
     left: 0;
     z-index: 1000;
 }
+
 .form-control, .form-select {
     background-color: #fff !important;
 }
@@ -334,6 +341,7 @@ input[type="checkbox"] {
 .field-name {
     cursor: grab;
 }
+
 .field-name:active {
     cursor: grabbing;
 }
@@ -343,12 +351,176 @@ input[type="checkbox"] {
     overflow-y: scroll;
 }
 
-.icon-item{
+.icon-item {
     transition: all 0.2s;
 }
 
-.icon-item:hover{
+.icon-item:hover {
     background-color: #FFAE1F !important;
 
     cursor: pointer;
+}
+
+.loader {
+    width: 32px;
+    height: 90px;
+    display: block;
+    margin: 20px auto;
+    position: relative;
+    border-radius: 50% 50% 0 0;
+    border-bottom: 10px solid #FF3D00;
+    background-color: #FFF;
+    background-image: radial-gradient(ellipse at center, #FFF 34%, #FF3D00 35%, #FF3D00 54%, #FFF 55%), linear-gradient(#FF3D00 10px, transparent 0);
+    background-size: 28px 28px;
+    background-position: center 20px, center 2px;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    animation: animloaderBack 1s linear infinite alternate;
+}
+
+.loader::before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 44px;
+    border-radius: 50%;
+    box-shadow: 0px 15px #FF3D00 inset;
+    top: 67px;
+}
+
+.loader::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 34px;
+    height: 34px;
+    top: 112%;
+    background: radial-gradient(ellipse at center, #ffdf00 8%, rgba(249, 62, 0, 0.6) 24%, rgba(0, 0, 0, 0) 100%);
+    border-radius: 50% 50% 0;
+    background-repeat: no-repeat;
+    background-position: -44px -44px;
+    background-size: 100px 100px;
+    box-shadow: 4px 4px 12px 0px rgba(255, 61, 0, 0.5);
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite alternate;
+}
+
+@keyframes animloaderBack {
+    0%, 30%, 70% {
+        transform: translateY(0px);
+    }
+    20%, 40%, 100% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes animloader {
+    0% {
+        box-shadow: 4px 4px 12px 2px rgba(255, 61, 0, 0.75);
+        width: 34px;
+        height: 34px;
+        background-position: -44px -44px;
+        background-size: 100px 100px;
+    }
+    100% {
+        box-shadow: 2px 2px 8px 0px rgba(255, 61, 0, 0.5);
+        width: 30px;
+        height: 28px;
+        background-position: -36px -36px;
+        background-size: 80px 80px;
+    }
+}
+
+.rotate-30 {
+    transform: rotate(30deg);
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2023-9-4 14:52:22
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation heartbeat
+ * ----------------------------------------
+ */
+@-webkit-keyframes heartbeat {
+    from {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: center center;
+        transform-origin: center center;
+        -webkit-animation-timing-function: ease-out;
+        animation-timing-function: ease-out;
+    }
+    10% {
+        -webkit-transform: scale(0.91);
+        transform: scale(0.91);
+        -webkit-animation-timing-function: ease-in;
+        animation-timing-function: ease-in;
+    }
+    17% {
+        -webkit-transform: scale(0.98);
+        transform: scale(0.98);
+        -webkit-animation-timing-function: ease-out;
+        animation-timing-function: ease-out;
+    }
+    33% {
+        -webkit-transform: scale(0.87);
+        transform: scale(0.87);
+        -webkit-animation-timing-function: ease-in;
+        animation-timing-function: ease-in;
+    }
+    45% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-animation-timing-function: ease-out;
+        animation-timing-function: ease-out;
+    }
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2023-9-4 14:57:0
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation rotate-hor-center
+ * ----------------------------------------
+ */
+@-webkit-keyframes rotate-hor-center {
+    0% {
+        -webkit-transform: rotateX(0);
+        transform: rotateX(0);
+    }
+    100% {
+        -webkit-transform: rotateX(-360deg);
+        transform: rotateX(-360deg);
+    }
+}
+
+@keyframes rotate-hor-center {
+    0% {
+        -webkit-transform: rotateX(0);
+        transform: rotateX(0);
+    }
+    100% {
+        -webkit-transform: rotateX(-360deg);
+        transform: rotateX(-360deg);
+    }
+}
+
+.rotate-hor-center {
+    -webkit-animation: rotate-hor-center 1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both;
+    animation: rotate-hor-center 1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both;
 }
