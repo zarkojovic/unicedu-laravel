@@ -26,6 +26,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
+    protected $visible = [
+        'name', 'email', 'custom_attribute', // Example attributes to make visible
+    ];
+
     protected $fillable = [
         'first_name',
         'last_name',

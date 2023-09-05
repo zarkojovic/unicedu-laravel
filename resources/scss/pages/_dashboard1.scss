@@ -1,14 +1,32 @@
 // ----------------------------------------------
 // Dashboard1 Style
 // ----------------------------------------------
-body {
+body{
     background-color: #f9f9f9;
 }
 
-.to-remove {
-    background-color: #ebf1f6 !important;
 
-    label:first-line {
+#userFormBtn2{
+    display:flex;
+    justify-content: end;
+}
+
+.btnEditClass{
+    background-color: $primary;
+    color: #fff;
+    width: 85px;
+
+}
+
+.btnEditClass:hover{
+    background-color: #da591b;
+    color: #fff;
+}
+
+
+.to-remove{
+    background-color: #ebf1f6!important;
+    label:first-line{
         text-decoration-line: line-through;
     }
 }
@@ -44,11 +62,11 @@ input[type="checkbox"] {
     }
 }
 
-.panel-field-settings {
+.panel-field-settings{
     font-size: 20px;
     cursor: pointer;
 
-    &:hover {
+    &:hover{
         color: $primary;
     }
 
@@ -57,8 +75,7 @@ input[type="checkbox"] {
 .search-parent {
     margin-top: -20px;
 }
-
-.scrollbar::-webkit-scrollbar-thumb {
+.scrollbar::-webkit-scrollbar-thumb{
     background-color: $primary;
     border-radius: 2px;
 }
@@ -73,13 +90,12 @@ input[type="checkbox"] {
     padding: 10px;
 
 }
-
 .search-dropdown {
     left: 0;
     position: absolute;
     overflow: hidden;
 
-    input {
+    input{
         border: 0px;
         padding: 10px 20px;
     }
@@ -88,7 +104,7 @@ input[type="checkbox"] {
 }
 
 
-.primary-color {
+.primary-color{
     color: $primary;
 }
 
@@ -105,44 +121,9 @@ input[type="checkbox"] {
     border-radius: 0px 5px 5px 5px;
 }
 
-.btn-edit {
-    border: 1px solid #5A6A85;
-    color: #5A6A85;
-    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
 
-    &:hover {
-        background-color: $primary;
-        color: #fff;
-        border: 1px solid $primary;
-    }
-}
 
-.btn-save {
-    border: 1px solid #5A6A85;
-    color: #5A6A85;
-    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
-
-    &:hover {
-        background-color: #33b249;
-        color: #fff;
-        border: 1px solid #33b249;
-
-    }
-}
-
-.btn-cancel {
-    border: 1px solid #5A6A85;
-    color: #5A6A85;
-    transition: background-color 0.25s, color 0.25s, border-color 0.25s;
-
-    &:hover {
-        background-color: #ED0800;
-        color: #fff;
-        border: 1px solid #ED0800;
-    }
-}
-
-.document-uploaded-label {
+.document-uploaded-label{
     border-radius: 10px;
     background-color: $primary;
     color: #fff;
@@ -152,7 +133,7 @@ input[type="checkbox"] {
     position: relative;
     padding: 10px 20px;
 
-    i {
+    i{
         font-size: 20px;
         margin-left: 5px;
     }
@@ -195,7 +176,7 @@ input[type="checkbox"] {
     &:hover {
         background-color: $primary;
         color: #fff;
-        cursor: pointer;
+        cursor:pointer;
         border-color: $primary;
 
         span {
@@ -210,7 +191,7 @@ input[type="checkbox"] {
 
 
 .profile-image-label {
-    cursor: pointer;
+    cursor:pointer;
 }
 
 #profile-image-input {
@@ -218,20 +199,20 @@ input[type="checkbox"] {
 }
 
 .profile-picture {
-    width: 120px; // Adjust the size as needed
-    height: 120px; // Maintain aspect ratio
-    border-radius: 50%; // Make it perfectly round
-    border: 10px solid silver; // Add a silver border
-    overflow: hidden; // Ensure the image stays within the rounded container
+    width: 120px;   // Adjust the size as needed
+    height: 120px;  // Maintain aspect ratio
+    border-radius: 50%;  // Make it perfectly round
+    border: 10px solid silver;  // Add a silver border
+    overflow: hidden;  // Ensure the image stays within the rounded container
 
     img {
-        width: 100%; // Make the image fill the container
-        height: 100%; // Make the image fill the container
-        object-fit: cover; // Fit the entire image within the container
+      width: 100%;  // Make the image fill the container
+      height: 100%;  // Make the image fill the container
+      object-fit: cover;  // Fit the entire image within the container
     }
-}
+  }
 
-.platinum-package {
+  .platinum-package {
     display: inline-block; // Adjust width based on content
     position: relative;
     position: relative;
@@ -240,19 +221,19 @@ input[type="checkbox"] {
     border-radius: 0px 20px 20px 20px;
 
     .text {
-        color: white;
-        letter-spacing: 0.5px;
-        font-weight: 400;
+      color: white;
+      letter-spacing: 0.5px;
+      font-weight: 400;
     }
-}
+  }
 
-.text-hover:hover {
-    color: #d3591e !important;
-}
+  .text-hover:hover {
+    color: #d3591e!important;
+  }
 
-.t05 {
+  .t05{
     transition: 0.5s;
-}
+  }
 
 .timeline-widget {
     .timeline-item {
@@ -287,18 +268,16 @@ input[type="checkbox"] {
         }
     }
 }
-
 #registerForm {
-    label {
+    label{
         color: #2A3547 !important;
     }
 }
 
-.text-dark {
-    color: $gray-600 !important;
+.text-dark{
+    color:$gray-600 !important;
 }
-
-.form-control {
+.form-control{
     box-shadow: none !important;
 }
 
@@ -313,20 +292,17 @@ input[type="checkbox"] {
     justify-content: center;
     transition: all 0.5s;
     align-items: center;
-
     img {
         width: 100px;
         margin: 0 auto;
     }
 }
-
 #search-dropdown {
     position: absolute;
     top: 25px;
     left: 0;
     z-index: 1000;
 }
-
 .form-control, .form-select {
     background-color: #fff !important;
 }
@@ -358,7 +334,6 @@ input[type="checkbox"] {
 .field-name {
     cursor: grab;
 }
-
 .field-name:active {
     cursor: grabbing;
 }
@@ -368,155 +343,12 @@ input[type="checkbox"] {
     overflow-y: scroll;
 }
 
-.icon-item {
+.icon-item{
     transition: all 0.2s;
 }
 
-.icon-item:hover {
+.icon-item:hover{
     background-color: #FFAE1F !important;
 
     cursor: pointer;
-}
-
-
-/**
- * placeholder-loading v0.6.0
- * Author: Zalog (https://www.zalog.ro/)
- * License: MIT
- **/
-.ph-item {
-    background-color: #fff;
-    border: 1px solid #e6e6e6;
-    border-radius: 2px;
-    direction: ltr;
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-    overflow: hidden;
-    padding: 30px 15px 15px;
-    position: relative
-}
-
-.ph-item, .ph-item *, .ph-item :after, .ph-item :before {
-    box-sizing: border-box
-}
-
-.ph-item:before {
-    -webkit-animation: ph-animation .8s linear infinite;
-    animation: ph-animation .8s linear infinite;
-    background: linear-gradient(90deg, hsla(0, 0%, 100%, 0) 46%, hsla(0, 0%, 100%, .35) 50%, hsla(0, 0%, 100%, 0) 54%) 50% 50%;
-    bottom: 0;
-    content: " ";
-    left: 50%;
-    margin-left: -250%;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 500%;
-    z-index: 1
-}
-
-.ph-item > * {
-    display: flex;
-    flex: 1 1 auto;
-    flex-flow: column;
-    margin-bottom: 15px;
-    padding-left: 15px;
-    padding-right: 15px
-}
-
-.ph-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: -7.5px
-}
-
-.ph-row div {
-    background-color: #ced4da;
-    height: 10px;
-    margin-top: 7.5px
-}
-
-.ph-row .big, .ph-row.big div {
-    height: 25px
-}
-
-.ph-row .empty {
-    background-color: hsla(0, 0%, 100%, 0)
-}
-
-.ph-col-2 {
-    flex: 0 0 16.6666666667%
-}
-
-.ph-col-4 {
-    flex: 0 0 33.3333333333%
-}
-
-.ph-col-6 {
-    flex: 0 0 50%
-}
-
-.ph-col-8 {
-    flex: 0 0 66.6666666667%
-}
-
-.ph-col-10 {
-    flex: 0 0 83.3333333333%
-}
-
-.ph-col-12 {
-    flex: 0 0 100%
-}
-
-[class*=ph-col] {
-    direction: ltr
-}
-
-[class*=ph-col] > * + .ph-row {
-    margin-top: 0
-}
-
-[class*=ph-col] > * + * {
-    margin-top: 7.5px
-}
-
-.ph-avatar {
-    background-color: #ced4da;
-    border-radius: 50%;
-    min-width: 60px;
-    overflow: hidden;
-    position: relative;
-    width: 100%
-}
-
-.ph-avatar:before {
-    content: " ";
-    display: block;
-    padding-top: 100%
-}
-
-.ph-picture {
-    background-color: #ced4da;
-    height: 120px;
-    width: 100%
-}
-
-@-webkit-keyframes ph-animation {
-    0% {
-        transform: translate3d(-30%, 0, 0)
-    }
-    to {
-        transform: translate3d(30%, 0, 0)
-    }
-}
-
-@keyframes ph-animation {
-    0% {
-        transform: translate3d(-30%, 0, 0)
-    }
-    to {
-        transform: translate3d(30%, 0, 0)
-    }
 }

@@ -1,5 +1,3 @@
-
-
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap");
 
 @import "./variables/variables";
@@ -11,6 +9,8 @@
 
 // Scrollbar style (Required file)
 @import "../libs/simplebar/dist/simplebar.css";
+
+@import "../css/jquery-ui.css";
 
 // Tabler Icons style
 @import "../css/icons/tabler-icons/tabler-icons.css";
@@ -31,3 +31,6 @@
 
 // Pages style (Required file)
 @import "./pages/dashboard1";
+
+// Responsive
+@import "./responsive/responsive";

@@ -66,51 +66,90 @@ class DealController extends Controller
 
             foreach ($applicationFields as $key=>$value) {
                 if (!$value){
-                    return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
+                    return redirect()->route("home")->with(["errors" => ["You must fill in the required information in your application before applying to universities."]]);
                 }
             }
 
             // Get user info from the 'user_infos' table based on user_id
             #OVO UZME VREDNOSTI IZABRANE ALI ZA DROPDOWNOWE MORA DA IDE VALUE ATRIBUT
-            $userInfo = UserInfo::where('user_id', $user->user_id)->get();
+//            $userInfoFields = UserInfo::join('fields', 'user_infos.field_id', '=', 'fields.field_id')
+//                                    ->where('user_infos.user_id', $user->user_id)
+//                                    ->where('fields.field_category_id', '!=', 4)
+//                                    ->select('user_infos.field_id', 'user_infos.value');
+//                                    ;
+//            dd($userInfoFields);
+
+//            $userInfoFields = UserInfo::where('user_id', $user->user_id)->get();
+            $userInfoFields = UserInfo::where('user_id', $user->user_id)
+                                        ->pluck("value","field_id")
+                                        ->toArray(); #ASOCIJATIVNI NIZ
+//            dd($userInfoFields);
 
             //IF NO FIELDS ARE FILLED
             //OVO MOZDA NE TREBA, MOZDA SAMO OBAVEZNA POLJA
-            if ($userInfo->isEmpty()) {
-                Log::errorLog('User information not found.', $user->user_id);
-                return redirect()->route("home")->with(["errors" => ["You must fill in information on your profile before applying to universities."]]);
-            }
+//            if ($userInfoFields->isEmpty()) {
+////                Log::errorLog('User information not found.', $user->user_id);
+//                return redirect()->route("home")->with(["errors" => ["You must fill in information on your profile before applying to universities."]]);
+//            }
 
-            foreach ($userInfo as $info) {
-                $fields[] = $info->field_id;
-            }
+//            foreach ($userInfoFields as $info) {
+//                $fields[] = $info->field_id;
+//            }
 
-            $requiredFields = Field::where("is_required", 1)->pluck("field_id")->toArray();
-            $missing = array_filter($requiredFields, function ($fieldId) use ($userInfo) {
-                return empty($userInfo->where('field_id', $fieldId)->first()->value);
+//            $requiredFields = Field::where("is_required", 1)->pluck("field_id");
+//            $requiredFields = Field::where("is_required", 1)->where("field_category_id", "!=", 4)->pluck("field_id")->toArray();
+            $requiredFields = Field::where("is_required", 1)
+                                    ->where("field_category_id", "!=", 4)
+                                    ->pluck("field_id")
+                                    ->toArray();
+//            dd($requiredFields);
+
+            $missing = array_filter($requiredFields, function ($fieldId) use ($userInfoFields) {
+                return empty($userInfoFields[$fieldId]);
+//                return empty($userInfoFields->where('field_id', $fieldId)->first()->value); //mozda ! treba
+//                return $userInfoFields->where('field_id', $fieldId)->isEmpty();
             });
-
+//            dd($missing);
             if (!empty($missing)){
+                Log::errorLog('Required fields not filled in.', $user->user_id);
                 return redirect()->route("home")->with(["errors" => ["You must fill in all required fields before applying to universities."]]);
             }
 
             // Create a deal in Bitrix24 using CRest
-            $fieldNames = Field::whereIn('field_id', $fields)->pluck('field_name', 'field_id');
+//            $fieldNames = Field::select('field_name', 'field_id')
+//                               ->whereIn('field_id', $userInfoFields)
+//                               ->get();
+            $fieldIds = array_keys($userInfoFields);
+//            dd($fieldIds);
+            $fieldNames = Field::whereIn('field_id', $fieldIds)
+                                ->pluck('field_name','field_id')
+                                ->toArray();
+//            dd($fieldNames);
             $dealFields = [
                 'TITLE' => $title,
                 'CONTACT_ID' => $contactId,
             ];
 
-
             // Populate $dealFields with the field names and values
-            foreach ($userInfo as $info) {
-                $fieldId = $info->field_id;
+            foreach ($userInfoFields as $key=>$value) {
+//                $fieldId = $info->field_id;
+//                $fieldName = $fieldNames[$fieldId];
+//                $fieldValue = $info->value;
+//
+//                $dealFields[$fieldName] = $fieldValue;
+                $fieldId = $key;
                 $fieldName = $fieldNames[$fieldId];
-                $fieldValue = $info->value;
+                $fieldValue = $value;
 
                 $dealFields[$fieldName] = $fieldValue;
             }
 
+            unset($applicationFields['_token']);
+
+//            dd($applicationFields);
+            $dealFields = array_merge($dealFields, $applicationFields);
+
+//            dd($dealFields);
             // Make API call to create the deal in Bitrix24
              $result = CRest::call("crm.deal.add", ['FIELDS' => $dealFields]);
 

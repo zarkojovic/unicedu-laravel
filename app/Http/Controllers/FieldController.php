@@ -188,6 +188,8 @@ class FieldController extends Controller
 
         file_put_contents($jsPath . "/fields.json", $json);
 
+
+        return redirect()->back()->with(['fieldMessage' => 'Fields are updated!']);
     }
 
 }

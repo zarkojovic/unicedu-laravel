@@ -68,6 +68,7 @@ function printHTML(el, val = null) {
 }
 
 function printForm(category, fields, field_details, user_info, display = true, show) {
+
     // Determine form type and related attributes
     const formType = display ? 'display' : 'user';
     var formId = `${formType}Form${category.field_category_id}`;
@@ -80,6 +81,7 @@ function printForm(category, fields, field_details, user_info, display = true, s
     }
     const enctype = !display ? 'enctype="multipart/form-data"' : '';
     const emptySpan = `<span class='small text-muted fst-italic'>empty</span>`;
+
     let html = `
         <form id="${formId}" class="${formClass}" ${enctype} ${action ? 'action=' + action : ''} method="post">
             <div class="container-fluid">
@@ -87,6 +89,7 @@ function printForm(category, fields, field_details, user_info, display = true, s
                     <div class="${show ? 'col-sm-12' : 'col-sm-8'}">
                         <div class="row">
             `;
+
     // Counter for row breaking
     let i = 0;
 
@@ -112,7 +115,7 @@ function printForm(category, fields, field_details, user_info, display = true, s
         if (display) {
             // Generate HTML for displaying field info
             html += `<div class="mb-3">
-                        <label class="form-label">${displayName}</label>
+                        <label class="form-label">${displayName} ${element.required ? '<i>(required)</i>' : ''} </label>
                         <p id="display${displayName}" class="form-control-static mb-3">`;
             // Populate info based on user input
             if (info_elem.length > 0) {
@@ -154,31 +157,40 @@ function printForm(category, fields, field_details, user_info, display = true, s
         `;
 
     return html;
+
 }
 
 function hideSpinner() {
     $("#preloader").fadeOut();
-    // setTimeout(function () {
-    //     $("#preloader").addClass("opacity-0", 2500);
-    // }, 3000);
 }
 
 function showSpinner() {
     $("#preloader").fadeIn();
-    // setTimeout(function () {
-    //     $("#preloader").removeClass("opacity-0", 2500);
-    // }, 3000);
+}
+
+function showToast(message, type) {
+    if (type === "error") {
+        $('#myAlert').hide().addClass("bg-danger text-white")
+            .fadeIn().html(message)
+            .delay(10000).fadeOut();
+
+    } else {
+        $('#myAlert').hide().removeClass("bg-danger text-white")
+            .fadeIn().html(message)
+            .delay(3000).fadeOut();
+    }
 }
 
 function printElements(array = [], modal = false) {
+
     // Prepare data for the request
     let data = {id: array};
-
 
     if (modal) {
         // Request category fields, active fields, and details for printing
         axios.post('/api/user_fields', data)
             .then(response => {
+
                 // Hide the spinner on load
                 hideSpinner();
 
@@ -225,25 +237,17 @@ function printElements(array = [], modal = false) {
 
                     })
                     .catch(error => {
-                        console.error(error);
+                        showToast(error, 'error');
+
                     });
             })
             .catch(error => {
-                console.error(error);
+                showToast(error, 'error');
             });
     } else {
-        // Request category fields, active fields, and details for printing
-        axios.post('/api/user_fields', data)
-            .then(response => {
-                // Hide the spinner on load
-                hideSpinner();
 
-                // Separate data from the response
-                var categories = response.data[0];
-                var fields = response.data[1];
-                var field_details = response.data[2];
-                categories.forEach(cat => {
-                    $("#fieldsWrap").append(`<div class="ph-item rounded">
+        array.forEach(el => {
+            let placeholder = `<div class="ph-item rounded">
                                                 <div class="ph-col-12">
                                                     <div class="ph-row">
                                                         <div class="ph-col-6 big rounded"></div>
@@ -271,9 +275,20 @@ function printElements(array = [], modal = false) {
                                                     </div>
 
                                                 </div>
-                                            </div>`);
-                });
-                // Get user information
+                                            </div>`;
+            $("#fieldsWrap").append(placeholder);
+        })
+
+        // Request category fields, active fields, and details for printing
+        axios.post('/api/user_fields', data)
+            .then(response => {
+                // Hide the spinner on load
+                hideSpinner();
+
+                // Separate data from the response
+                var categories = response.data[0];
+                var fields = response.data[1];
+                var field_details = response.data[2];
                 axios.post("/user_info")
                     .then(response => {
 
@@ -316,7 +331,7 @@ function printElements(array = [], modal = false) {
                                                     <div id="displayFormBtn${category.field_category_id}">
                                                         <button
                                                             type="button"
-                                                            class="btn btn-danger btn-block m-1 btnEditClass"
+                                                            class="btn btn-edit btn-block m-1 btnEditClass"
                                                             id="btnEdit${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                         >
@@ -343,11 +358,11 @@ function printElements(array = [], modal = false) {
 
                     })
                     .catch(error => {
-                        console.error(error);
+                        console.error(error.response);
                     });
             })
             .catch(error => {
-                console.error(error);
+                console.error(error.response);
             });
     }
 }
@@ -375,49 +390,45 @@ $(document).ready(function () {
     }
 
     $(document).on("click", ".btnSaveClass", function () {
-        try {
-            showSpinner();
-            // Extract data attributes
-            let id = $(this).data("category");
-            let print = $(this).data("print");
-            var numbersArray = [];
+            try {
+                showSpinner();
+                // Extract data attributes
+                let id = $(this).data("category");
+                let print = $(this).data("print");
+                var numbersArray = [];
 
-            // Convert comma-separated string to array of numbers
-            if (print.toString().includes(',')) {
-                numbersArray = print.split(',').map(Number);
-            } else {
-                numbersArray.push(parseInt(print))
-            }
-
-            // Get the form element and create FormData object
-            var formEl = document.getElementById('userForm' + id);
-            var formObj = new FormData(formEl);
-            // Send data for updating user information
-            axios.post("/update_user", formObj, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+                // Convert comma-separated string to array of numbers
+                if (print.toString().includes(',')) {
+                    numbersArray = print.split(',').map(Number);
+                } else {
+                    numbersArray.push(parseInt(print))
                 }
-            }).then(response => {
-                // Display success message and refresh elements
-                $('#myAlert').removeClass("bg-danger text-white")
-                    .fadeIn().html("Profile Updated!").delay(3000).fadeOut();
-                printElements(numbersArray);
-            }).catch(error => {
-                // Display error message
-                setTimeout(function () {
-                    hideSpinner();
-                    $('#myAlert').addClass("bg-danger text-white")
-                        .fadeIn().html("An error occurred, try again later!")
-                        .delay(3000).fadeOut();
-                }, 3000);
 
-                console.error('Error:', error);
-            });
-        } catch (error) {
-            // Handle unexpected errors
-            console.error('Unexpected error:', error);
+                // Get the form element and create FormData object
+                var formEl = document.getElementById('userForm' + id);
+                var formObj = new FormData(formEl);
+
+                // Send data for updating user information
+                axios.post("/update_user", formObj, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                }).then(response => {
+                    // Display success message and refresh elements
+                    showToast('Profile Updated!', 'success');
+                    printElements(numbersArray);
+                }).catch(error => {
+                    // Display error message
+                    hideSpinner();
+                    showToast(error.response.data.error, 'error');
+                })
+            } catch
+                (error) {
+                console.log(error.response.data);
+            }
         }
-    });
+    )
+    ;
 
     $(document).on("click", ".btnCancelClass", function () {
         let id = $(this).data("category");
@@ -429,6 +440,11 @@ $(document).ready(function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     try {
+        setTimeout(function () {
+            $(".alertNotification").remove();
+        }, 10000);
+
+
         let path = window.location.pathname;
 
         // Check if the page is for page editing or inserting

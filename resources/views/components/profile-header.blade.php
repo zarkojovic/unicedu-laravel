@@ -22,6 +22,7 @@
             <ul
                 class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
             >
+                Hello, {{\Illuminate\Support\Facades\Auth::user()->first_name}}
                 @if(\Illuminate\Support\Facades\Auth::user()->role->role_name == "student")
                     <li>
                         <button

@@ -779,6 +779,10 @@
                 "VALUE": "Polish Japanese Academy"
             },
             {
+                "ID": "647",
+                "VALUE": "Poznan University of Economics and Business"
+            },
+            {
                 "ID": "201",
                 "VALUE": "SWPS"
             },
@@ -833,6 +837,10 @@
             {
                 "ID": "591",
                 "VALUE": "WSB University"
+            },
+            {
+                "ID": "651",
+                "VALUE": "WWSB"
             },
             {
                 "ID": "217",
@@ -1079,7 +1087,15 @@
             },
             {
                 "ID": "77",
-                "VALUE": "Student Depot"
+                "VALUE": "Student Depot Suwak"
+            },
+            {
+                "ID": "645",
+                "VALUE": "Student Depot Wilanowska"
+            },
+            {
+                "ID": "649",
+                "VALUE": "Basecamp"
             },
             {
                 "ID": "79",
@@ -3088,5 +3104,47 @@
             "DEFAULT_VALUE": null
         },
         "field_name": "UF_CRM_1693525586411"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1693580037715",
+        "listLabel": "Accommodation login",
+        "formLabel": "Accommodation login",
+        "filterLabel": "Accommodation login",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1693580037715"
+    },
+    {
+        "type": "string",
+        "isRequired": false,
+        "isReadOnly": false,
+        "isImmutable": false,
+        "isMultiple": false,
+        "isDynamic": true,
+        "title": "UF_CRM_1693580065545",
+        "listLabel": "Accommodation password",
+        "formLabel": "Accommodation password",
+        "filterLabel": "Accommodation password",
+        "settings": {
+            "SIZE": 20,
+            "ROWS": 1,
+            "REGEXP": "",
+            "MIN_LENGTH": 0,
+            "MAX_LENGTH": 0,
+            "DEFAULT_VALUE": null
+        },
+        "field_name": "UF_CRM_1693580065545"
     }
 ]
