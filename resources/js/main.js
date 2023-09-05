@@ -79,7 +79,7 @@ function printForm(category, fields, field_details, user_info, display = true, s
         action = "/apply";
     }
     const enctype = !display ? 'enctype="multipart/form-data"' : '';
-    const emptySpan = `<span class='small text-muted fst-italic'>empty</span>`;
+    const emptySpan = `<span class='small text-muted fst-italic'>Empty</span>`;
     let html = `
         <form id="${formId}" class="${formClass}" ${enctype} ${action ? 'action=' + action : ''} method="post">
             <div class="container-fluid">
@@ -304,12 +304,12 @@ function printElements(array = [], modal = false) {
                                     <div class="card w-100">
                                         <div class="card-header bg-white p-3">
                                             <div class="row align-items-center ps-4 ps-4">
-                                                <div class="col-8">
+                                                <div class="col-6">
                                                     <h5 class="card-title fw-semibold m-0">
                                                         ${category.category_name}
                                                     </h5>
                                                 </div>
-                                                <div class="col-4 text-end pe-4">
+                                                <div class="col-6 text-end pe-4">
                                                     <div id="userFormBtn${category.field_category_id}" class="d-none">
                                                         <button
                                                             type="button"
@@ -318,7 +318,7 @@ function printElements(array = [], modal = false) {
                                                             data-category="${category.field_category_id}"
                                                             data-print="${array}"
                                                         >
-                                                            Save
+                                                            <i class="ti ti-check"></i>
                                                         </button>
                                                         <button
                                                             type="button"
@@ -326,17 +326,18 @@ function printElements(array = [], modal = false) {
                                                             id="btnCancel${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                         >
-                                                            Cancel
+                                                            <i class="ti ti-x"></i>
                                                         </button>
                                                     </div>
                                                     <div id="displayFormBtn${category.field_category_id}">
                                                         <button
                                                             type="button"
-                                                            class="btn btn-danger btn-block m-1 btnEditClass"
+                                                            class="btn btn-block m-1 btnEditClass"
                                                             id="btnEdit${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                         >
                                                             Edit
+                                                            <i class="ti ti-pencil-minus ms-1"></i>
                                                         </button>
                                                     </div>
                                                 </div>
