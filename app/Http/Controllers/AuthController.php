@@ -160,23 +160,25 @@ class AuthController extends Controller
             $phone = $user->phone;
 
             //CREATE CONTACT IN BITRIX24
-            $result = CRest::call("crm.contact.add", [
-                'FIELDS' => [
-                    'NAME' => $firstName,
-                    'LAST_NAME' => $lastName,
-                    'PHONE' => [
-                        ['VALUE' => $phone]
-                    ],
-                    'EMAIL' => [
-                        ['VALUE' => $email]
-                    ]
-                ]
-            ]);
+//            $result = CRest::call("crm.contact.add", [
+//                'FIELDS' => [
+//                    'NAME' => $firstName,
+//                    'LAST_NAME' => $lastName,
+//                    'PHONE' => [
+//                        ['VALUE' => $phone]
+//                    ],
+//                    'EMAIL' => [
+//                        ['VALUE' => $email]
+//                    ]
+//                ]
+//            ]);
 
             //UPDATE IN DATABASE AFTER WE RECEIVE CONTACT ID
-            if ($result) {
-                $user->update(['contact_id' => $result["result"]]);
-            }
+            //if ($result) {
+//                $user->update(['contact_id' => $result["result"]]);
+            $user->update(['contact_id' => mt_rand(100000, 999999)]);
+
+            //}
 
             Log::authLog('User verified.', $user->user_id);
         } catch (Exception $e) {

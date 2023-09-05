@@ -11,8 +11,9 @@ use CRest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function Laravel\Prompts\error;
 
-class DealController extends Controller
+class DealController extends RootController
 {
     public function showDeals()
     {
@@ -45,7 +46,6 @@ class DealController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->email_verified_at) {
-//            return "User not logged in or not verified.";
             Log::errorLog('Unauthenticated or unverified user tried to apply to university.', $user->user_id);
             return redirect()->route("fallback");
         }
@@ -60,7 +60,7 @@ class DealController extends Controller
             //GET FROM UNIVERSITY APPLICATION FORM SUBMIT
             $applicationFields = $request->all();
 
-            if (!$applicationFields) {
+            if (empty($applicationFields)) {
                 return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
             }
 
@@ -70,88 +70,49 @@ class DealController extends Controller
                 }
             }
 
-            // Get user info from the 'user_infos' table based on user_id
-            #OVO UZME VREDNOSTI IZABRANE ALI ZA DROPDOWNOWE MORA DA IDE VALUE ATRIBUT
-//            $userInfoFields = UserInfo::join('fields', 'user_infos.field_id', '=', 'fields.field_id')
-//                                    ->where('user_infos.user_id', $user->user_id)
-//                                    ->where('fields.field_category_id', '!=', 4)
-//                                    ->select('user_infos.field_id', 'user_infos.value');
-//                                    ;
-//            dd($userInfoFields);
-
-//            $userInfoFields = UserInfo::where('user_id', $user->user_id)->get();
             $userInfoFields = UserInfo::where('user_id', $user->user_id)
                                         ->pluck("value","field_id")
                                         ->toArray(); #ASOCIJATIVNI NIZ
-//            dd($userInfoFields);
 
-            //IF NO FIELDS ARE FILLED
-            //OVO MOZDA NE TREBA, MOZDA SAMO OBAVEZNA POLJA
-//            if ($userInfoFields->isEmpty()) {
-////                Log::errorLog('User information not found.', $user->user_id);
-//                return redirect()->route("home")->with(["errors" => ["You must fill in information on your profile before applying to universities."]]);
-//            }
-
-//            foreach ($userInfoFields as $info) {
-//                $fields[] = $info->field_id;
-//            }
-
-//            $requiredFields = Field::where("is_required", 1)->pluck("field_id");
-//            $requiredFields = Field::where("is_required", 1)->where("field_category_id", "!=", 4)->pluck("field_id")->toArray();
             $requiredFields = Field::where("is_required", 1)
                                     ->where("field_category_id", "!=", 4)
                                     ->pluck("field_id")
                                     ->toArray();
-//            dd($requiredFields);
 
             $missing = array_filter($requiredFields, function ($fieldId) use ($userInfoFields) {
                 return empty($userInfoFields[$fieldId]);
-//                return empty($userInfoFields->where('field_id', $fieldId)->first()->value); //mozda ! treba
-//                return $userInfoFields->where('field_id', $fieldId)->isEmpty();
             });
-//            dd($missing);
+
             if (!empty($missing)){
                 Log::errorLog('Required fields not filled in.', $user->user_id);
                 return redirect()->route("home")->with(["errors" => ["You must fill in all required fields before applying to universities."]]);
             }
 
-            // Create a deal in Bitrix24 using CRest
-//            $fieldNames = Field::select('field_name', 'field_id')
-//                               ->whereIn('field_id', $userInfoFields)
-//                               ->get();
             $fieldIds = array_keys($userInfoFields);
-//            dd($fieldIds);
+
             $fieldNames = Field::whereIn('field_id', $fieldIds)
                                 ->pluck('field_name','field_id')
                                 ->toArray();
-//            dd($fieldNames);
+
             $dealFields = [
                 'TITLE' => $title,
                 'CONTACT_ID' => $contactId,
             ];
 
             // Populate $dealFields with the field names and values
-            foreach ($userInfoFields as $key=>$value) {
-//                $fieldId = $info->field_id;
-//                $fieldName = $fieldNames[$fieldId];
-//                $fieldValue = $info->value;
-//
-//                $dealFields[$fieldName] = $fieldValue;
-                $fieldId = $key;
-                $fieldName = $fieldNames[$fieldId];
-                $fieldValue = $value;
+            foreach ($userInfoFields as $fieldId=>$fieldValue) {
+                $fieldName = $fieldNames[$fieldId] ?? null;
 
-                $dealFields[$fieldName] = $fieldValue;
+                if ($fieldName){
+                    $dealFields[$fieldName] = $fieldValue;
+                }
             }
 
             unset($applicationFields['_token']);
-
-//            dd($applicationFields);
             $dealFields = array_merge($dealFields, $applicationFields);
 
-//            dd($dealFields);
             // Make API call to create the deal in Bitrix24
-             $result = CRest::call("crm.deal.add", ['FIELDS' => $dealFields]);
+            $result = CRest::call("crm.deal.add", ['FIELDS' => $dealFields]);
 
             if (isset($result['result']) && $result['result'] > 0) {
                 // Deal created successfully
@@ -193,6 +154,5 @@ class DealController extends Controller
             Log::errorLog('Error during application creation: '.$e->getMessage(), $user->user_id);
             return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."]]);
         }
-//        return view('notification', ['type' => 'deal_created']);
     }
 }

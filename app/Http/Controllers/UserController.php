@@ -181,7 +181,7 @@ class UserController extends RootController
     {
         #INPUTS
         if (!$request->hasFile('profile-image')) {
-            return redirect()->route('profile')->with(["errors" => ['No file uploaded!']]);
+            return redirect()->route('profile')->with(["errors" => ['No image uploaded.']]);
         }
 
         $pathOriginal = "public/profile/original";
@@ -225,7 +225,6 @@ class UserController extends RootController
         if (!$moved) {
             Log::errorLog("Failed to update profile image on server.", Auth::user()->user_id);
             return redirect()->route('profile')->with(["errors" => ['Saving image on the server failed.']]);
-//            return "Error: Saving image on the server failed.";
         }
 
         #MAKE SMALL IMAGES
@@ -242,10 +241,8 @@ class UserController extends RootController
 
         } catch (\Exception $e) {
             report($e);
-
             Log::errorLog("Failed to resize file image.", Auth::user()->user_id);
-            return redirect()->route('profile')->with(["errors" => ['An error occurred while saving images and updating records.']]);
-//            return back()->with('error', 'An error occurred while saving images and updating records.');
+            return redirect()->route('profile')->with(["errors" => ['An error occurred while saving profile image.']]);
         }
 
         #INSERT INTO DATABASE
@@ -264,17 +261,46 @@ class UserController extends RootController
                 ]);
             }
             $user->profile_image = $newFileName;
-            $user->save();
+            if(!$user->save()){
+                DB::rollback();
+                Log::errorLog("Profile image updating not saved.", Auth::user()->user_id);
+                return redirect()->route('profile')->with(["errors" => ['An error occurred while saving profile image.']]);
+            }
+
+            $fieldId = Field::where('field_name', 'UF_CRM_1667336320092')->value('field_id');
+//                $imageContent = Storage::get($pathOriginal.'/'.$newFileName);
+
+            if (!$fieldId) {
+                DB::rollback();
+                Log::errorLog("Field id for 'UF_CRM_1667336320092' not found.", Auth::user()->user_id);
+                return redirect()->route('profile')->with(["errors" => ['An error occurred while saving profile image.']]);
+            }
+
+            // Insert a row into the UserInfo table
+            $updated = UserInfo::updateOrInsert(
+                [
+                    'user_id' => $user->user_id,
+                    'field_id' => $fieldId,
+                ],
+                [
+                    'file_name' => $fileName,
+                    'file_path' => $newFileName,
+                ]
+            );
+
+            if (!$updated) {
+                DB::rollback();
+                Log::errorLog("Photo in User Info table not updated.", Auth::user()->user_id);
+                return redirect()->route('profile')->with(["errors" => ['An error occurred while saving profile image.']]);
+            }
 
             Log::informationLog("Profile image updated.", Auth::user()->user_id);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-
             Log::errorLog("Failed to update profile image.", Auth::user()->user_id);
             report($e);
-            return redirect()->route('profile')->with(["errors" => ['An error occurred while updating.']]);
-//            return back()->with('error', 'An error occurred while updating.');
+            return redirect()->route('profile')->with(["errors" => ['An error occurred while saving profile image.']]);
         }
 
         #UF_CRM_1667336320092 - polje za sliku
