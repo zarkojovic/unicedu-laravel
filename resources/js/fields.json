@@ -861,14 +861,6 @@
             {
                 "ID": "599",
                 "VALUE": "Wroclaw Medical University"
-            },
-            {
-                "ID": "647",
-                "VALUE": "Poznan University of Economics and Business"
-            },
-            {
-                "ID": "651",
-                "VALUE": "WWSB"
             }
         ],
         "title": "UF_CRM_1667335624051",
@@ -1116,14 +1108,6 @@
             {
                 "ID": "83",
                 "VALUE": "Private accommodation"
-            },
-            {
-                "ID": "645",
-                "VALUE": "Student Depot Wilanowska"
-            },
-            {
-                "ID": "649",
-                "VALUE": "Basecamp"
             }
         ],
         "title": "UF_CRM_1667336524064",
