@@ -1,0 +1,41 @@
+@media (max-width: 340px) {
+    .checkboxes {
+        left: 50%; /* Adjust the left position for smaller screens */
+        border-radius: 5px 0px 5px 5px;
+
+    }
+}
+
+@media (max-width: 576px) {
+    .checkboxes {
+        left: 70%; /* Adjust the left position for smaller screens */
+        border-radius: 5px 0px 5px 5px;
+
+    }
+
+    .profile-info {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+            :first-child{
+                margin-bottom: 10px;
+            }
+
+    }
+
+    .card-title{
+
+        font-size: 16px;
+    }
+
+    #userFormBtn1{
+        display: flex;
+    }
+    .btn{
+        font-size: 12px;
+    }
+
+}
+
+
