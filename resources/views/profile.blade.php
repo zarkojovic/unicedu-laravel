@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-lg-12 d-flex align-items-strech">
                 <div class="card w-100">
-                    <div class="card-body profile-info">
+                    <div class="card-body">
                         <div
                             class="d-sm-flex d-block align-items-center justify-content-between mb-9"
                         >
@@ -19,8 +19,8 @@
                                 <h4 class="card-title fw-semibold">Student Profile</h4>
                             </div>
                         </div>
-                        <div class="row profile-info">
-                            <div class="col-12 col-lg-2 col-md-3 col-sm-4 profile-info">
+                        <div class="row">
+                            <div class="col-6 col-lg-2 col-md-3 col-sm-4">
                                 <div class="profile-picture border border-silver">
                                     <img src="{{ asset("storage/profile/thumbnail/{$user->profile_image}")  }}"
                                          alt="Profile Picture"
@@ -28,7 +28,7 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-10 col-md-9 col-sm-8">
+                            <div class="col-6 col-lg-10 col-md-9 col-sm-8">
                                 <h5 class="fw-semibold">{{ $user->first_name }} {{ $user->last_name }}</h5>
                                 <h6 class="fw-semibold text-muted">{{ $user->email }}</h6>
                                 <div class="platinum-package bg-gradient">

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+
 //use Kafka0238\Crest\Src\CRest;
 use Mockery\Exception;
 
@@ -32,12 +33,14 @@ class AuthController extends Controller
     public function check(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:20',
-            'last_name' => 'required|string|max:20',
+            'first_name' => 'required|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
+            'last_name' => 'required|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
             'phone' => 'required|unique:users',
             'password' => 'required|confirmed|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
             'email' => 'required|email|unique:users',
         ], [
+            'first_name.regex' => 'First name start with capital letter first!',
+            'last_name.regex' => 'First name start with capital letter first!',
             'password.regex' => 'Password must contain at least one small letter, one big letter and one number!',
         ]);
 
@@ -161,10 +164,10 @@ class AuthController extends Controller
                 'FIELDS' => [
                     'NAME' => $firstName,
                     'LAST_NAME' => $lastName,
-                    'PHONE' =>[
+                    'PHONE' => [
                         ['VALUE' => $phone]
                     ],
-                    'EMAIL' =>[
+                    'EMAIL' => [
                         ['VALUE' => $email]
                     ]
                 ]
@@ -177,7 +180,7 @@ class AuthController extends Controller
 
             Log::authLog('User verified.', $user->user_id);
         } catch (Exception $e) {
-            Log::errorLog('Error during verification. Message: '.$e->getMessage(), $user->user_id);
+            Log::errorLog('Error during verification. Message: ' . $e->getMessage(), $user->user_id);
         }
 
         //Log::authLog('User is verified now!', $user->user_id);
