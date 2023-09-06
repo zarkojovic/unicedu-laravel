@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Field extends Model
 {
@@ -26,4 +27,10 @@ class Field extends Model
     {
         return $this->belongsTo(FieldCategory::class, 'field_category_id');
     }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(FieldItem::class, 'field_id');
+    }
+
 }

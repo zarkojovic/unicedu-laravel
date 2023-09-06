@@ -48,6 +48,10 @@ return new class extends Migration {
             $table->foreign('action_id')->references('action_id')->on('actions')->onDelete('cascade');
         });
 
+        Schema::table('field_items', function (Blueprint $table) {
+            $table->foreign('field_id')->references('field_id')->on('fields')->onDelete('cascade');
+        });
+
 
     }
 

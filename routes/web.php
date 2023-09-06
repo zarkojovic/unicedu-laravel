@@ -101,7 +101,7 @@ Route::middleware(["auth"])->group(function () {
                 Route::get('/pages', [PageController::class, 'showPages'])->name('showPages');
                 Route::get('/pages/{id}/edit', [PageController::class, 'editPages'])->name('edit_pages');
                 Route::post('/pages/update', [PageController::class, 'updatePage'])->name('updatePage');
-                  Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPage');
+                Route::get('/pages/insert', [PageController::class, 'insertPage'])->name('insertPage');
                 Route::post('/pages/create', [PageController::class, 'addNewPage'])->name('createPage');
                 Route::post('/pages/remove', [PageController::class, 'deletePage'])->name('deletePage');
 
@@ -160,7 +160,7 @@ Route::get('/test-page', function () {
     $info = Db::table("user_infos")
         ->selectRaw("`field_id`, `value`, `display_value`, `file_name`,`file_path`")
         ->where("user_id", '1')
-        ->groupBy("field_id", "value", "display_value","file_name", 'file_path')
+        ->groupBy("field_id", "value", "display_value", "file_name", 'file_path')
         ->get();
 
 
@@ -221,3 +221,44 @@ Route::post("/search-update", [AdminController::class, "setFieldCategory"]);
 Route::post("/apply", [DealController::class, "apply"])->name('makeDeal');
 
 
+Route::get("/test_items", function () {
+
+
+    $categories = \App\Models\FieldCategory::whereIn('field_category_id', [1, 2])->get();
+    $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
+    $items = [];
+    foreach ($fields as $field) {
+        if ($field->type == "enumeration") {
+//            $items[] = $field->items;
+            $field['items'] = $field->items;
+        }
+    }
+
+    $data = [$categories, $fields];
+
+    $data = response()->json($data);
+
+
+
+
+//    $res = \CRest::call('crm.deal.fields');
+//
+//    $values = $res["result"];
+//
+//    $newArray = array_filter($values,function ($el){
+//       return  $el['type'] == 'enumeration';
+//    });
+//
+//    echo "<pre>";
+//
+//    foreach ($newArray as $key => $value){
+//        $fieldId = Field::where("field_name",$key)->pluck('field_id');
+//        echo "<h1>" . $key . $fieldId[0] . "</h1>";
+//        foreach ($value["items"] as $item){
+//            echo "<h1>".$item["ID"]."  ".$item["VALUE"]."</h1>";
+//        }
+////        print_r($value["items"]);
+//    }
+//
+//    echo "</pre>";
+});

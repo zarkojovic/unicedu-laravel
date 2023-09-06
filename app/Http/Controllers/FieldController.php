@@ -12,21 +12,39 @@ class FieldController extends Controller
 {
     public function getAvailableFields(Request $request)
     {
+//        $c_vals = $request->input('id');
+//
+//        $categories = \App\Models\FieldCategory::whereIn('field_category_id', $c_vals)->get();
+//        $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
+//
+//        // Path to the public/js directory
+//        $jsPath = resource_path('js');
+//        //Gets content from json file
+//        $json = file_get_contents($jsPath . "/fields.json");
+//        //Make it in php array
+//        $json_fields = json_decode($json, true);
+//
+//        $data = [$categories, $fields, $json_fields];
+//
+//        return response()->json($data);
+
         $c_vals = $request->input('id');
 
         $categories = \App\Models\FieldCategory::whereIn('field_category_id', $c_vals)->get();
         $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
+        $items = [];
+        foreach ($fields as $field) {
+            if ($field->type == "enumeration") {
 
-        // Path to the public/js directory
-        $jsPath = resource_path('js');
-        //Gets content from json file
-        $json = file_get_contents($jsPath . "/fields.json");
-        //Make it in php array
-        $json_fields = json_decode($json, true);
+                $field['items'] = $field->items;
+            }
+        }
 
-        $data = [$categories, $fields, $json_fields];
+        $data = [$categories, $fields];
 
         return response()->json($data);
+
+
     }
 
     public function setFieldCategory(Request $request)
