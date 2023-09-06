@@ -71,8 +71,23 @@ class DealController extends RootController
             }
 
             $userInfoFields = UserInfo::where('user_id', $user->user_id)
+                                        ->where("value","!=",null)
                                         ->pluck("value","field_id")
                                         ->toArray(); #ASOCIJATIVNI NIZ
+
+//            $userInfoFiles = UserInfo::where('user_id', $user->user_id)
+//                                        ->whereNull("value")
+//                                        ->whereNotNull("file_path")
+//                                        ->pluck("file_path","field_id")
+//                                        ->toArray();
+            $userInfoFiles = UserInfo::join('fields', 'user_infos.field_id', '=', 'fields.field_id')
+                                        ->where('user_infos.user_id', $user->user_id)
+                                        ->whereNull('user_infos.value')
+                                        ->whereNotNull('user_infos.file_path')
+                                        ->pluck('user_infos.file_path', 'fields.field_name')
+                                        ->toArray();
+
+            dd($userInfoFiles); //DOHVATA IME_POLJA => PUTANJA_FAJLA
 
             $requiredFields = Field::where("is_required", 1)
                                     ->where("field_category_id", "!=", 4)
@@ -93,7 +108,6 @@ class DealController extends RootController
             $fieldNames = Field::whereIn('field_id', $fieldIds)
                                 ->pluck('field_name','field_id')
                                 ->toArray();
-
             $dealFields = [
                 'TITLE' => $title,
                 'CONTACT_ID' => $contactId,
