@@ -13,12 +13,20 @@ class CategoryFieldSeeder extends Seeder
      */
     public function run(): void
     {
-        $category_names = ['Personal Information','Address','Documents','Deals'];
+        $category_names = ['Personal Information', 'Address', 'Documents', 'Deals', 'Hidden'];
 
-        foreach ($category_names as $category_name){
-            $category = FieldCategory::create([
-                'category_name' => $category_name
-            ]);
+        foreach ($category_names as $category_name) {
+            if ($category_name == 'Hidden') {
+                $category = FieldCategory::create([
+                    'category_name' => $category_name,
+                    'is_visible' => false
+                ]);
+            } else {
+                $category = FieldCategory::create([
+                    'category_name' => $category_name
+                ]);
+            }
         }
+
     }
 }

@@ -290,15 +290,16 @@ function printElements(array = [], modal = false) {
                             <div class="row">
                                 <div class="col-lg-12 d-flex align-items-stretch">
                                     <div class="card w-100">
-                                        <div class="card-header bg-white p-3">
-                                            <div class="row align-items-center ps-4 ps-4">
-                                                <div class="col-6">
+                                        <div class="card-header bg-white p-4 px-4">
+                                        <div class="container-fluid">
+                                            <div class="row align-items-center ">
+                                                <div class="col-6 px-0">
                                                     <h5 class="card-title fw-semibold m-0">
                                                         ${category.category_name}
                                                     </h5>
                                                 </div>
-                                                <div class="col-6 text-end pe-4">
-                                                    <div id="userFormBtn${category.field_category_id}" class="d-none">
+                                                <div class="col-6 d-flex justify-content-end p-0">
+                                                    <div id="userFormBtn${category.field_category_id}" class="d-none justify-content-end">
                                                         <button
                                                             type="button"
                                                             class="btn btn-success btn-block m-1 btnSaveClass"
@@ -329,9 +330,9 @@ function printElements(array = [], modal = false) {
                                                         </button>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div></div>
                                         </div>
-                                        <div class="card-body">`;
+                                        <div class="card-body  px-sm-4 p-sm-3 px-sm-3 px-2">`;
                                     // Generate HTML for printing both forms
                                     html += printForm(category, fields, user_info, false);
                                     html += printForm(category, fields, user_info);

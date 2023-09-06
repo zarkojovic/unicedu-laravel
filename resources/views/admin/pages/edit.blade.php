@@ -35,7 +35,7 @@
                         @endforeach
                     </div>
                 </div>
-                <input type="hidden" required value="ti ti-at" name="icon" id="icon">
+                <input type="hidden" required value="ti {{$isUpdate ? $page->icon : ''}}" name="icon" id="icon">
             </div>
             <div class="form-group mb-3">
                 <label for="roles" class="fw-bold text-black">Roles</label> <br>
@@ -50,8 +50,8 @@
                             $check = false;
                         @endphp
                     @endif
-                        <input type="radio" name="role_id" {{ $check ? 'checked' : '' }} id="roles-{{ $role->role_id }}"
-                               value="{{ $role->role_id }}"> {{ $role->role_name }}<br>
+                    <input type="radio" name="role_id" {{ $check ? 'checked' : '' }} id="roles-{{ $role->role_id }}"
+                           value="{{ $role->role_id }}"> {{ $role->role_name }}<br>
                 @endforeach
 
 
