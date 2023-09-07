@@ -9,6 +9,7 @@ class FieldItem extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'field_item_id';
 
     protected $fillable = [
         'item_value',

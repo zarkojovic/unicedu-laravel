@@ -1,11 +1,12 @@
 import axios from "axios";
 
 function printHTML(el, val = null) {
+    console.log(el)
     let html = '';
     var requiredSpan = `<span class="text-danger">*</span>`;
     // Handle CRM category field
     if (el.type === "crm_category" && el.field_name === "CATEGORY_ID") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                     <select class="form-control mb-3" name="${el.field_name}">
                     <option value="0">Select</option>`;
 
@@ -17,7 +18,7 @@ function printHTML(el, val = null) {
     }
     // Handle CRM status field
     else if (el.type === "crm_status" && el.statusType === "DEAL_STAGE") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.is_required ? requiredSpan : ''}</label>
                 <select class="form-control mb-3" name="${el.field_name}">
                 <option value="0">Select</option>`;
         el.items.forEach(item => {
@@ -28,25 +29,25 @@ function printHTML(el, val = null) {
     }
     // Handle file input field
     else if (el.type === "file") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.is_required ? requiredSpan : ''}</label>
                 <br>
                 <label class="upload-document-label mb-3" for="${el.field_name}"><span>Upload Document</span></label>
                 <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control  d-none">`;
     }
     // Handle date input field
     else if (el.type === "date") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <input type="date" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control mb-3">`;
     }
     // Handle datetime input field
     else if (el.type === "datetime") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <input type="datetime-local" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" name="${el.field_name}" class="form-control mb-3">`;
     }
     // Handle enumeration/select input field
     else if (el.type === "enumeration") {
         console.log(el.items)
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <select class="form-control mb-3" data-field-id="${el.field_id}"  name="${el.field_name}">
                 <option value="0">Select</option>`;
 
@@ -61,7 +62,7 @@ function printHTML(el, val = null) {
     // Handle text input field (default case)
     else {
         let checkVal = val != null && val.value != null;
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <input class="form-control mb-3" ${el.isReadOnly ? "readonly" : ""} ${el.isRequired ? "required" : ""} value="${checkVal ? val.value : ''}" data-field-id="${el.field_id}" name="${el.field_name}" />`;
     }
 
@@ -111,7 +112,7 @@ function printForm(category, fields, user_info, display = true, show) {
         if (display) {
             // Generate HTML for displaying field info
             html += `<div class="mb-3">
-                        <label class="form-label">${displayName} ${element.required ? '<i>(required)</i>' : ''} </label>
+                        <label class="form-label">${displayName} ${element.is_required ? '<i>(required)</i>' : ''} </label>
                         <p id="display${displayName}" class="form-control-static mb-3">`;
             // Populate info based on user input
             if (info_elem.length > 0) {

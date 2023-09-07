@@ -176,8 +176,7 @@ class UserController extends RootController
         echo json_encode($info);
     }
 
-    public
-    function updateImage(Request $request)
+    public function updateImage(Request $request)
     {
         #INPUTS
         if (!$request->hasFile('profile-image')) {
