@@ -74,9 +74,14 @@ class FieldController extends Controller
         Field::whereIn('field_id', $requiredFields)->update([
             'is_required' => true,
         ]);
-        Field::whereIn('field_id', array_diff($requiredFieldsFromDatabaseIDs, $requiredFields))->update([
-            'is_required' => false,
-        ]);
+        Field::where('field_category_id', $category_id)
+            ->whereNotIn('field_id', $requiredFields)
+            ->update([
+                'is_required' => false,
+            ]);
+//        Field::whereIn('field_id', array_diff($requiredFieldsFromDatabaseIDs, $requiredFields))->update([
+//            'is_required' => false,
+//        ]);
 
 // Associate fields with the new category
         Field::whereIn('field_id', $fields ?? [])->update([
