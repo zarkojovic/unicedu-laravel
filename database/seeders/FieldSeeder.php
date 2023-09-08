@@ -31,6 +31,7 @@ class FieldSeeder extends Seeder
 
         file_put_contents($jsPath . "/fields.json", $json);
         $i = 0;
+        $hiddenFields = array();
         foreach ($arrayOfObjects as $object) {
             if (isset($object['formLabel'])) {
                 Field::create([
@@ -39,6 +40,13 @@ class FieldSeeder extends Seeder
                     'title' => $object['formLabel']
                 ]);
             } else {
+                $i++;
+                $hiddenFields[] = [
+                    "field_name" => $object['field_name'],
+                    "is_required" => '0',
+                    'order' => $i,
+                    "field_category_id" => '5'
+                ];
                 Field::create([
                     'field_name' => $object['field_name'],
                     'type' => $object['type']
@@ -192,7 +200,18 @@ class FieldSeeder extends Seeder
             ]
         ];
 
-        $allCategories = [$personalCategory, $addressCategory, $documentsCategory, $dealsCategory];
+        $i++;
+        $hiddenCategory = [
+            [
+                "field_name" => 'UF_CRM_1667336320092',
+                "is_required" => '1',
+                'order' => $i,
+                "field_category_id" => '5'
+            ]
+        ];
+        $hiddenCategory = array_merge($hiddenCategory, $hiddenFields);
+
+        $allCategories = [$personalCategory, $addressCategory, $documentsCategory, $dealsCategory, $hiddenCategory];
 
         foreach ($allCategories as $category) {
 
@@ -200,7 +219,9 @@ class FieldSeeder extends Seeder
                 $row = Field::where('field_name', $item["field_name"])->first();
                 $row->field_category_id = $item["field_category_id"];
                 $row->is_required = $item["is_required"];
-                $row->order = $item["order"];
+                if (isset($item["order"])) {
+                    $row->order = $item["order"];
+                }
                 $row->save();
             }
 

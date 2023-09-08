@@ -1,11 +1,12 @@
 import axios from "axios";
 
 function printHTML(el, val = null) {
+    console.log(el)
     let html = '';
     var requiredSpan = `<span class="text-danger">*</span>`;
     // Handle CRM category field
     if (el.type === "crm_category" && el.field_name === "CATEGORY_ID") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                     <select class="form-control mb-3" name="${el.field_name}">
                     <option value="0">Select</option>`;
 
@@ -17,7 +18,7 @@ function printHTML(el, val = null) {
     }
     // Handle CRM status field
     else if (el.type === "crm_status" && el.statusType === "DEAL_STAGE") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.is_required ? requiredSpan : ''}</label>
                 <select class="form-control mb-3" name="${el.field_name}">
                 <option value="0">Select</option>`;
         el.items.forEach(item => {
@@ -28,30 +29,31 @@ function printHTML(el, val = null) {
     }
     // Handle file input field
     else if (el.type === "file") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.is_required ? requiredSpan : ''}</label>
                 <br>
                 <label class="upload-document-label mb-3" for="${el.field_name}"><span>Upload Document</span></label>
                 <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control  d-none">`;
     }
     // Handle date input field
     else if (el.type === "date") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <input type="date" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control mb-3">`;
     }
     // Handle datetime input field
     else if (el.type === "datetime") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <input type="datetime-local" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" name="${el.field_name}" class="form-control mb-3">`;
     }
     // Handle enumeration/select input field
     else if (el.type === "enumeration") {
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        console.log(el.items)
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <select class="form-control mb-3" data-field-id="${el.field_id}"  name="${el.field_name}">
                 <option value="0">Select</option>`;
 
         el.items.forEach(item => {
             const isSelected = val != null && val.value === item.ID;
-            html += `<option value="${item.ID}__${item.VALUE}" ${isSelected ? "selected" : ""}>${item.VALUE}</option>`;
+            html += `<option value="${item.item_id}__${item.item_value}" ${isSelected ? "selected" : ""}>${item.item_value}</option>`;
         });
 
         html += `</select>`;
@@ -60,14 +62,14 @@ function printHTML(el, val = null) {
     // Handle text input field (default case)
     else {
         let checkVal = val != null && val.value != null;
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <input class="form-control mb-3" ${el.isReadOnly ? "readonly" : ""} ${el.isRequired ? "required" : ""} value="${checkVal ? val.value : ''}" data-field-id="${el.field_id}" name="${el.field_name}" />`;
     }
 
     return html;
 }
 
-function printForm(category, fields, field_details, user_info, display = true, show) {
+function printForm(category, fields, user_info, display = true, show) {
     // Determine form type and related attributes
     const formType = display ? 'display' : 'user';
     var formId = `${formType}Form${category.field_category_id}`;
@@ -100,9 +102,7 @@ function printForm(category, fields, field_details, user_info, display = true, s
         const breakRow = i % 2;
 
         // Find element details for the current field
-        let element = field_details.find(el => el.field_name === field.field_name);
-        element.field_id = field.field_id;
-        element.required = field.is_required;
+        let element = field;
 
         html += `<div class="col-sm-6">`;
 
@@ -112,7 +112,7 @@ function printForm(category, fields, field_details, user_info, display = true, s
         if (display) {
             // Generate HTML for displaying field info
             html += `<div class="mb-3">
-                        <label class="form-label">${displayName} ${element.required ? '<i>(required)</i>' : ''} </label>
+                        <label class="form-label">${displayName} ${element.is_required ? '<i>(required)</i>' : ''} </label>
                         <p id="display${displayName}" class="form-control-static mb-3">`;
             // Populate info based on user input
             if (info_elem.length > 0) {
@@ -187,55 +187,45 @@ function printElements(array = [], modal = false) {
         // Request category fields, active fields, and details for printing
         axios.post('/api/user_fields', data)
             .then(response => {
+                console.log(response.data);
                 // Hide the spinner on load
                 hideSpinner();
 
                 // Separate data from the response
                 var categories = response.data[0];
                 var fields = response.data[1];
-                var field_details = response.data[2];
 
-                // Get user information
-                axios.post("/user_info")
-                    .then(response => {
-                        var user_info = response.data;
-
-                        // Generate HTML for each category
-                        var html = '';
-                        categories.forEach(category => {
-                            html += `
+                // Generate HTML for each category
+                var html = '';
+                categories.forEach(category => {
+                    html += `
                             <div class="row">
                                 <div class="col-lg-12 d-flex align-items-stretch">
                                     `;
-                            // Generate HTML for printing both forms
-                            html += printForm(category, fields, field_details, user_info, false, true);
+                    // Generate HTML for printing both forms
+                    html += printForm(category, fields, [], false, true);
 
-                            html += `
+                    html += `
                                 </div>
                             </div>`;
-                        });
-                        // Display the generated HTML
-                        $("#fieldsModalWrap").html(html);
+                });
+                // Display the generated HTML
+                $("#fieldsModalWrap").html(html);
 
-                        var form = document.getElementById('dealForm');
-                        // Get the CSRF token from the meta tag
-                        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                var form = document.getElementById('dealForm');
+                // Get the CSRF token from the meta tag
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                        // Create a hidden input field for the CSRF token
-                        var csrfInput = document.createElement('input');
-                        csrfInput.type = 'hidden';
-                        csrfInput.name = '_token'; // This is the default name for Laravel's CSRF token field
-                        csrfInput.value = csrfToken;
+                // Create a hidden input field for the CSRF token
+                var csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token'; // This is the default name for Laravel's CSRF token field
+                csrfInput.value = csrfToken;
 
-                        // Append the CSRF token input field to the form
-                        form.appendChild(csrfInput);
+                // Append the CSRF token input field to the form
+                form.appendChild(csrfInput);
 
 
-                    })
-                    .catch(error => {
-                        showToast(error, 'error');
-
-                    });
             })
             .catch(error => {
                 showToast(error, 'error');
@@ -289,7 +279,6 @@ function printElements(array = [], modal = false) {
                         // Separate data from the response
                         var categories = response.data[0];
                         var fields = response.data[1];
-                        var field_details = response.data[2];
                         axios.post("/user_info")
                             .then(response => {
 
@@ -302,15 +291,16 @@ function printElements(array = [], modal = false) {
                             <div class="row">
                                 <div class="col-lg-12 d-flex align-items-stretch">
                                     <div class="card w-100">
-                                        <div class="card-header bg-white p-3">
-                                            <div class="row align-items-center ps-4 ps-4">
-                                                <div class="col-6">
+                                        <div class="card-header bg-white p-4 px-4">
+                                        <div class="container-fluid">
+                                            <div class="row align-items-center ">
+                                                <div class="col-6 px-0">
                                                     <h5 class="card-title fw-semibold m-0">
                                                         ${category.category_name}
                                                     </h5>
                                                 </div>
-                                                <div class="col-6 text-end pe-4">
-                                                    <div id="userFormBtn${category.field_category_id}" class="d-none">
+                                                <div class="col-6 d-flex justify-content-end p-0">
+                                                    <div id="userFormBtn${category.field_category_id}" class="d-none justify-content-end">
                                                         <button
                                                             type="button"
                                                             class="btn btn-success btn-block m-1 btnSaveClass"
@@ -341,12 +331,12 @@ function printElements(array = [], modal = false) {
                                                         </button>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div></div>
                                         </div>
-                                        <div class="card-body">`;
+                                        <div class="card-body  px-sm-4 p-sm-3 px-sm-3 px-2">`;
                                     // Generate HTML for printing both forms
-                                    html += printForm(category, fields, field_details, user_info, false);
-                                    html += printForm(category, fields, field_details, user_info);
+                                    html += printForm(category, fields, user_info, false);
+                                    html += printForm(category, fields, user_info);
                                     html += `
                                         </div>
                                     </div>

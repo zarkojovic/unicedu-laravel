@@ -10,16 +10,20 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('field_categories', function (Blueprint $table) {
-            $table->id('field_category_id');
-            $table->string('category_name');
-            $table->boolean('is_visible')->default(true);
+
+        Schema::create('field_items', function (Blueprint $table) {
+            $table->id('field_item_id');
+            $table->string("item_value");
+            $table->string("item_id");
+            $table->unsignedBigInteger('field_id');
+            $table->boolean("is_active")->default(true);
             $table->timestamps();
         });
 
         Artisan::call('db:seed', [
-            '--class' => 'CategoryFieldSeeder',
+            '--class' => 'FieldItemSeeder',
         ]);
+
     }
 
     /**
@@ -27,6 +31,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('field_categories');
+        Schema::dropIfExists('field_items');
     }
 };

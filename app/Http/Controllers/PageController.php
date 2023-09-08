@@ -73,7 +73,7 @@ class PageController extends Controller
 
             // Fetch all roles and field categories
             $roles = Role::all();
-            $categories = FieldCategory::all();
+            $categories = FieldCategory::where('category_name','<>','Hidden')->get();
 
             // Get selected field category IDs for the page
             $selectedCategories = DB::table('field_category_page')->select('field_category_id')

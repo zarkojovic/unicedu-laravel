@@ -176,8 +176,7 @@ class UserController extends RootController
         echo json_encode($info);
     }
 
-    public
-    function updateImage(Request $request)
+    public function updateImage(Request $request)
     {
         #INPUTS
         if (!$request->hasFile('profile-image')) {
@@ -277,22 +276,39 @@ class UserController extends RootController
             }
 
             // Insert a row into the UserInfo table
-            $updated = UserInfo::updateOrInsert(
-                [
+//            $updated = UserInfo::updateOrInsert(
+//                [
+//                    'user_id' => $user->user_id,
+//                    'field_id' => $fieldId,
+//                ],
+//                [
+//                    'file_name' => $fileName,
+//                    'file_path' => $newFileName,
+//                ]
+//            );
+            $userInfoImage = UserInfo::where('user_id', $user->user_id)
+                ->where('field_id', $fieldId)
+                ->first();
+
+            if ($userInfoImage) {
+                // Update the existing record
+                $userInfoImage->file_name = $fileName;
+                $userInfoImage->file_path = $newFileName;
+                $userInfoImage->save();
+            }
+            // Insert a new record
+            else {
+                UserInfo::create([
                     'user_id' => $user->user_id,
                     'field_id' => $fieldId,
-                ],
-                [
                     'file_name' => $fileName,
                     'file_path' => $newFileName,
-                ]
-            );
-
-            if (!$updated) {
-                DB::rollback();
-                Log::errorLog("Photo in User Info table not updated.", Auth::user()->user_id);
-                return redirect()->route('profile')->with(["errors" => ['An error occurred while saving profile image.']]);
+                ]);
             }
+
+//                DB::rollback();
+//                Log::errorLog("Photo in User Info table not updated.", Auth::user()->user_id);
+//                return redirect()->route('profile')->with(["errors" => ['An error occurred while saving profile image.']]);
 
             Log::informationLog("Profile image updated.", Auth::user()->user_id);
             DB::commit();
@@ -332,8 +348,7 @@ class UserController extends RootController
     /**
      * Remove the specified resource from storage.
      */
-    public
-    function destroy(string $id)
+    public function destroy(string $id)
     {
         //
     }

@@ -20,7 +20,8 @@
                         @case("success_registration")
                             <h1 class="text-center">Just one more step!</h1>
                             <h5 class="text-center text-muted">Hi {{ $user->first_name }},</h5>
-                            <h5 class="text-center text-muted">We have sent you a confirmation link to activate your account on email!</h5>
+                            <h5 class="text-center text-muted">We have sent you a confirmation link to activate your
+                                account on email!</h5>
 
                             <form action="{{route("verification.send")}}" method="POST">
                                 @csrf
@@ -35,9 +36,12 @@
                                         class="btn btn-outline-primary mx-auto d-block">Logout
                                 </button>
                             </form>
-{{--                            <p class="text-center"><a href="{{route("logout")}}">Logout</a></p>--}}
+                            {{--                            <p class="text-center"><a href="{{route("logout")}}">Logout</a></p>--}}
                             @break
                         @case("profile_activated")
+                            @section('appHeader')
+                                <meta http-equiv="refresh" content="5;url={{ route('profile') }}"/>
+                            @endsection
                             <h1 class="text-center">Congratulations! Your account is now activated.</h1>
                             <p class="text-center"><a href="{{route("profile")}}">Go to your profile</a></p>
                             @break

@@ -4,13 +4,13 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @yield('appHeader')
     <title>{{$pageTitle}}</title>
     <link
         rel="shortcut icon"
         type="image/png"
         href="{{asset("images/logos/polandstudylogo.png")}}"
     />
-{{--    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>--}}
     @vite(['resources/scss/styles.scss'])
 </head>
 

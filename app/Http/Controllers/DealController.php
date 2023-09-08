@@ -11,7 +11,9 @@ use CRest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use function Laravel\Prompts\error;
+use function Webmozart\Assert\Tests\StaticAnalysis\length;
 
 class DealController extends RootController
 {
@@ -52,10 +54,9 @@ class DealController extends RootController
 
         try {
             $title = "University Application From Platform";
-
-            //GET FROM USERS TABLE
             $contactId = $user->contact_id;
-            $profileImageName = $user->profile_image;
+            $pathOriginalImage = "public/profile/original";
+            $pathDocuments = "public/profile/documents";
 
             //GET FROM UNIVERSITY APPLICATION FORM SUBMIT
             $applicationFields = $request->all();
@@ -71,33 +72,49 @@ class DealController extends RootController
             }
 
             $userInfoFields = UserInfo::where('user_id', $user->user_id)
+                                        ->whereNotNull("value")
                                         ->pluck("value","field_id")
                                         ->toArray(); #ASOCIJATIVNI NIZ
 
+            $userInfoFiles = UserInfo::where('user_id', $user->user_id)
+                                        ->whereNull("value")
+                                        ->whereNotNull("file_path")
+                                        ->pluck("file_path","field_id")
+                                        ->toArray();
+
+            $userInfoFilesNames = UserInfo::where('user_id', $user->user_id)
+                                            ->whereNull("value")
+                                            ->whereNotNull("file_path")
+                                            ->pluck("file_name", "field_id")
+                                            ->toArray();
+
+            $allUserInfoFieldIds = array_merge(array_keys($userInfoFields), array_keys($userInfoFiles));
+
+            //GET REQUIRED FIELDS
             $requiredFields = Field::where("is_required", 1)
                                     ->where("field_category_id", "!=", 4)
                                     ->pluck("field_id")
                                     ->toArray();
 
-            $missing = array_filter($requiredFields, function ($fieldId) use ($userInfoFields) {
-                return empty($userInfoFields[$fieldId]);
-            });
 
+            //CHECK REQUIRED FIELDS
+            $missing = array_diff($requiredFields, $allUserInfoFieldIds);
             if (!empty($missing)){
                 Log::errorLog('Required fields not filled in.', $user->user_id);
                 return redirect()->route("home")->with(["errors" => ["You must fill in all required fields before applying to universities."]]);
             }
 
-            $fieldIds = array_keys($userInfoFields);
-
-            $fieldNames = Field::whereIn('field_id', $fieldIds)
-                                ->pluck('field_name','field_id')
-                                ->toArray();
 
             $dealFields = [
                 'TITLE' => $title,
                 'CONTACT_ID' => $contactId,
             ];
+
+            //EXTRACT FIELD NAMES FOR FIELDS FROM USER_INFO TABLE THAT ARE NOT FILES
+            $userInfoFieldIds = array_keys($userInfoFields);
+            $fieldNames = Field::whereIn('field_id', $userInfoFieldIds)
+                ->pluck('field_name','field_id')
+                ->toArray();
 
             // Populate $dealFields with the field names and values
             foreach ($userInfoFields as $fieldId=>$fieldValue) {
@@ -108,14 +125,56 @@ class DealController extends RootController
                 }
             }
 
+            //EXTRACT FIELD NAMES FOR FILES
+            $userInfoFileIds = array_keys($userInfoFiles);
+            $fieldNames = Field::whereIn('field_id', $userInfoFileIds)
+                                ->pluck('field_name','field_id')
+                                ->toArray();
+
+
+            //EXTRACT FIELD NAMES FOR FILES, FILE NAMES AND FILE CONTENTS
+            foreach ($userInfoFiles as $fieldId=>$fieldFilePath) {
+                $fieldName = $fieldNames[$fieldId] ?? null;
+                $fileName = $userInfoFilesNames[$fieldId] ?? null;
+
+                if ($fieldName) {
+                    $path = $fieldName === "UF_CRM_1667336320092" ? $pathOriginalImage : $pathDocuments;
+                    $fileContent = Storage::get($path.'/'.$fieldFilePath);
+
+                    $dealFields[$fieldName] = [
+                        'fileData' => [
+                            $fileName,
+                            base64_encode($fileContent)
+                        ]
+                    ];
+                }
+            }
+
+
+            //EXTRACT APPLICATION FIELDS NAMES AND THEIR VALUES (FROM DROPDOWNS) AND THEIR OPTION NAMES
             unset($applicationFields['_token']);
-            $dealFields = array_merge($dealFields, $applicationFields);
+            $applicationFieldsValues = [];
+            $applicationFieldsOptions = [];
+
+            foreach ($applicationFields as $key=>$value) {
+                $array = explode("__", $value);
+                if(is_array($array) && count($array)>1){
+                    $applicationFieldsValues[$key] = $array[0];
+                    $applicationFieldsOptions[$key] = $array[1];
+                }
+                else {
+                    $applicationFieldsOptions[$key] = $value;
+                }
+            }
+
+            //MERGE WITH APPLICATION FIELDS
+            $dealFields = array_merge($dealFields, $applicationFieldsValues);
 
             // Make API call to create the deal in Bitrix24
             $result = CRest::call("crm.deal.add", ['FIELDS' => $dealFields]);
 
+            //IF DEAL SUCCESSFULLY ADDED IN BITRIX
             if (isset($result['result']) && $result['result'] > 0) {
-                // Deal created successfully
                 Log::apiLog('Deal successfully created in Bitrix24.', $user->user_id);
 
                 // Insert a record into the 'deal' table in your database
@@ -124,7 +183,7 @@ class DealController extends RootController
                 $deal->user_id = $user->user_id;
                 $deal->date = now();
 
-                foreach ($dealFields as $fieldName => $fieldValue) {
+                foreach ($applicationFieldsOptions as $fieldName => $fieldValue) {//$dealFields array previously
                     switch ($fieldName) {
                         case 'UF_CRM_1667335624051':
                             $deal->university = $fieldValue;
@@ -152,7 +211,7 @@ class DealController extends RootController
         }
         catch (\Exception $e) {
             Log::errorLog('Error during application creation: '.$e->getMessage(), $user->user_id);
-            return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."]]);
+            return redirect()->route("profile")->with(["errors" => ["Application to university failed. Please try again later."]]);
         }
     }
 }
