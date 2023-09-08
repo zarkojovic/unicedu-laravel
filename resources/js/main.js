@@ -1,7 +1,7 @@
 import axios from "axios";
 
 function printHTML(el, val = null) {
-    console.log(el)
+
     let html = '';
     var requiredSpan = `<span class="text-danger">*</span>`;
     // Handle CRM category field
@@ -29,10 +29,12 @@ function printHTML(el, val = null) {
     }
     // Handle file input field
     else if (el.type === "file") {
+
         html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.is_required ? requiredSpan : ''}</label>
                 <br>
-                <label class="upload-document-label mb-3" for="${el.field_name}"><span>Upload Document</span></label>
-                <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control  d-none">`;
+                <label class="upload-document-label mb-3" for="${el.field_name}"><span>${val != null ? "Replace Document" : "Upload Document"}  </span></label>
+                <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control userFiles d-none">
+                ${val != null ? `<a class="btn btn-outline-danger ms-2"> <i class="ti ti-trash"></i> </a>` : ''}`;
     }
     // Handle date input field
     else if (el.type === "date") {
@@ -53,7 +55,10 @@ function printHTML(el, val = null) {
 
         el.items.forEach(item => {
             const isSelected = val != null && val.value === item.ID;
-            html += `<option value="${item.item_id}__${item.item_value}" ${isSelected ? "selected" : ""}>${item.item_value}</option>`;
+
+            if (item.is_active) {
+                html += `<option value="${item.item_id}__${item.item_value}" ${isSelected ? "selected" : ""}>${item.item_value}</option>`;
+            }
         });
 
         html += `</select>`;
@@ -187,7 +192,7 @@ function printElements(array = [], modal = false) {
         // Request category fields, active fields, and details for printing
         axios.post('/api/user_fields', data)
             .then(response => {
-                console.log(response.data);
+
                 // Hide the spinner on load
                 hideSpinner();
 
@@ -350,11 +355,11 @@ function printElements(array = [], modal = false) {
 
                             })
                             .catch(error => {
-                                console.error(error);
+                                showToast(error, 'error');
                             });
                     })
                     .catch(error => {
-                        console.error(error);
+                        showToast(error, 'error');
                     });
             });
     }
@@ -417,7 +422,8 @@ $(document).ready(function () {
                 })
             } catch
                 (error) {
-                console.log(error.response.data);
+                showToast(eerror.response.data, 'error');
+
             }
         }
     )
@@ -428,8 +434,6 @@ $(document).ready(function () {
         hideSpinner();
         showDisplayForm(id);
     });
-
-
 
 
 });
@@ -533,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const uploadedContent = '<span>Replace Document</span>';
         const newContent = 'Document Uploaded <i class="ti ti-check"></i>';
 
-        label.fadeOut(400, function() {
+        label.fadeOut(400, function () {
             label.html(newContent);
             label.removeClass(defaultClass);
             label.addClass(newClass);
@@ -556,5 +560,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 // Attach the handleFileInputChange function to the change event of input elements of type "file" within the document
-    $(document).on('change', 'input[type="file"]', handleFileInputChange);
+    $(document).on('change', 'input[type="file"].userFiles', handleFileInputChange);
 });

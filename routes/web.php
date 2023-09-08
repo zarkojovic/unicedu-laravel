@@ -228,26 +228,36 @@ Route::post("/apply", [DealController::class, "apply"])->name('makeDeal');
 Route::get("/test_items", function () {
 
 
-    $categories = \App\Models\FieldCategory::whereIn('field_category_id', [1, 2])->get();
-    $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->get();
-    $items = [];
-    foreach ($fields as $field) {
-        if ($field->type == "enumeration") {
-//            $items[] = $field->items;
-            $field['items'] = $field->items;
-        }
-    }
-
-    $data = [$categories, $fields];
-
-    $data = response()->json($data);
+//    $categories = \App\Models\FieldCategory::whereIn('field_category_id', [1, 2])->get();
+//    $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->orderBy('order', 'asc')->get();
+//    $items = [];
+//    foreach ($fields as $field) {
+//        if ($field->type == "enumeration") {
+//            $activeItems = array_filter($field->items->toArray(), function ($el) {
+//                return $el['is_active'] == 1;
+//            });
+//            $field['items'] = $activeItems;
+//        }
+//    }
 
 
-
-
-//    $res = \CRest::call('crm.deal.fields');
+//    $res = \CRest::call('crm.dealcategory.stage.list');
+////
+//    $stages = $res["result"];
+//    echo "<pre>";
+////        print_r($values);
+//    $field = Field::where('field_name', 'STAGE_ID')->first();
+//    if ($field) {
+//        foreach ($stages as $stage) {
+//            \App\Models\FieldItem::create([
+//                'item_value' => $stage['NAME'],
+//                'item_id' => $stage['ID'],
+//                'filed_id' => $field->field_id
+//            ]);
+//        }
+//    }
 //
-//    $values = $res["result"];
+//    echo "</pre>";
 //
 //    $newArray = array_filter($values,function ($el){
 //       return  $el['type'] == 'enumeration';

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Field;
+use App\Models\FieldItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Kafka0238\Crest\Src;
 use Illuminate\Database\Seeder;
@@ -226,6 +227,9 @@ class FieldSeeder extends Seeder
             }
 
         }
+
+
+
 
     }
 }
