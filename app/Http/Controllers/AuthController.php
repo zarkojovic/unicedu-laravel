@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -30,43 +31,93 @@ class AuthController extends Controller
         return view("login");
     }
 
+//    public function check(Request $request)
+//    {
+//        $validator = Validator::make($request->all(), [
+//            'first_name' => 'required|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
+//            'last_name' => 'required|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
+//            'phone' => 'required|unique:users',
+//            'password' => 'required|confirmed|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
+//            'email' => 'required|email|unique:users',
+//        ], [
+//            'first_name.regex' => 'First name start with capital letter first!',
+//            'last_name.regex' => 'First name start with capital letter first!',
+//            'password.regex' => 'Password must contain at least one small letter, one big letter and one number!',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return redirect()->back()->withErrors($validator)->withInput();
+//        } else {
+//            $validated = $validator->validated();
+//            $new = new User();
+//            $new->first_name = $request->first_name;
+//            $new->last_name = $request->last_name;
+//            $new->email = $request->email;
+//            $new->password = bcrypt($request->password);
+//            $new->phone = $request->phone;
+//
+//            if ($new->save()) {
+//                Log::authLog('User registered!(Not verified)', $new->user_id);
+//                event(new Registered($new));
+//                Auth::login($new);
+//                return redirect()->route("verification.notice");
+//            } else {
+//                Log::errorLog('Tried to register! Failed attempt!');
+//                return redirect()->back();
+//            }
+//
+//        }
+//    }
     public function check(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
-            'last_name' => 'required|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
+            'first_name' => 'required|string|max:20',
+            'last_name' => 'required|string|max:20',
             'phone' => 'required|unique:users',
-            'password' => 'required|confirmed|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
+            'password' => 'required|confirmed|string|min:8',
             'email' => 'required|email|unique:users',
-        ], [
-            'first_name.regex' => 'First name start with capital letter first!',
-            'last_name.regex' => 'First name start with capital letter first!',
-            'password.regex' => 'Password must contain at least one small letter, one big letter and one number!',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-        } else {
-            $validated = $validator->validated();
+        }
+
+        $validated = $validator->validated();
+
+        try {
+            DB::beginTransaction();
+
             $new = new User();
-            $new->first_name = $request->first_name;
-            $new->last_name = $request->last_name;
-            $new->email = $request->email;
-            $new->password = bcrypt($request->password);
-            $new->phone = $request->phone;
+            $new->fill([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'phone' => $request->phone,
+            ]);
 
             if ($new->save()) {
+                DB::commit();
+
                 Log::authLog('User registered!(Not verified)', $new->user_id);
                 event(new Registered($new));
                 Auth::login($new);
-                return redirect()->route("verification.notice");
-            } else {
-                Log::errorLog('Tried to register! Failed attempt!');
-                return redirect()->back();
-            }
 
+                return redirect()->route("verification.notice");
+            }
+            DB::rollback();
+
+            Log::errorLog('Tried to register! Failed attempt!');
+            return redirect()->back();
+        } catch (Exception $e) {
+            DB::rollback();
+
+            Log::errorLog('Exception during user registration: ' . $e->getMessage());
+
+            return redirect()->back();
         }
     }
+
 
     public function auth(Request $request)
     {
