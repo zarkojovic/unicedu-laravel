@@ -14,7 +14,6 @@
 @section('main-content')
 
     <div class="container-fluid pt-0">
-        <h1 class="fs-6 mb-5">Admin panel</h1>
         @if(session('fieldMessage'))
             <div class="alert alert-success" role="alert">
                 {{session('fieldMessage')}}

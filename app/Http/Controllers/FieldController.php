@@ -43,14 +43,14 @@ class FieldController extends Controller
         $existingFields = Field::where('field_category_id', $category_id)->get();
         $existingFieldIds = $existingFields->pluck('field_id')->toArray();
 
-// Remove fields that are no longer selected
+        // Remove fields that are no longer selected
         $fieldsToRemove = array_diff($existingFieldIds, $fields ?? []);
         Field::whereIn('field_id', $fieldsToRemove)->update([
             'field_category_id' => null,
             'order' => null
         ]);
 
-// Update required fields
+        // Update required fields
         Field::whereIn('field_id', $requiredFields)->update([
             'is_required' => true,
         ]);
@@ -58,7 +58,7 @@ class FieldController extends Controller
             'is_required' => false,
         ]);
 
-// Associate fields with the new category
+        // Associate fields with the new category
         Field::whereIn('field_id', $fields ?? [])->update([
             'field_category_id' => $category_id,
         ]);
