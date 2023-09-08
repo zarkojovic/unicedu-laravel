@@ -30,11 +30,11 @@ function printHTML(el, val = null) {
     // Handle file input field
     else if (el.type === "file") {
 
-        html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.is_required ? requiredSpan : ''}</label>
+        html += `<label for="${el.field_name}">${el.title}  ${el.is_required ? requiredSpan : ''}</label>
                 <br>
                 <label class="upload-document-label mb-3" for="${el.field_name}"><span>${val != null ? "Replace Document" : "Upload Document"}  </span></label>
                 <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control userFiles d-none">
-                ${val != null ? `<a class="btn btn-outline-danger ms-2"> <i class="ti ti-trash"></i> </a>` : ''}`;
+                ${val != null ? `<a class="btn btn-outline-danger ms-2 removeFileBtn" data-is_required="${el.is_required}" data-field_id="${el.field_id}" data-field_name="${el.field_name}" data-form_label="${el.title}"> <i class="ti ti-trash"></i> </a>` : ''}`;
     }
     // Handle date input field
     else if (el.type === "date") {
@@ -48,7 +48,6 @@ function printHTML(el, val = null) {
     }
     // Handle enumeration/select input field
     else if (el.type === "enumeration") {
-        console.log(el.items)
         html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <select class="form-control mb-3" data-field-id="${el.field_id}"  name="${el.field_name}">
                 <option value="0">Select</option>`;
@@ -116,7 +115,7 @@ function printForm(category, fields, user_info, display = true, show) {
 
         if (display) {
             // Generate HTML for displaying field info
-            html += `<div class="mb-3">
+            html += `<div class="mb-3" id="displayField${field.field_id}">
                         <label class="form-label">${displayName} ${element.is_required ? '<i>(required)</i>' : ''} </label>
                         <p id="display${displayName}" class="form-control-static mb-3">`;
             // Populate info based on user input
@@ -243,7 +242,7 @@ function printElements(array = [], modal = false) {
                 hideSpinner();
 
                 array.forEach(el => {
-                    let placeholder = `<div class="ph-item rounded">
+                    let placeholder = `<div class="ph-item rounded-5">
                                                 <div class="ph-col-12">
                                                     <div class="ph-row">
                                                         <div class="ph-col-6 big rounded"></div>
@@ -365,7 +364,43 @@ function printElements(array = [], modal = false) {
     }
 }
 
+
 $(document).ready(function () {
+    hideSpinner();
+
+    // deleting file from user info
+    $(document).on('click', ".removeFileBtn", function () {
+        var id = $(this).data('field_id');
+        var is_required = $(this).data('is_required');
+        var formLabel = $(this).data('form_label');
+        var field_name = $(this).data('field_name');
+        if (confirm('Are you sure you want to remove this file?')) {
+            var data = {
+                field_id: id
+            };
+            axios.post('/removeFileFromUserInfo', data)
+                .then(response => {
+                    var requiredSpan = `<span class="text-danger">*</span>`;
+                    let html = `
+                    <label for="${field_name}">${formLabel}  ${is_required ? requiredSpan : ''}</label>
+                    <br>
+                    <label class="upload-document-label mb-3" for="${field_name}"><span>Upload Document</span></label>
+                    <input type="file" id="${field_name}" name="${field_name}"  data-field-id="${id}" class="form-control userFiles d-none">
+                    `;
+                    $(this).parent().html(html);
+                    let displayHtml = `<div class="mb-3" id="displayField${id}">
+                                                <label class="form-label">${formLabel} ${is_required ? '<i>(required)</i>' : ''} </label>
+                                                <p id="display${formLabel}" class="form-control-static mb-3"> <span class='small text-muted fst-italic'>Empty</span> </p>
+                                                </div>`
+                    $(`#displayField` + id).html(displayHtml);
+
+                    showToast(response.data.message, 'success');
+                }).catch(error => {
+                console.log(error);
+                showToast('File not removed!', 'error');
+            });
+        }
+    });
 
     $(document).on('change', '#profile-image-input', function () {
         this.form.submit();
@@ -446,6 +481,161 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         let path = window.location.pathname;
+
+        // registration
+        if (path == '/register') {
+
+            function validatePhoneNumber() {
+                // Get the form elements
+                const phoneNumberInput = document.getElementById('phone');
+
+                // Your regex pattern for phone number validation
+                const phoneNumberPattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+
+                const phoneNumber = phoneNumberInput.value;
+
+                if (!phoneNumberPattern.test(phoneNumber)) {
+                    document.getElementById("phoneMessageWrap").innerHTML = `<span class="text-danger">Invalid phone number. Please enter a valid phone number.</span>`;
+                    return 0;
+                } else {
+                    document.getElementById("phoneMessageWrap").innerHTML = '';
+                    return 1;
+                }
+            }
+
+            function validateName(type) {
+                var nameInput;
+                if (type === 'first') {
+                    // Get the form elements
+                    nameInput = document.getElementById('first_name');
+                } else {
+                    // Get the form elements
+                    nameInput = document.getElementById('last_name');
+                }
+
+                // Your regex pattern for last name validation
+                const namePattern = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+
+                const name = nameInput.value;
+
+
+                if (!namePattern.test(name)) {
+                    if (type === 'first') {
+                        document.getElementById("firstNameMessageWrap").innerHTML = `<span class="text-danger">Invalid first name. Please enter a valid first name.</span>`;
+                    } else {
+                        document.getElementById("lastNameMessageWrap").innerHTML = `<span class="text-danger">Invalid last name. Please enter a valid last name.</span>`;
+                    }
+                    return 0;
+                } else {
+                    console.log('lagano')
+                    if (type === 'first') {
+                        document.getElementById("firstNameMessageWrap").innerHTML = '';
+                    } else {
+                        document.getElementById("lastNameMessageWrap").innerHTML = '';
+                    }
+                    return 1;
+                }
+            }
+
+            function validateEmail() {
+                // Get the form elements
+                const emailInput = document.getElementById('email');
+                // Your regex pattern for email validation
+                const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+                const email = emailInput.value;
+                if (!emailPattern.test(email)) {
+                    document.getElementById("emailMessageWrap").innerHTML = `<span class="text-danger">Invalid email address. Please enter a valid email address.</span>`;
+                    return 0;
+                } else {
+                    document.getElementById("emailMessageWrap").innerHTML = '';
+                    return 1;
+                }
+            }
+
+            function validatePassword() {
+                const passwordInput = document.getElementById('password');
+                console.log(passwordInput.value)
+                // Get the values entered by the user
+                const password = passwordInput.value;
+                const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+                if (!passwordPattern.test(password)) {
+                    document.getElementById("passwordMessageWrap").innerHTML = `<span class="text-danger">Password must have at least 8 characters (One big, one small and one number)</span>`;
+                    return 0;
+                } else {
+                    document.getElementById("passwordMessageWrap").innerHTML = '';
+                    return 1;
+                }
+            }
+
+            function validateRepeatPassword() {
+                // Get the form elements
+                const passwordInput = document.getElementById('password');
+                const repeatPasswordInput = document.getElementById('password_confirmation');
+
+                const password = passwordInput.value;
+                const repeatPassword = repeatPasswordInput.value;
+
+                if (password !== repeatPassword) {
+                    document.getElementById("repeatMessageWrap").innerHTML = `<span class="text-danger">Passwords do not match. Please re-enter the password.</span>`;
+                    return 0;
+                } else {
+                    document.getElementById("repeatMessageWrap").innerHTML = '';
+                    return 1;
+                }
+            }
+
+            function handleSubmit() {
+                var err = 0;
+                // Validate the email input
+                if (!validateEmail()) {
+                    err = 1;
+                }
+                if (!validatePassword()) {
+                    err = 1;
+                }
+                if (!validateRepeatPassword()) {
+                    err = 1;
+                }
+                if (!validateName('first')) {
+                    err = 1;
+                }
+                if (!validateName('last')) {
+                    err = 1;
+                }
+                if (!validatePhoneNumber()) {
+                    err = 1;
+                }
+
+                if (!err) {
+                    showSpinner();
+                    document.forms['registerForm'].submit();
+                }
+            }
+
+
+            const registerForm = document.getElementById('registerForm');
+            document.getElementById('email').addEventListener('change', validateEmail);
+            document.getElementById('password').addEventListener('change', validatePassword);
+            document.getElementById('password_confirmation').addEventListener('change', validateRepeatPassword);
+            document.getElementById('phone').addEventListener('change', validatePhoneNumber);
+            document.getElementById('last_name').addEventListener('change', function () {
+                validateName('last')
+            });
+            document.getElementById('first_name').addEventListener('change', function () {
+                validateName('first')
+            });
+            document.getElementById('registrationSubmit').addEventListener('click', handleSubmit);
+
+
+            registerForm.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent the default Enter key behavior
+                    handleSubmit();
+                }
+            });
+
+        }
+
 
         // Check if the page is for page editing or inserting
         if (path.includes('pages') && (path.includes('edit') || path.includes('insert'))) {

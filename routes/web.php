@@ -76,6 +76,8 @@ Route::middleware(["auth"])->group(function () {
 
         //EDIT IMAGE
         Route::match(['post', 'put', 'patch'], '/image/edit', [UserController::class, 'updateImage'])->name("user.image.update");
+//        DELETE FILE
+        Route::post('/removeFileFromUserInfo', [\App\Http\Controllers\UserController::class, 'removeUserFile']);
 
         // DOCUMENTS
         Route::get('/documents', function () {
@@ -85,6 +87,7 @@ Route::middleware(["auth"])->group(function () {
         Route::get('/applications', function () {
             return view('applications');
         });
+
 
         //ADMIN PERMISSIONS
         Route::middleware(["admin"])->group(function () {

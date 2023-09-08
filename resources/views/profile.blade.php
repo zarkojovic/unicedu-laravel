@@ -82,9 +82,6 @@
 @endsection
 
 @section('scripts')
-{{--    <script>--}}
-{{--        printElements();--}}
-{{--    </script>--}}
 
 @endsection
 

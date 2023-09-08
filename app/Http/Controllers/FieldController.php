@@ -108,7 +108,7 @@ class FieldController extends Controller
 
         return redirect()->back();
     }
-
+//OLD FUNCTION WITH JSON
     public function updateFieldss()
     {
 

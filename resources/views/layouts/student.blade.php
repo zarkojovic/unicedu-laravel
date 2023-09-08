@@ -4,12 +4,9 @@
 @section('main')
 
     <!-- PRELOADER -->
-    <div id="preloader">
-{{--        <div class="rotate-30">--}}
-{{--        <span class="loader shadow-lg"></span>--}}
-{{--        </div>--}}
-        <img src="{{ asset("images/logos/polandstudylogo.png") }}" alt="spinner" class="rotate-hor-center"/>
-    </div>
+{{--    <div id="preloader">--}}
+{{--        <img src="{{ asset("images/logos/polandstudylogo.png") }}" alt="spinner" class="rotate-hor-center"/>--}}
+{{--    </div>--}}
     <!--  Body Wrapper -->
     <div
         class="page-wrapper"

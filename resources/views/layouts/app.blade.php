@@ -15,7 +15,10 @@
 </head>
 
 <body class="overflow-x-hidden">
-
+<!-- PRELOADER -->
+<div id="preloader">
+    <img src="{{ asset("images/logos/polandstudylogo.png") }}" alt="spinner" class="rotate-hor-center"/>
+</div>
 @yield('main')
 
 @vite(['resources/scss/styles.scss',

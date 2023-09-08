@@ -35,6 +35,28 @@ class UserController extends RootController
     }
 
 
+    public function removeUserFile(Request $request)
+    {
+        $user = Auth::user();
+
+        $field_id = $request->field_id;
+
+        $info = UserInfo::where('field_id', $field_id)->where('user_id', $user->user_id)->first();
+
+        if ($info) {
+            if ($info->delete()) {
+                return response()->json(['message' => 'You removed this file!']);
+            } else {
+                http_response_code(500);
+                return response()->json(['message' => 'Error occurred! File is not deleted!']);
+            }
+        } else {
+            http_response_code(401);
+            return response()->json(['message' => 'File not found!']);
+        }
+    }
+
+
     public function updateUserInfo(Request $request)
     {
 //        GET ALL OF THE DATA FROM REQUEST
@@ -295,8 +317,7 @@ class UserController extends RootController
                 $userInfoImage->file_name = $fileName;
                 $userInfoImage->file_path = $newFileName;
                 $userInfoImage->save();
-            }
-            // Insert a new record
+            } // Insert a new record
             else {
                 UserInfo::create([
                     'user_id' => $user->user_id,
