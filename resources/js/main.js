@@ -48,6 +48,7 @@ function printHTML(el, val = null) {
     }
     // Handle enumeration/select input field
     else if (el.type === "enumeration") {
+        console.log(el.items)
         html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <select class="form-control mb-3" data-field-id="${el.field_id}"  name="${el.field_name}">
                 <option value="0">Select</option>`;
@@ -115,7 +116,7 @@ function printForm(category, fields, user_info, display = true, show) {
 
         if (display) {
             // Generate HTML for displaying field info
-            html += `<div class="mb-3" id="displayField${field.field_id}">
+            html += `<div class="mb-3">
                         <label class="form-label">${displayName} ${element.is_required ? '<i>(required)</i>' : ''} </label>
                         <p id="display${displayName}" class="form-control-static mb-3">`;
             // Populate info based on user input
@@ -294,8 +295,8 @@ function printElements(array = [], modal = false) {
                                     html += `
                             <div class="row">
                                 <div class="col-lg-12 d-flex align-items-stretch">
-                                    <div class="card w-100">
-                                        <div class="card-header bg-white p-4 px-4">
+                                    <div class="card w-100 rounded-5">
+                                        <div class="card-header bg-white p-4 px-4 rounded-5">
                                         <div class="container-fluid">
                                             <div class="row align-items-center ">
                                                 <div class="col-6 px-0">
@@ -307,7 +308,7 @@ function printElements(array = [], modal = false) {
                                                     <div id="userFormBtn${category.field_category_id}" class="d-none justify-content-end">
                                                         <button
                                                             type="button"
-                                                            class="btn btn-success btn-block m-1 btnSaveClass"
+                                                            class="btn btn-success btn-block m-1 btnSaveClass rounded-3"
                                                             id="btnSave${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                             data-print="${array}"
@@ -316,7 +317,7 @@ function printElements(array = [], modal = false) {
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            class="btn btn-danger btn-block m-1 btnCancelClass"
+                                                            class="btn btn-danger btn-block m-1 btnCancelClass rounded-3"
                                                             id="btnCancel${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                         >
@@ -326,7 +327,7 @@ function printElements(array = [], modal = false) {
                                                     <div id="displayFormBtn${category.field_category_id}">
                                                         <button
                                                             type="button"
-                                                            class="btn btn-block m-1 btnEditClass"
+                                                            class="btn btn-block m-1 btnEditClass rounded-3"
                                                             id="btnEdit${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                         >

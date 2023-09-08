@@ -157,7 +157,7 @@ $(document).ready(function() {
         }).disableSelection();
     });
 
-    //FIELD SETTINGS POPUP
+    //MARKING THE FIELD WHEN UNCHECKING ACTIVE
     $('input[type="checkbox"][name^="fields["]').on('change', function () {
         const parentDiv = $(this).closest('.sortable-item');
         const form = parentDiv.closest('form'); // Get the form element using jQuery
@@ -171,6 +171,19 @@ $(document).ready(function() {
                 parentDiv.addClass('to-remove');
                 updateFieldOrder(form, categoryList);
             }
+        }
+    });
+
+    //FIELD TITLE CHANGING COLOR ON REQUIRED CHECKBOX CHANGE
+    $('input[type="checkbox"][name^="requiredFields["]').on('change', function () {
+        var fieldId = $(this).attr('value'); // Get the ID of the changed checkbox
+        var labelSelector = 'label[for="' + fieldId + '"]'; // Construct the label selector
+
+        // Check if the checkbox is checked and add/remove the 'primary-color' class accordingly
+        if ($(this).is(':checked')) {
+            $(labelSelector).addClass('primary-color');
+        } else {
+            $(labelSelector).removeClass('primary-color');
         }
     });
 });

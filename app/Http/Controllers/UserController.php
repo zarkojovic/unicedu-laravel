@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deal;
 use App\Models\Field;
 use App\Models\FieldCategory;
 use App\Models\Log;
@@ -388,5 +389,16 @@ class UserController extends RootController
             ->findOrFail($id);
         $history = Log::where('user_id', $id)->get();
         return view('admin.users.edit', ['pageTitle' => 'User Info', 'history' => $history, 'data' => $users, 'name' => 'Users']);
+    }
+
+    public function showMyApplications(){
+        $user = Auth::user();
+        $userDeals = Deal::where('user_id', $user->user_id)->get();
+
+
+        // Return a view with the user's deals
+        return view('applications', [
+            'userDeals' => $userDeals, // User-specific deals data
+        ]);
     }
 }

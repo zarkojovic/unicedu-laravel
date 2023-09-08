@@ -84,9 +84,9 @@ Route::middleware(["auth"])->group(function () {
             return view('documents');
         });
 
-        Route::get('/applications', function () {
-            return view('applications');
-        });
+        Route::get('/applications', [UserController::class, 'showMyApplications']);
+
+
 
 
         //ADMIN PERMISSIONS
