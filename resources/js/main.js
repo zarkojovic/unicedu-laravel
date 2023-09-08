@@ -33,8 +33,8 @@ function printHTML(el, val = null) {
         html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title}  ${el.is_required ? requiredSpan : ''}</label>
                 <br>
                 <label class="upload-document-label mb-3" for="${el.field_name}"><span>${val != null ? "Replace Document" : "Upload Document"}  </span></label>
-                <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control  d-none">
-                ${val != null ? `<a class="btn btn-danger ms-2"> <i class="ti ti-trash"></i> </a>` : ''}`;
+                <input type="file" id="${el.field_name}" name="${el.field_name}" value="${val != null ? val.value : ""}" data-field-id="${el.field_id}" class="form-control userFiles d-none">
+                ${val != null ? `<a class="btn btn-outline-danger ms-2"> <i class="ti ti-trash"></i> </a>` : ''}`;
     }
     // Handle date input field
     else if (el.type === "date") {
@@ -436,8 +436,6 @@ $(document).ready(function () {
     });
 
 
-
-
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -539,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const uploadedContent = '<span>Replace Document</span>';
         const newContent = 'Document Uploaded <i class="ti ti-check"></i>';
 
-        label.fadeOut(400, function() {
+        label.fadeOut(400, function () {
             label.html(newContent);
             label.removeClass(defaultClass);
             label.addClass(newClass);
@@ -562,5 +560,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 // Attach the handleFileInputChange function to the change event of input elements of type "file" within the document
-    $(document).on('change', 'input[type="file"]', handleFileInputChange);
+    $(document).on('change', 'input[type="file"].userFiles', handleFileInputChange);
 });
