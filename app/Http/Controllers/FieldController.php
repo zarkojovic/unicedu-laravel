@@ -57,8 +57,8 @@ class FieldController extends Controller
         $requiredFields = $request->requiredFields ?? [];
         $fieldsOrder = json_decode($request->category_order, true);
 
-        $requiredFieldsFromDatabase = Field::where('is_required', 1)->get();
-        $requiredFieldsFromDatabaseIDs = $requiredFieldsFromDatabase->pluck('field_id')->toArray();
+//        $requiredFieldsFromDatabase = Field::where('is_required', 1)->get();
+//        $requiredFieldsFromDatabaseIDs = $requiredFieldsFromDatabase->pluck('field_id')->toArray();
 
         $existingFields = Field::where('field_category_id', $category_id)->get();
         $existingFieldIds = $existingFields->pluck('field_id')->toArray();
