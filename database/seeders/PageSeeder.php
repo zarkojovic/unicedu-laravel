@@ -41,8 +41,8 @@ class PageSeeder extends Seeder
                 'icon' => 'ti ti-users',
                 'role_id' => '3'
             ], [
-                'route' => '/deals',
-                'title' => 'My Applications',
+                'route' => '/applications',
+                'title' => 'Applications',
                 'icon' => 'ti ti-school',
                 'role_id' => '1'
             ], [
