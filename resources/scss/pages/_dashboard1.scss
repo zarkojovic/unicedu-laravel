@@ -6,6 +6,15 @@ body {
 }
 
 
+.applicationStatus{
+    background-color: $danger;
+    color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    width: 75%;
+    font-size: 10px;
+}
+
 #userFormBtn2 {
     display: flex;
     justify-content: end;

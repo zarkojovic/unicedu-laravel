@@ -27,7 +27,7 @@
                         <button
                             data-bs-toggle="modal"
                             data-bs-target="#dealModal"
-                            class="btn btn-primary"
+                            class="btn btn-primary rounded-3"
                         >Apply For University
                         </button>
                     </li>
