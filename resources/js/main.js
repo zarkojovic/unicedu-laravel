@@ -435,6 +435,9 @@ $(document).ready(function () {
         showDisplayForm(id);
     });
 
+
+
+
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -516,4 +519,48 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (error) {
         console.error('Unexpected error:', error);
     }
+
+    function handleFileInputChange() {
+        const input = this;
+
+        const parentDiv = input.closest('.col-sm-6');
+
+        const firstLabel = parentDiv.querySelector('label');
+
+        const labelHTML = firstLabel.innerHTML;
+        const fieldName = labelHTML.replace('*', '').trim();
+
+
+        const label = $(input).siblings('label.upload-document-label');
+
+        const newClass = 'document-uploaded-label';
+        const defaultClass = 'upload-document-label';
+
+        const uploadedContent = '<span>Replace Document</span>';
+        const newContent = 'Document Uploaded <i class="ti ti-check"></i>';
+
+        label.fadeOut(400, function() {
+            label.html(newContent);
+            label.removeClass(defaultClass);
+            label.addClass(newClass);
+
+            label.fadeIn(400);
+
+            showToast('You\'ve attached a file to ' + fieldName + ' field<br/>Submit changes by clicking on "&#10004;"', 'success');
+
+            setTimeout(function () {
+                label.removeClass(newClass);
+                label.html(uploadedContent);
+            }, 3000);
+
+            setTimeout(function () {
+                label.addClass(defaultClass);
+
+                label.fadeIn(400);
+            }, 3000);
+        });
+    }
+
+// Attach the handleFileInputChange function to the change event of input elements of type "file" within the document
+    $(document).on('change', 'input[type="file"]', handleFileInputChange);
 });
