@@ -22,6 +22,49 @@ class FieldItemSeeder extends Seeder
             return $el['type'] == 'enumeration';
         });
 
+        $res = \CRest::call('crm.dealcategory.stage.list');
+        $stages = $res["result"];
+
+        $field = Field::where('field_name', 'STAGE_ID')->first();
+        if ($field) {
+            foreach ($stages as $stage) {
+                FieldItem::create([
+                    'item_value' => $stage['NAME'],
+                    'item_id' => $stage['STATUS_ID'],
+                    'field_id' => $field->field_id
+                ]);
+            }
+        }
+
+        $res = \CRest::call('crm.dealcategory.list');
+        $stages = $res["result"];
+
+        $field = Field::where('field_name', 'CATEGORY_ID')->first();
+        if ($field) {
+            foreach ($stages as $stage) {
+                FieldItem::create([
+                    'item_value' => $stage['NAME'],
+                    'item_id' => $stage['ID'],
+                    'field_id' => $field->field_id
+                ]);
+            }
+        }
+
+        $res = \CRest::call('crm.status.list');
+        $stages = $res["result"];
+
+        $field = Field::where('field_name', 'TYPE_ID')->first();
+        if ($field) {
+            foreach ($stages as $stage) {
+                FieldItem::create([
+                    'item_value' => $stage['NAME'],
+                    'item_id' => $stage['ID'],
+                    'field_id' => $field->field_id
+                ]);
+            }
+        }
+
+
         foreach ($newArray as $key => $value) {
             $fieldId = Field::where("field_name", $key)->pluck('field_id');
             $fieldId = $fieldId[0];

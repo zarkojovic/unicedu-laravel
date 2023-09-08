@@ -14,6 +14,9 @@ class FieldController extends Controller
 {
     public function getAvailableFields(Request $request)
     {
+
+//        OLD WAY WITH THE FIELDS JSON
+
 //        $c_vals = $request->input('id');
 //
 //        $categories = \App\Models\FieldCategory::whereIn('field_category_id', $c_vals)->get();
