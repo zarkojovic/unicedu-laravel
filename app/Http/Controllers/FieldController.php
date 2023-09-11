@@ -36,8 +36,16 @@ class FieldController extends Controller
         $c_vals = $request->input('id');
 
         $categories = \App\Models\FieldCategory::whereIn('field_category_id', $c_vals)->get();
-        $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->orderBy('order', 'asc')->get();
+        $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->whereIn('field_category_id', $c_vals)->orderBy('order', 'asc')->get();
         $items = [];
+        $user = Auth::user();
+        $info = Db::table("user_infos")
+            ->selectRaw("`field_id`, `value`, `display_value`, `file_name`,`file_path`")
+            ->where("user_id", $user->user_id)
+            ->groupBy("field_id", "value", "display_value", "file_name", 'file_path')
+            ->get();
+
+
         foreach ($fields as $field) {
             if ($field->type == "enumeration") {
 
@@ -45,7 +53,7 @@ class FieldController extends Controller
             }
         }
 
-        $data = [$categories, $fields];
+        $data = [$categories, $fields,$info];
 
         return response()->json($data);
 

@@ -45,8 +45,6 @@
                             <input type="hidden" name="category_order" class="category-order-input"/>
                             <div class="card-body">
                                 <div class="container-fluid">
-                                    {{--                                    <div class="row">--}}
-                                    {{--                                        <div class="col-lg-10 col-sm-12">--}}
                                     <div class="row row-sortable position-relative">
                                         @foreach($fields as $field)
                                             @if ($field->field_category_id === $category->field_category_id)
@@ -55,7 +53,8 @@
                                                     data-field-id="{{$field->field_id}}">
                                                     <div class="d-flex justify-content-between position-relative">
                                                         <label
-                                                            class="{{ $field->is_required ? 'primary-color' : '' }}" for="{{$field->field_id }}">{{$field->title != null ? $field->title : $field->field_name}}</label>
+                                                            class="{{ $field->is_required ? 'primary-color' : '' }}"
+                                                            for="{{$field->field_id }}">{{$field->title != null ? $field->title : $field->field_name}}</label>
 
                                                         <i class="ti ti-adjustments-alt panel-field-settings"
                                                            id="icon_{{$field->field_id}}"

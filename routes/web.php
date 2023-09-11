@@ -63,6 +63,7 @@ Route::middleware(["auth"])->group(function () {
         //ROUTES FOR AJAX RETURN OF DATA
         Route::post("/user_info", [UserController::class, 'getUserInfo']);
         Route::post("/update_user", [UserController::class, 'updateUserInfo']);
+        Route::post("/user_fields", [\App\Http\Controllers\FieldController::class, 'getAvailableFields']);
 
         Route::get('/', function () {
 //            $user = Auth::user();

@@ -48,7 +48,7 @@ function printHTML(el, val = null) {
     }
     // Handle enumeration/select input field
     else if (el.type === "enumeration") {
-        console.log(el.items)
+
         html += `<label for="${el.field_name}">${el.formLabel ? el.formLabel : el.title} ${el.is_required ? requiredSpan : ''}</label>
                 <select class="form-control mb-3" data-field-id="${el.field_id}"  name="${el.field_name}">
                 <option value="0">Select</option>`;
@@ -190,7 +190,7 @@ function printElements(array = [], modal = false) {
 
     if (modal) {
         // Request category fields, active fields, and details for printing
-        axios.post('/api/user_fields', data)
+        axios.post('/user_fields', data)
             .then(response => {
 
                 // Hide the spinner on load
@@ -230,20 +230,14 @@ function printElements(array = [], modal = false) {
                 // Append the CSRF token input field to the form
                 form.appendChild(csrfInput);
 
-
             })
             .catch(error => {
                 showToast(error, 'error');
             });
     } else {
-        // Request category fields, active fields, and details for printing
-        axios.post('/api/user_fields', data)
-            .then(response => {
-                // Hide the spinner on load
-                hideSpinner();
 
-                array.forEach(el => {
-                    let placeholder = `<div class="ph-item rounded-5">
+        array.forEach(el => {
+            let placeholder = `<div class="ph-item rounded-5">
                                                 <div class="ph-col-12">
                                                     <div class="ph-row">
                                                         <div class="ph-col-6 big rounded"></div>
@@ -272,27 +266,27 @@ function printElements(array = [], modal = false) {
 
                                                 </div>
                                             </div>`;
-                    $("#fieldsWrap").append(placeholder);
-                })
+            $("#fieldsWrap").append(placeholder);
+        });
 
-                // Request category fields, active fields, and details for printing
-                axios.post('/api/user_fields', data)
-                    .then(response => {
-                        // Hide the spinner on load
-                        hideSpinner();
+        // Hide the spinner on load
+        hideSpinner();
 
-                        // Separate data from the response
-                        var categories = response.data[0];
-                        var fields = response.data[1];
-                        axios.post("/user_info")
-                            .then(response => {
+        // Request category fields, active fields, and details for printing
+        axios.post('/user_fields', data)
+            .then(response => {
+                // Hide the spinner on load
+                hideSpinner();
 
-                                var user_info = response.data;
+                // Separate data from the response
+                var categories = response.data[0];
+                var fields = response.data[1];
+                var user_info = response.data[2];
 
-                                // Generate HTML for each category
-                                var html = '';
-                                categories.forEach(category => {
-                                    html += `
+                // Generate HTML for each category
+                var html = '';
+                categories.forEach(category => {
+                    html += `
                             <div class="row">
                                 <div class="col-lg-12 d-flex align-items-stretch">
                                     <div class="card w-100 rounded-5">
@@ -339,29 +333,26 @@ function printElements(array = [], modal = false) {
                                             </div></div>
                                         </div>
                                         <div class="card-body  px-sm-4 p-sm-3 px-sm-3 px-2">`;
-                                    // Generate HTML for printing both forms
-                                    html += printForm(category, fields, user_info, false);
-                                    html += printForm(category, fields, user_info);
-                                    html += `
+                    // Generate HTML for printing both forms
+                    html += printForm(category, fields, user_info, false);
+                    html += printForm(category, fields, user_info);
+                    html += `
                                         </div>
                                     </div>
                                 </div>
                             </div>`;
-                                });
-                                // $("#fieldsWrap").hide();
-                                // // Display the generated HTML
-                                $("#fieldsWrap").html(html);
-                                // $("#fieldsWrap").fadeIn();
+                });
+                // $("#fieldsWrap").hide();
+                // // Display the generated HTML
+                $("#fieldsWrap").html(html);
+                // $("#fieldsWrap").fadeIn();
 
-                            })
-                            .catch(error => {
-                                showToast(error, 'error');
-                            });
-                    })
-                    .catch(error => {
-                        showToast(error, 'error');
-                    });
+
+            })
+            .catch(error => {
+                showToast(error, 'error');
             });
+
     }
 }
 

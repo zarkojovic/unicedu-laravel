@@ -30,7 +30,7 @@
 
 
     <div id="myAlert"
-         class="alert top-0 toast-notification mt-3 alert-notification alert-success fade show position-fixed px-5"
+         class="alert top-0 toast-notification mt-3 alert-notification alert-success fade show position-fixed px-sm-5 px-sm-3"
          role="alert">
     </div>
 

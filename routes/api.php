@@ -21,8 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post("/user_fields", [\App\Http\Controllers\FieldController::class, 'getAvailableFields']);
-
 
 Route::post("/get_icons", [\App\Http\Controllers\PageController::class, 'getIconsByName']);
 
