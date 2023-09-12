@@ -40,7 +40,7 @@ class PageController extends Controller
             $columns = DB::getSchemaBuilder()->getColumnListing('pages');
 
             // Return the admin template view with necessary data
-            return view("templates.admin", [
+            return view("admin.table_data", [
                 'pageTitle' => 'Pages',     // Page title for display
                 'data' => $pages,           // Pages data to be displayed
                 'columns' => $columns,      // Column listing for the table

@@ -24,7 +24,7 @@ class FieldCategoryController extends Controller
             $columns = DB::getSchemaBuilder()->getColumnListing('field_categories');
 
             // Return the admin template view with necessary data
-            return view("templates.admin", [
+            return view("admin.table_data", [
                 'pageTitle' => 'Field Categories', // Page title for display
                 'data' => $data,                   // Field categories data to be displayed
                 'name' => 'Categories',            // Name of the entity being displayed

@@ -18,7 +18,8 @@
             <a href="/profile" class="text-nowrap logo-img">
                 <img
                     src="{{ asset("images/logos/polandstudylogo.png") }}"
-                    width="180"
+{{--                    width="180"--}}
+                    class="img-fluid"
                     alt="logo"
                 />
             </a>

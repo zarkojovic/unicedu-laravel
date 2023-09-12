@@ -32,7 +32,7 @@ class UserController extends RootController
         if ($user->role->role_name === "admin") {
             return redirect()->route("admin_home");
         }
-        return view('profile');
+        return view('student.profile');
     }
 
 
@@ -380,7 +380,7 @@ class UserController extends RootController
         $users = User::select('first_name', 'last_name', 'email', 'phone', 'email_verified_at', 'profile_image', 'contact_id', 'created_at', 'updated_at', 'user_id as id')->get();
         $columns = DB::getSchemaBuilder()->getColumnListing('users');
         $columns = ['id', 'profile_image', 'first_name', 'last_name', 'email', 'phone', 'email_verified_at', 'contact_id', 'created_at', 'updated_at'];
-        return view("templates.admin", ['pageTitle' => 'User', 'data' => $users, 'columns' => $columns, 'name' => 'Users']);
+        return view("admin.table_data", ['pageTitle' => 'User', 'data' => $users, 'columns' => $columns, 'name' => 'Users']);
     }
 
     public function editUsers(string $id)
@@ -391,14 +391,16 @@ class UserController extends RootController
         return view('admin.users.edit', ['pageTitle' => 'User Info', 'history' => $history, 'data' => $users, 'name' => 'Users']);
     }
 
-    public function showMyApplications(){
+    public function showMyApplications(Request $request)
+    {
         $user = Auth::user();
         $userDeals = Deal::where('user_id', $user->user_id)->get();
-
+        $showModal = $request->input('showModal');
 
         // Return a view with the user's deals
-        return view('applications', [
+        return view('student.applications', [
             'userDeals' => $userDeals, // User-specific deals data
+            'showModal' => $showModal
         ]);
     }
 }
