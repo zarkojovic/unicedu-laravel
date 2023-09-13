@@ -2,13 +2,15 @@
 {{-- Header --}}
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
-{{ config('app.name') }}
+{{--{{ config('app.name') }}--}}
 </x-mail::header>
 </x-slot:header>
-
+<body>
 {{-- Body --}}
-{{ $slot }}
+<img src="https://polandstudy.com/site/assets/images/12144109981689673876.png" id="logo" alt="{{ config('app.name') }}">
 
+{{ $slot }}
+</body>
 {{-- Subcopy --}}
 @isset($subcopy)
 <x-slot:subcopy>
@@ -21,7 +23,7 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-© {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+© {{ date('Y') }} @lang('Poland Study'). @lang('All rights reserved.')
 </x-mail::footer>
 </x-slot:footer>
 </x-mail::layout>

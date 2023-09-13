@@ -15,7 +15,8 @@
                             <h4 class="card-title fw-semibold">My Applications</h4>
                         </div>
                         @foreach($userDeals as $application)
-                        <div class="row p-3 border-bottom align-items-baseline">
+                            @if($application->active == 1)
+                            <div class="row p-3 border-bottom align-items-baseline">
                             <div class="col-12 col-lg-10">
                                 <div class="row mb-lg-3">
                                     <div class="col-12 col-md-6">
@@ -50,16 +51,38 @@
                                 </div>
                             </div>
                             <div class="col-12 col-lg-2 d-flex justify-content-end align-items-start mt-3">
-                                <button class="btn btn-outline-danger rounded-3">Delete</button>
+                                <button class="btn btn-outline-danger rounded-3" data-deal-id="{{ $application->deal_id }}" data-bs-toggle="modal" data-bs-target="#deleteApplicationModal">Delete</button>
+
                             </div>
                         </div>
+                            @endif
                         @endforeach
+                        <div class="modal fade" id="deleteApplicationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                <div class="modal-content rounded-5 p-2">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Are you sure that you want to delete this application?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
 
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger rounded-3" data-bs-dismiss="modal">No</button>
+                                        <button type="submit" id="confirmDeleteButton" class="btn btn-success rounded-3">Yes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
             </div>
         </div>
     </div>
+        @endsection
+        @section('scripts')
+            @vite(['resources/js/userDeleteDeal.js']);
+        @endsection
 
 
-@endsection
+
 

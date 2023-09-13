@@ -24,6 +24,7 @@ body {
     background-color: $primary;
     color: #fff;
     width: 85px;
+    border-radius: 0px 15px 15px 15px;
 
 }
 
@@ -307,7 +308,7 @@ input[type="checkbox"] {
     align-items: center;
 
     img {
-        width: 200px;
+        width: 120px;
         margin: 0 auto;
     }
 }

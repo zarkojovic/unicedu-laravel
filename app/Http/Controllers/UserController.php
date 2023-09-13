@@ -391,14 +391,18 @@ class UserController extends RootController
         return view('admin.users.edit', ['pageTitle' => 'User Info', 'history' => $history, 'data' => $users, 'name' => 'Users']);
     }
 
-    public function showMyApplications(){
+    public function showMyApplications()
+    {
         $user = Auth::user();
-        $userDeals = Deal::where('user_id', $user->user_id)->get();
-
+        $userDeals = Deal::where('user_id', $user->user_id)
+            ->select('deal_id', 'university', 'user_id', 'degree', 'program', 'intake', 'created_at', 'updated_at', 'active')
+            ->get();
 
         // Return a view with the user's deals
         return view('applications', [
             'userDeals' => $userDeals, // User-specific deals data
         ]);
     }
+
+
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('degree');
             $table->string('program');
             $table->string('intake');
-            $table->string('date');
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

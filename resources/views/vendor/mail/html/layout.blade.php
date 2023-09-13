@@ -34,7 +34,8 @@ width: 100% !important;
 
 <!-- Email Body -->
 <tr>
-<td class="body" width="100%" cellpadding="0" cellspacing="0" style="border: hidden !important;">
+<td class="body" width="100%" cellpadding="0" cellspacing="0" style="border: hidden !important; background: linear-gradient(90deg, rgb(229, 100, 70) 0%, rgb(235, 171, 88) 100%);
+">
 <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
 <!-- Body content -->
 <tr>

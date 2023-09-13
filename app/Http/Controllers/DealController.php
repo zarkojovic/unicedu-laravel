@@ -179,9 +179,9 @@ class DealController extends RootController
 
                 // Insert a record into the 'deal' table in your database
                 $deal = new Deal();
+                $deal->active = true;
                 $deal->bitrix_deal_id = $result['result'];
                 $deal->user_id = $user->user_id;
-                $deal->date = now();
 
                 foreach ($applicationFieldsOptions as $fieldName => $fieldValue) {//$dealFields array previously
                     switch ($fieldName) {
@@ -210,8 +210,35 @@ class DealController extends RootController
             return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."]]);
         }
         catch (\Exception $e) {
-            Log::errorLog('Error during application creation: '.$e->getMessage(), $user->user_id);
+            Log::errorLog('Error during application creation: ', $user->user_id);
             return redirect()->route("profile")->with(["errors" => ["Application to university failed. Please try again later."]]);
         }
     }
+    public function deleteDeal($deal_id)
+    {
+        $user = Auth::user();
+
+        // This function is making deal unactive, making user think he deleted it
+        // But it will be removed from Bitrix24
+
+        $deal = Deal::find($deal_id);
+
+        if (!$deal) {
+            Log::errorLog('Tried to remove deal that doesen\'t exist.', $user->user_id);
+            return redirect()->route('home')->withErrors(['error' => 'An error occurred while deleting an application.']);
+        }
+        // Update the 'active' column
+        $deal->active = false; // Assuming you want to set it to true
+        if(!($deal->save())){
+            Log::errorLog('Couldn\'t remove deal from database.', $user->user_id);
+            return redirect()->route('home')->withErrors(['error' => 'An error occurred while deleting an application.']);
+        }
+
+
+        Log::informationLog('Removed deal.', $user->user_id);
+
+        // Optionally, you can return a success message or perform other actions here
+        }
+
+
 }
