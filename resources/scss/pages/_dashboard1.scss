@@ -24,6 +24,7 @@ body {
     background-color: $primary;
     color: #fff;
     width: 85px;
+    border-radius: 0px 15px 15px 15px;
 
 }
 
@@ -307,7 +308,7 @@ input[type="checkbox"] {
     align-items: center;
 
     img {
-        width: 200px;
+        width: 120px;
         margin: 0 auto;
     }
 }
@@ -532,4 +533,13 @@ input[type="checkbox"] {
 .rotate-hor-center {
     -webkit-animation: rotate-hor-center 1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both;
     animation: rotate-hor-center 1s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both;
+}
+
+.btn-save{
+    border: 1px solid #5D6A83;
+}
+.btn-save:hover{
+    background-color: #0ea78b;
+    color: #fff;
+    border: 1px solid transparent;
 }

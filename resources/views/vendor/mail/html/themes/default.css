@@ -6,6 +6,7 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     position: relative;
+
 }
 
 body {
@@ -17,6 +18,7 @@ body {
     margin: 0;
     padding: 0;
     width: 100% !important;
+
 }
 
 p,
@@ -38,7 +40,7 @@ a img {
 /* Typography */
 
 h1 {
-    color: #3d4852;
+    color: #fff;
     font-size: 18px;
     font-weight: bold;
     margin-top: 0;
@@ -63,7 +65,8 @@ p {
     font-size: 16px;
     line-height: 1.5em;
     margin-top: 0;
-    text-align: left;
+    color: #7C8FAC!important;
+    font-weight: 600;
 }
 
 p.sub {
@@ -74,16 +77,33 @@ img {
     max-width: 100%;
 }
 
+#logo{
+    max-width: 120px;
+    margin: 0px auto;
+    display: flex;
+}
+
+.gradient{
+    background: linear-gradient(90deg, rgb(229, 100, 70) 0%, rgb(235, 171, 88) 100%);
+
+}
+.logowrap{
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    display:flex;
+}
 /* Layout */
 
 .wrapper {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #edf2f7;
     margin: 0;
     padding: 0;
     width: 100%;
+    background: linear-gradient(90deg, rgb(229, 100, 70) 0%, rgb(235, 171, 88) 100%);
+
 }
 
 .content {
@@ -103,11 +123,12 @@ img {
 }
 
 .header a {
-    color: #3d4852;
-    font-size: 19px;
-    font-weight: bold;
+    color: #F86923;
+    font-size: 14px;
     text-decoration: none;
 }
+
+
 
 /* Logo */
 
@@ -118,6 +139,7 @@ img {
 }
 
 /* Body */
+
 
 .body {
     -premailer-cellpadding: 0;
@@ -132,6 +154,8 @@ img {
 }
 
 .inner-body {
+    border-radius: 30px!important;
+    background-color: #fff!important;
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 570px;
@@ -170,7 +194,7 @@ img {
 }
 
 .footer p {
-    color: #b0adc5;
+    color: #fff!important;
     font-size: 12px;
     text-align: center;
 }
@@ -197,11 +221,13 @@ img {
 }
 
 .table td {
+    background-color: #F86923!important;
     color: #74787e;
     font-size: 15px;
     line-height: 18px;
     margin: 0;
     padding: 10px 0;
+
 }
 
 .content-cell {
@@ -222,9 +248,11 @@ img {
 }
 
 .button {
+    background-color: #F86923!important;
     -webkit-text-size-adjust: none;
-    border-radius: 4px;
-    color: #fff;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #fff!important;
     display: inline-block;
     overflow: hidden;
     text-decoration: none;
@@ -233,10 +261,10 @@ img {
 .button-blue,
 .button-primary {
     background-color: #2d3748;
-    border-bottom: 8px solid #2d3748;
-    border-left: 18px solid #2d3748;
-    border-right: 18px solid #2d3748;
-    border-top: 8px solid #2d3748;
+    border-bottom: 8px solid #F86923!important;;
+    border-left: 18px solid #F86923!important;;
+    border-right: 18px solid #F86923!important;;
+    border-top: 8px solid #F86923!important;;
 }
 
 .button-green,

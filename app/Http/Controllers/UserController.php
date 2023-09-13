@@ -32,7 +32,7 @@ class UserController extends RootController
         if ($user->role->role_name === "admin") {
             return redirect()->route("admin_home");
         }
-        return view('profile');
+        return view('student.profile');
     }
 
 
@@ -177,8 +177,125 @@ class UserController extends RootController
                         }
                     }
                 }
+
+
                 DB::commit();
+
+//                $deals = Deal::where('user_id', $user->user_id)->pluck('user_id', 'bitrix_deal_id')->toArray();
+//
+//                if (count($deals) > 0) {
+//
+//                    $pathOriginalImage = "public/profile/original";
+//                    $pathDocuments = "public/profile/documents";
+//
+//                    //GET FROM UNIVERSITY APPLICATION FORM SUBMIT
+//                    $applicationFields = $request->all();
+//
+//
+//                    $userInfoFields = UserInfo::where('user_id', $user->user_id)
+//                        ->whereNotNull("value")
+//                        ->pluck("value", "field_id")
+//                        ->toArray(); #ASOCIJATIVNI NIZ
+//
+//                    $userInfoFiles = UserInfo::where('user_id', $user->user_id)
+//                        ->whereNull("value")
+//                        ->whereNotNull("file_path")
+//                        ->pluck("file_path", "field_id")
+//                        ->toArray();
+//
+//                    $userInfoFilesNames = UserInfo::where('user_id', $user->user_id)
+//                        ->whereNull("value")
+//                        ->whereNotNull("file_path")
+//                        ->pluck("file_name", "field_id")
+//                        ->toArray();
+//
+//                    $allUserInfoFieldIds = array_merge(array_keys($userInfoFields), array_keys($userInfoFiles));
+//
+//                    //GET REQUIRED FIELDS
+//                    $requiredFields = Field::where("is_required", 1)
+//                        ->where("field_category_id", "!=", 4)
+//                        ->pluck("field_id")
+//                        ->toArray();
+//
+//
+//                    //CHECK REQUIRED FIELDS
+//                    $missing = array_diff($requiredFields, $allUserInfoFieldIds);
+////                    if (!empty($missing)) {
+////                        Log::errorLog('Required fields not filled in.', $user->user_id);
+////                        return redirect()->route("home")->with(["errors" => ["You must fill in all required fields before applying to universities."]]);
+////                    }
+//
+//                    //EXTRACT FIELD NAMES FOR FIELDS FROM USER_INFO TABLE THAT ARE NOT FILES
+//                    $userInfoFieldIds = array_keys($userInfoFields);
+//                    $fieldNames = Field::whereIn('field_id', $userInfoFieldIds)
+//                        ->pluck('field_name', 'field_id')
+//                        ->toArray();
+//
+//                    // Populate $dealFields with the field names and values
+//                    foreach ($userInfoFields as $fieldId => $fieldValue) {
+//                        $fieldName = $fieldNames[$fieldId] ?? null;
+//                        if ($fieldName) {
+//                            $dealFields[$fieldName] = $fieldValue;
+//                        }
+//                    }
+//
+//                    //EXTRACT FIELD NAMES FOR FILES
+//                    $userInfoFileIds = array_keys($userInfoFiles);
+//                    $fieldNames = Field::whereIn('field_id', $userInfoFileIds)
+//                        ->pluck('field_name', 'field_id')
+//                        ->toArray();
+//
+//
+//                    //EXTRACT FIELD NAMES FOR FILES, FILE NAMES AND FILE CONTENTS
+//                    foreach ($userInfoFiles as $fieldId => $fieldFilePath) {
+//                        $fieldName = $fieldNames[$fieldId] ?? null;
+//                        $fileName = $userInfoFilesNames[$fieldId] ?? null;
+//
+//                        if ($fieldName) {
+//                            $path = $fieldName === "UF_CRM_1667336320092" ? $pathOriginalImage : $pathDocuments;
+//                            $fileContent = Storage::get($path . '/' . $fieldFilePath);
+//
+//                            $dealFields[$fieldName] = [
+//                                'fileData' => [
+//                                    $fileName,
+//                                    base64_encode($fileContent)
+//                                ]
+//                            ];
+//                        }
+//                    }
+//
+//
+//                    //EXTRACT APPLICATION FIELDS NAMES AND THEIR VALUES (FROM DROPDOWNS) AND THEIR OPTION NAMES
+//
+//                    $applicationFieldsValues = [];
+//                    $applicationFieldsOptions = [];
+//
+//                    foreach ($applicationFields as $key => $value) {
+//                        $array = explode("__", $value);
+//                        if (is_array($array) && count($array) > 1) {
+//                            $applicationFieldsValues[$key] = $array[0];
+//                            $applicationFieldsOptions[$key] = $array[1];
+//                        } else {
+//                            $applicationFieldsOptions[$key] = $value;
+//                        }
+//                    }
+//
+//                    //MERGE WITH APPLICATION FIELDS
+//                    $dealFields = array_merge($dealFields, $applicationFieldsValues);
+//                    foreach ($deals as $deal) {
+//                        // Make API call to create the deal in Bitrix24
+//                        $result = CRest::call("crm.deal.update", [
+//                            'ID' => '7887',
+//                            'FIELDS' => [$dealFields]
+//                        ]);
+//                    }
+//                    return response()->json(['success' => 'There are deals to update!']);
+//
+//                }
+
+
             } catch (\Exception $ex) {
+                http_response_code(501);
                 Log::errorLog($ex->getMessage(), Auth::user()->user_id);
                 return response()->json(['error' => $ex->getMessage()], 500);
             }
@@ -374,7 +491,7 @@ class UserController extends RootController
         $users = User::select('first_name', 'last_name', 'email', 'phone', 'email_verified_at', 'profile_image', 'contact_id', 'created_at', 'updated_at', 'user_id as id')->get();
         $columns = DB::getSchemaBuilder()->getColumnListing('users');
         $columns = ['id', 'profile_image', 'first_name', 'last_name', 'email', 'phone', 'email_verified_at', 'contact_id', 'created_at', 'updated_at'];
-        return view("templates.admin", ['pageTitle' => 'User', 'data' => $users, 'columns' => $columns, 'name' => 'Users']);
+        return view("admin.table_data", ['pageTitle' => 'User', 'data' => $users, 'columns' => $columns, 'name' => 'Users']);
     }
 
     public function editUsers(string $id)
@@ -385,14 +502,21 @@ class UserController extends RootController
         return view('admin.users.edit', ['pageTitle' => 'User Info', 'history' => $history, 'data' => $users, 'name' => 'Users']);
     }
 
-    public function showMyApplications(){
+    public function showMyApplications(Request $request)
+    {
         $user = Auth::user();
-        $userDeals = Deal::where('user_id', $user->user_id)->get();
-
+        $userDeals = Deal::where('user_id', $user->user_id)
+            ->select('deal_id', 'university', 'user_id', 'degree', 'program', 'intake', 'created_at', 'updated_at', 'active')
+            ->get();
+        $showModal = $request->input('showModal');
 
         // Return a view with the user's deals
-        return view('applications', [
+        return view('student.applications', [
             'userDeals' => $userDeals, // User-specific deals data
+            'showModal' => $showModal
         ]);
     }
+
+
 }
+

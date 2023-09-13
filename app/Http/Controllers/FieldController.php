@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deal;
 use App\Models\Field;
 use App\Models\FieldItem;
 use App\Models\Log;
@@ -39,12 +40,15 @@ class FieldController extends Controller
         $fields = Field::where('is_active', '1')->where('field_category_id', '<>', NULL)->whereIn('field_category_id', $c_vals)->orderBy('order', 'asc')->get();
         $items = [];
         $user = Auth::user();
-        $info = Db::table("user_infos")
-            ->selectRaw("`field_id`, `value`, `display_value`, `file_name`,`file_path`")
-            ->where("user_id", $user->user_id)
-            ->groupBy("field_id", "value", "display_value", "file_name", 'file_path')
-            ->get();
-
+        if (in_array(4, $c_vals)) {
+            $info = count(Deal::where('user_id', $user->user_id)->pluck('deal_id')->toArray());
+        } else {
+            $info = Db::table("user_infos")
+                ->selectRaw("`field_id`, `value`, `display_value`, `file_name`,`file_path`")
+                ->where("user_id", $user->user_id)
+                ->groupBy("field_id", "value", "display_value", "file_name", 'file_path')
+                ->get();
+        }
 
         foreach ($fields as $field) {
             if ($field->type == "enumeration") {
@@ -53,7 +57,7 @@ class FieldController extends Controller
             }
         }
 
-        $data = [$categories, $fields,$info];
+        $data = [$categories, $fields, $info];
 
         return response()->json($data);
 
@@ -116,6 +120,7 @@ class FieldController extends Controller
 
         return redirect()->back();
     }
+
 //OLD FUNCTION WITH JSON
     public function updateFieldss()
     {

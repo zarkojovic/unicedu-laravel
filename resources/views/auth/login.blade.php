@@ -47,8 +47,25 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span class="invalid-feedback" style="display:block">
+                                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col">
-                            <button type="button" id="loginSubmit" class="w-100 btn btn-primary mt-3">Submit</button>
+                            <button
+                                type="button"
+                                onclick="handleSubmit(event)"
+                                id="loginSubmit"
+                                class=" w-100 btn btn-primary mt-3">Submit
+                            </button>
                         </div>
                     </div>
                     <div class="row">
@@ -64,7 +81,19 @@
 @endsection
 
 @section('scripts')
-    <script>// Function to validate an email address using a regular expression
+
+    <script src="https://www.google.com/recaptcha/api.js?render={{config('services.recaptcha.site_key')}}"></script>
+    <script>
+
+        function hideSpinner() {
+            $("#preloader").fadeOut();
+        }
+
+        function showSpinner() {
+            $("#preloader").fadeIn();
+        }
+
+        // Function to validate an email address using a regular expression
         function validateEmail() {
             // Get the form elements
             const emailInput = document.getElementById('email');
@@ -82,7 +111,7 @@
 
         function validatePassword() {
             const passwordInput = document.getElementById('password');
-            console.log(passwordInput.value)
+
             // Get the values entered by the user
             const password = passwordInput.value;
             const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -106,7 +135,14 @@
                 err = 1;
             }
             if (!err) {
-                document.forms['loginForm'].submit();
+                showSpinner()
+                // event.preventDefault();
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'submit'}).then(function (token) {
+                        document.getElementById('g-recaptcha-response').value = token;
+                        document.getElementById("loginForm").submit();
+                    });
+                });
             }
         }
 

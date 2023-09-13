@@ -117,7 +117,7 @@ function printForm(category, fields, user_info, display = true, show) {
         if (display) {
             // Generate HTML for displaying field info
             html += `<div class="mb-3">
-                        <label class="form-label">${displayName} ${element.is_required ? '<i>(required)</i>' : ''} </label>
+                        <label class="form-label">${displayName} ${element.is_required ? '<i class="text-muted fw-light small">(required)</i>' : ''} </label>
                         <p id="display${displayName}" class="form-control-static mb-3">`;
             // Populate info based on user input
             if (info_elem.length > 0) {
@@ -189,6 +189,7 @@ function printElements(array = [], modal = false) {
 
 
     if (modal) {
+
         // Request category fields, active fields, and details for printing
         axios.post('/user_fields', data)
             .then(response => {
@@ -199,6 +200,14 @@ function printElements(array = [], modal = false) {
                 // Separate data from the response
                 var categories = response.data[0];
                 var fields = response.data[1];
+                var deals = response.data[2];
+
+                console.log(deals);
+
+                fields = fields.map(el => {
+                    el.is_required = 1;
+                    return el;
+                })
 
                 // Generate HTML for each category
                 var html = '';
@@ -207,6 +216,7 @@ function printElements(array = [], modal = false) {
                             <div class="row">
                                 <div class="col-lg-12 d-flex align-items-stretch">
                                     `;
+
                     // Generate HTML for printing both forms
                     html += printForm(category, fields, [], false, true);
 
@@ -214,6 +224,7 @@ function printElements(array = [], modal = false) {
                                 </div>
                             </div>`;
                 });
+
                 // Display the generated HTML
                 $("#fieldsModalWrap").html(html);
 
@@ -230,10 +241,24 @@ function printElements(array = [], modal = false) {
                 // Append the CSRF token input field to the form
                 form.appendChild(csrfInput);
 
+                if (deals >= 5) {
+                    const form = document.getElementById('dealForm'); // Get the form element
+                    const inputElements = form.querySelectorAll('input , select'); // Get all input elements within the form
+
+
+                    inputElements.forEach(el => {
+                        el.setAttribute('disabled', 'disabled');
+                    });
+
+                    $("#modalErrorWrap").html(`<span class="text-danger">You can't have more than 5 applications!</span>`)
+                    $("#dealSubmit").addClass('disabled');
+                }
+
             })
             .catch(error => {
                 showToast(error, 'error');
             });
+
     } else {
 
         array.forEach(el => {
@@ -321,7 +346,7 @@ function printElements(array = [], modal = false) {
                                                     <div id="displayFormBtn${category.field_category_id}">
                                                         <button
                                                             type="button"
-                                                            class="btn btn-block m-1 btnEditClass rounded-3"
+                                                            class="btn btn-block m-1 btnEditClass"
                                                             id="btnEdit${category.field_category_id}"
                                                             data-category="${category.field_category_id}"
                                                         >
@@ -359,6 +384,7 @@ function printElements(array = [], modal = false) {
 
 $(document).ready(function () {
     hideSpinner();
+
 
     // deleting file from user info
     $(document).on('click', ".removeFileBtn", function () {
@@ -440,6 +466,7 @@ $(document).ready(function () {
                     }
                 }).then(response => {
                     // Display success message and refresh elements
+                    console.log(response)
                     showToast('Profile Updated!', 'success');
                     printElements(numbersArray);
                 }).catch(error => {
@@ -474,160 +501,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let path = window.location.pathname;
 
-        // registration
-        if (path == '/register') {
 
-            function validatePhoneNumber() {
-                // Get the form elements
-                const phoneNumberInput = document.getElementById('phone');
+        if (path == '/applications') {
 
-                // Your regex pattern for phone number validation
-                const phoneNumberPattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+            printElements([4], true);
+            let show = $("#showModal").val();
 
-                const phoneNumber = phoneNumberInput.value;
+            var myModal = new bootstrap.Modal(document.getElementById("dealModal"));
 
-                if (!phoneNumberPattern.test(phoneNumber)) {
-                    document.getElementById("phoneMessageWrap").innerHTML = `<span class="text-danger">Invalid phone number. Please enter a valid phone number.</span>`;
-                    return 0;
-                } else {
-                    document.getElementById("phoneMessageWrap").innerHTML = '';
-                    return 1;
-                }
+            if (show == 'true') {
+                myModal.show();
             }
 
-            function validateName(type) {
-                var nameInput;
-                if (type === 'first') {
-                    // Get the form elements
-                    nameInput = document.getElementById('first_name');
-                } else {
-                    // Get the form elements
-                    nameInput = document.getElementById('last_name');
-                }
+            $(document).on("click", "#dealSubmit", function () {
 
-                // Your regex pattern for last name validation
-                const namePattern = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
+                var dealform = document.forms['dealForm'];
+                var elements = dealform.elements;
+                var errors = 0;
 
-                const name = nameInput.value;
-
-
-                if (!namePattern.test(name)) {
-                    if (type === 'first') {
-                        document.getElementById("firstNameMessageWrap").innerHTML = `<span class="text-danger">Invalid first name. Please enter a valid first name.</span>`;
-                    } else {
-                        document.getElementById("lastNameMessageWrap").innerHTML = `<span class="text-danger">Invalid last name. Please enter a valid last name.</span>`;
+                for (let i = 0; i < elements.length - 2; i++) {
+                    if (elements[i].value == '' || elements[i].value == '0') {
+                        errors++;
                     }
-                    return 0;
+                }
+
+                if (errors > 0) {
+                    let html = `<span class="text-danger">You didn't fill all of the fields!</span>`
+                    $("#modalErrorWrap").html(html)
                 } else {
-                    console.log('lagano')
-                    if (type === 'first') {
-                        document.getElementById("firstNameMessageWrap").innerHTML = '';
-                    } else {
-                        document.getElementById("lastNameMessageWrap").innerHTML = '';
-                    }
-                    return 1;
-                }
-            }
-
-            function validateEmail() {
-                // Get the form elements
-                const emailInput = document.getElementById('email');
-                // Your regex pattern for email validation
-                const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-                const email = emailInput.value;
-                if (!emailPattern.test(email)) {
-                    document.getElementById("emailMessageWrap").innerHTML = `<span class="text-danger">Invalid email address. Please enter a valid email address.</span>`;
-                    return 0;
-                } else {
-                    document.getElementById("emailMessageWrap").innerHTML = '';
-                    return 1;
-                }
-            }
-
-            function validatePassword() {
-                const passwordInput = document.getElementById('password');
-                console.log(passwordInput.value)
-                // Get the values entered by the user
-                const password = passwordInput.value;
-                const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-                if (!passwordPattern.test(password)) {
-                    document.getElementById("passwordMessageWrap").innerHTML = `<span class="text-danger">Password must have at least 8 characters (One big, one small and one number)</span>`;
-                    return 0;
-                } else {
-                    document.getElementById("passwordMessageWrap").innerHTML = '';
-                    return 1;
-                }
-            }
-
-            function validateRepeatPassword() {
-                // Get the form elements
-                const passwordInput = document.getElementById('password');
-                const repeatPasswordInput = document.getElementById('password_confirmation');
-
-                const password = passwordInput.value;
-                const repeatPassword = repeatPasswordInput.value;
-
-                if (password !== repeatPassword) {
-                    document.getElementById("repeatMessageWrap").innerHTML = `<span class="text-danger">Passwords do not match. Please re-enter the password.</span>`;
-                    return 0;
-                } else {
-                    document.getElementById("repeatMessageWrap").innerHTML = '';
-                    return 1;
-                }
-            }
-
-            function handleSubmit() {
-                var err = 0;
-                // Validate the email input
-                if (!validateEmail()) {
-                    err = 1;
-                }
-                if (!validatePassword()) {
-                    err = 1;
-                }
-                if (!validateRepeatPassword()) {
-                    err = 1;
-                }
-                if (!validateName('first')) {
-                    err = 1;
-                }
-                if (!validateName('last')) {
-                    err = 1;
-                }
-                if (!validatePhoneNumber()) {
-                    err = 1;
-                }
-
-                if (!err) {
+                    myModal.hide();
                     showSpinner();
-                    document.forms['registerForm'].submit();
+                    $("#modalErrorWrap").html('')
+                    document.forms['dealForm'].submit();
                 }
-            }
 
-
-            const registerForm = document.getElementById('registerForm');
-            document.getElementById('email').addEventListener('change', validateEmail);
-            document.getElementById('password').addEventListener('change', validatePassword);
-            document.getElementById('password_confirmation').addEventListener('change', validateRepeatPassword);
-            document.getElementById('phone').addEventListener('change', validatePhoneNumber);
-            document.getElementById('last_name').addEventListener('change', function () {
-                validateName('last')
-            });
-            document.getElementById('first_name').addEventListener('change', function () {
-                validateName('first')
-            });
-            document.getElementById('registrationSubmit').addEventListener('click', handleSubmit);
-
-
-            registerForm.addEventListener('keypress', function (event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Prevent the default Enter key behavior
-                    handleSubmit();
-                }
-            });
+            })
 
         }
-
 
         // Check if the page is for page editing or inserting
         if (path.includes('pages') && (path.includes('edit') || path.includes('insert'))) {
@@ -678,23 +588,37 @@ document.addEventListener('DOMContentLoaded', function () {
             path = '/profile';
         }
 
-        // Fetch page category data and print elements
-        axios.post("/page_category", {name: path})
-            .then(response => {
-                let res = response.data;
-                const idArray = res.map(item => item.field_category_id);
-                if (idArray.length > 0) {
-                    printElements(idArray);
-                } else {
-                    hideSpinner();
-                }
-            })
-            .catch(error => {
-                alert(error);
-                console.error('Error fetching page category:', error);
-            });
-        printElements([4], true);
 
+        // $(`#${path == '/register' ? 'registerForm' : 'loginForm'}`).submit(function (event) {
+        //     event.preventDefault();
+        //
+        //     grecaptcha.ready(function () {
+        //         grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", {action: 'subscribe_newsletter'}).then(function (token) {
+        //             $(`#${path == '/register' ? 'registerForm' : 'loginForm'}`).prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+        //             $('#contactUSForm').unbind('submit').submit();
+        //         });
+        //         ;
+        //     });
+        // });
+
+        if (path != '/login' && path != '/register' && !path.includes('admin')) {
+
+            // Fetch page category data and print elements
+            axios.post("/page_category", {name: path})
+                .then(response => {
+                    let res = response.data;
+                    const idArray = res.map(item => item.field_category_id);
+                    if (idArray.length > 0) {
+                        printElements(idArray);
+                    } else {
+                        hideSpinner();
+                    }
+                })
+                .catch(error => {
+                    alert(error);
+                    console.error('Error fetching page category:', error);
+                });
+        }
 
     } catch (error) {
         console.error('Unexpected error:', error);

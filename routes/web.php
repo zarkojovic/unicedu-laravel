@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 //CUSTOM 404 REDIRECT
 Route::fallback(function () {
-    return view('notification', ['type' => '404']);
+    return view('layouts.notification', ['type' => '404']);
 })->name("fallback");
 
 Route::middleware(["verified"])->group(function () {
@@ -30,14 +30,14 @@ Route::middleware(["verified"])->group(function () {
                         //ADMIN ROUTES
                         Route::prefix('admin')->group(function () use ($route) {
                             Route::get($route->route, function () use ($route) {
-                                return view('templates.student', ['pageTitle' => $route->title]);
+                                return view('student.generic_page', ['pageTitle' => $route->title]);
                             });
                         });
                     });
                     break;
                 default :
                     Route::get($route->route, function () use ($route) {
-                        return view('templates.student', ['pageTitle' => $route->title]);
+                        return view('student.generic_page', ['pageTitle' => $route->title]);
                     });
                     break;
             }
@@ -70,7 +70,7 @@ Route::middleware(["auth"])->group(function () {
 //            if ($user->role->role_name === "admin") {
 //                return redirect()->route("admin_home");
 //            }
-            return view('profile');
+            return view('student.profile');
         })->name("home");
 
         Route::get("/profile", [UserController::class, "show"])->name("profile");
@@ -80,12 +80,11 @@ Route::middleware(["auth"])->group(function () {
 //        DELETE FILE
         Route::post('/removeFileFromUserInfo', [\App\Http\Controllers\UserController::class, 'removeUserFile']);
 
-        // DOCUMENTS
-        Route::get('/documents', function () {
-            return view('documents');
-        });
 
-        Route::get('/applications', [UserController::class, 'showMyApplications']);
+        Route::get('/applications', [UserController::class, 'showMyApplications'])->name('applications');
+        Route::post('/applications/{deal_id}', [DealController::class, 'deleteDeal']);
+
+
 
 
 
