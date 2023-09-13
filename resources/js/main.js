@@ -466,7 +466,6 @@ $(document).ready(function () {
                     }
                 }).then(response => {
                     // Display success message and refresh elements
-                    console.log(response)
                     showToast('Profile Updated!', 'success');
                     printElements(numbersArray);
                 }).catch(error => {
