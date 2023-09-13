@@ -13,13 +13,12 @@
     <!-- Sidebar scroll-->
     <div>
         <div
-            class="brand-logo d-flex align-items-center justify-content-between pt-4"
+            class="brand-logo d-flex align-items-center justify-content-between justify-content-xl-center pt-4"
         >
             <a href="/profile" class="text-nowrap logo-img">
                 <img
                     src="{{ asset("images/logos/polandstudylogo.png") }}"
-{{--                    width="180"--}}
-                    class="img-fluid"
+                    width="120"
                     alt="logo"
                 />
             </a>

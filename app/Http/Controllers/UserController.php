@@ -511,7 +511,9 @@ class UserController extends RootController
     public function showMyApplications(Request $request)
     {
         $user = Auth::user();
-        $userDeals = Deal::where('user_id', $user->user_id)->get();
+        $userDeals = Deal::where('user_id', $user->user_id)
+            ->select('deal_id', 'university', 'user_id', 'degree', 'program', 'intake', 'created_at', 'updated_at', 'active')
+            ->get();
         $showModal = $request->input('showModal');
 
         // Return a view with the user's deals
@@ -520,5 +522,7 @@ class UserController extends RootController
             'showModal' => $showModal
         ]);
     }
+
+
 }
 

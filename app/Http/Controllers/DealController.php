@@ -65,41 +65,41 @@ class DealController extends RootController
                 return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
             }
 
-            foreach ($applicationFields as $key => $value) {
-                if (!$value) {
+            foreach ($applicationFields as $key=>$value) {
+                if (!$value){
                     return redirect()->route("home")->with(["errors" => ["You must fill in the required information in your application before applying to universities."]]);
                 }
             }
 
             $userInfoFields = UserInfo::where('user_id', $user->user_id)
-                ->whereNotNull("value")
-                ->pluck("value", "field_id")
-                ->toArray(); #ASOCIJATIVNI NIZ
+                                        ->whereNotNull("value")
+                                        ->pluck("value","field_id")
+                                        ->toArray(); #ASOCIJATIVNI NIZ
 
             $userInfoFiles = UserInfo::where('user_id', $user->user_id)
-                ->whereNull("value")
-                ->whereNotNull("file_path")
-                ->pluck("file_path", "field_id")
-                ->toArray();
+                                        ->whereNull("value")
+                                        ->whereNotNull("file_path")
+                                        ->pluck("file_path","field_id")
+                                        ->toArray();
 
             $userInfoFilesNames = UserInfo::where('user_id', $user->user_id)
-                ->whereNull("value")
-                ->whereNotNull("file_path")
-                ->pluck("file_name", "field_id")
-                ->toArray();
+                                            ->whereNull("value")
+                                            ->whereNotNull("file_path")
+                                            ->pluck("file_name", "field_id")
+                                            ->toArray();
 
             $allUserInfoFieldIds = array_merge(array_keys($userInfoFields), array_keys($userInfoFiles));
 
             //GET REQUIRED FIELDS
             $requiredFields = Field::where("is_required", 1)
-                ->where("field_category_id", "!=", 4)
-                ->pluck("field_id")
-                ->toArray();
+                                    ->where("field_category_id", "!=", 4)
+                                    ->pluck("field_id")
+                                    ->toArray();
 
 
             //CHECK REQUIRED FIELDS
             $missing = array_diff($requiredFields, $allUserInfoFieldIds);
-            if (!empty($missing)) {
+            if (!empty($missing)){
                 Log::errorLog('Required fields not filled in.', $user->user_id);
                 return redirect()->route("home")->with(["errors" => ["You must fill in all required fields before applying to universities."]]);
             }
@@ -113,14 +113,14 @@ class DealController extends RootController
             //EXTRACT FIELD NAMES FOR FIELDS FROM USER_INFO TABLE THAT ARE NOT FILES
             $userInfoFieldIds = array_keys($userInfoFields);
             $fieldNames = Field::whereIn('field_id', $userInfoFieldIds)
-                ->pluck('field_name', 'field_id')
+                ->pluck('field_name','field_id')
                 ->toArray();
 
             // Populate $dealFields with the field names and values
-            foreach ($userInfoFields as $fieldId => $fieldValue) {
+            foreach ($userInfoFields as $fieldId=>$fieldValue) {
                 $fieldName = $fieldNames[$fieldId] ?? null;
 
-                if ($fieldName) {
+                if ($fieldName){
                     $dealFields[$fieldName] = $fieldValue;
                 }
             }
@@ -128,18 +128,18 @@ class DealController extends RootController
             //EXTRACT FIELD NAMES FOR FILES
             $userInfoFileIds = array_keys($userInfoFiles);
             $fieldNames = Field::whereIn('field_id', $userInfoFileIds)
-                ->pluck('field_name', 'field_id')
-                ->toArray();
+                                ->pluck('field_name','field_id')
+                                ->toArray();
 
 
             //EXTRACT FIELD NAMES FOR FILES, FILE NAMES AND FILE CONTENTS
-            foreach ($userInfoFiles as $fieldId => $fieldFilePath) {
+            foreach ($userInfoFiles as $fieldId=>$fieldFilePath) {
                 $fieldName = $fieldNames[$fieldId] ?? null;
                 $fileName = $userInfoFilesNames[$fieldId] ?? null;
 
                 if ($fieldName) {
                     $path = $fieldName === "UF_CRM_1667336320092" ? $pathOriginalImage : $pathDocuments;
-                    $fileContent = Storage::get($path . '/' . $fieldFilePath);
+                    $fileContent = Storage::get($path.'/'.$fieldFilePath);
 
                     $dealFields[$fieldName] = [
                         'fileData' => [
@@ -156,12 +156,13 @@ class DealController extends RootController
             $applicationFieldsValues = [];
             $applicationFieldsOptions = [];
 
-            foreach ($applicationFields as $key => $value) {
+            foreach ($applicationFields as $key=>$value) {
                 $array = explode("__", $value);
-                if (is_array($array) && count($array) > 1) {
+                if(is_array($array) && count($array)>1){
                     $applicationFieldsValues[$key] = $array[0];
                     $applicationFieldsOptions[$key] = $array[1];
-                } else {
+                }
+                else {
                     $applicationFieldsOptions[$key] = $value;
                 }
             }
@@ -178,9 +179,9 @@ class DealController extends RootController
 
                 // Insert a record into the 'deal' table in your database
                 $deal = new Deal();
+                $deal->active = true;
                 $deal->bitrix_deal_id = $result['result'];
                 $deal->user_id = $user->user_id;
-                $deal->date = now();
 
                 foreach ($applicationFieldsOptions as $fieldName => $fieldValue) {//$dealFields array previously
                     switch ($fieldName) {
@@ -212,4 +213,31 @@ class DealController extends RootController
             return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."], "showModal" => "false"]);
         }
     }
+    public function deleteDeal($deal_id)
+    {
+        $user = Auth::user();
+
+        // This function is making deal unactive, making user think he deleted it
+        // But it will be removed from Bitrix24
+
+        $deal = Deal::find($deal_id);
+
+        if (!$deal) {
+            Log::errorLog('Tried to remove deal that doesen\'t exist.', $user->user_id);
+            return redirect()->route('home')->withErrors(['error' => 'An error occurred while deleting an application.']);
+        }
+        // Update the 'active' column
+        $deal->active = false; // Assuming you want to set it to true
+        if(!($deal->save())){
+            Log::errorLog('Couldn\'t remove deal from database.', $user->user_id);
+            return redirect()->route('home')->withErrors(['error' => 'An error occurred while deleting an application.']);
+        }
+
+
+        Log::informationLog('Removed deal.', $user->user_id);
+
+        // Optionally, you can return a success message or perform other actions here
+        }
+
+
 }

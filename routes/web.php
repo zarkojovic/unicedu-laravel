@@ -81,7 +81,12 @@ Route::middleware(["auth"])->group(function () {
         Route::post('/removeFileFromUserInfo', [\App\Http\Controllers\UserController::class, 'removeUserFile']);
 
 
-        Route::get('/applications', [UserController::class, 'showMyApplications'])->name('applications');
+        Route::get('/applications', [UserController::class, 'showMyApplications']);
+        Route::post('/applications/{deal_id}', [DealController::class, 'deleteDeal']);
+
+
+
+
 
 
         //ADMIN PERMISSIONS
@@ -126,7 +131,7 @@ Route::middleware(["auth"])->group(function () {
                 Route::get('/actions', [\App\Http\Controllers\ActionController::class, 'showActions'])->name('showActions');
 
                 //applications routes
-                Route::get('/deals', [\App\Http\Controllers\DealController::class, 'showDeals']);
+                Route::get('/applications', [\App\Http\Controllers\DealController::class, 'showDeals']);
 
 
             });
