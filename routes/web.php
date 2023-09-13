@@ -81,7 +81,7 @@ Route::middleware(["auth"])->group(function () {
         Route::post('/removeFileFromUserInfo', [\App\Http\Controllers\UserController::class, 'removeUserFile']);
 
 
-        Route::get('/applications', [UserController::class, 'showMyApplications']);
+        Route::get('/applications', [UserController::class, 'showMyApplications'])->name('applications');
         Route::post('/applications/{deal_id}', [DealController::class, 'deleteDeal']);
 
 
