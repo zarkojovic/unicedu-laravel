@@ -14,8 +14,8 @@ class AdminController extends RootController
     {
         $categories = FieldCategory::all();
         //$fields = Field::where('is_active', '1')->get();//->where('order', '<>', NULL)
-        $sortedFields = Field::where('is_active', '1')->orderBy("order","asc")->get();
-        return view("admin", ["fields" => $sortedFields, "categories" => $categories]);
+        $sortedFields = Field::where('is_active', '1')->orderBy("order", "asc")->get();
+        return view("admin.fields", ["fields" => $sortedFields, "categories" => $categories]);
     }
 
     public function fieldSelect()

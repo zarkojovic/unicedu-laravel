@@ -22,7 +22,15 @@
             <ul
                 class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
             >
-                @if(\Illuminate\Support\Facades\Auth::user()->role->role_name == "student")
+                @if(\Illuminate\Support\Facades\Auth::user()->role->role_name == "student" && request()->path() != 'applications')
+                    <li>
+                        <a
+                            href="{{route('applications')}}?showModal=true"
+                            class="btn btn-primary rounded-3"
+                        >Apply For University
+                        </a>
+                    </li>
+                @elseif(\Illuminate\Support\Facades\Auth::user()->role->role_name == "student" && request()->path() == 'applications')
                     <li>
                         <button
                             data-bs-toggle="modal"

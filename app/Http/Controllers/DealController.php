@@ -27,7 +27,7 @@ class DealController extends RootController
             $columns = DB::getSchemaBuilder()->getColumnListing('deals');
 
             // Return the admin template view with necessary data
-            return view("templates.admin", [
+            return view("admin.table_data", [
                 'pageTitle' => 'Deals',  // Page title for display
                 'data' => $data,               // Actions data to be displayed
                 'name' => 'Deals',           // Name of the entity being displayed
@@ -202,16 +202,15 @@ class DealController extends RootController
 
                 $deal->save();
                 Log::informationLog('Deal inserted into Deals table.', $user->user_id);
-                return redirect()->back()->with("success","Your application to university has been successfully created.");
+                return redirect()->back()->with(["success" => "Your application to university has been successfully created.", "showModal" => "false"]);
             }
 
             // Deal creation failed
             Log::errorLog('Failed to create deal in Bitrix24.', $user->user_id);
-            return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."]]);
-        }
-        catch (\Exception $e) {
-            Log::errorLog('Error during application creation: ', $user->user_id);
-            return redirect()->route("profile")->with(["errors" => ["Application to university failed. Please try again later."]]);
+            return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."], "showModal" => "false"]);
+        } catch (\Exception $e) {
+            Log::errorLog('Error during application creation: ' . $e->getMessage(), $user->user_id);
+            return redirect()->back()->with(["errors" => ["Application to university failed. Please try again later."], "showModal" => "false"]);
         }
     }
     public function deleteDeal($deal_id)

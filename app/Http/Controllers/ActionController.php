@@ -19,7 +19,7 @@ class ActionController extends Controller
             $columns = DB::getSchemaBuilder()->getColumnListing('actions');
 
             // Return the admin template view with necessary data
-            return view("templates.admin", [
+            return view("admin.table_data", [
                 'pageTitle' => 'Log Actions',  // Page title for display
                 'data' => $data,               // Actions data to be displayed
                 'name' => 'Actions',           // Name of the entity being displayed

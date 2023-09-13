@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Mail\VerifyEmail;
 use App\Models\Log;
 use App\Models\User;
+use App\Rules\ReCaptcha;
+use Closure;
 use CRest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -12,29 +14,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 //use Kafka0238\Crest\Src\CRest;
 use Mockery\Exception;
+use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 
 class AuthController extends Controller
 {
     public function register()
     {
-        return view("register");
+        return view("auth.register");
     }
 
     public function login()
     {
-        return view("login");
+        return view("auth.login");
     }
 
 //    public function check(Request $request)
 //    {
 //        $validator = Validator::make($request->all(), [
-//            'first_name' => 'required|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
+//            'first_name' => 'lN|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
 //            'last_name' => 'required|string|max:20|regex:/^[A-Z][a-z]{3,17}$/',
 //            'phone' => 'required|unique:users',
 //            'password' => 'required|confirmed|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
@@ -76,6 +80,18 @@ class AuthController extends Controller
             'phone' => 'required|unique:users',
             'password' => 'required|confirmed|string|min:8',
             'email' => 'required|email|unique:users',
+            'g-recaptcha-response' => ['required', function (string $attribute, mixed $value, Closure $fail) {
+                $g_response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => config('services.recaptcha.secret_key'),
+                    'response' => $value,
+                    'remoteip' => \request()->ip()
+                ]);
+
+
+                if (!$g_response->json('success')) {
+                    $fail("The captcha is invalid.");
+                }
+            }]
         ]);
 
         if ($validator->fails()) {
@@ -94,6 +110,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'phone' => $request->phone,
+//                'g-recaptcha-response' => ['required', NoCaptcha::rule()],
             ]);
 
             if ($new->save()) {
@@ -121,12 +138,21 @@ class AuthController extends Controller
 
     public function auth(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'password' => 'required',
             'email' => 'required|email',
-        ]);
+            'g-recaptcha-response' => ['required', function (string $attribute, mixed $value, Closure $fail) {
+                $g_response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => config('services.recaptcha.secret_key'),
+                    'response' => $value,
+                    'remoteip' => \request()->ip()
+                ]);
 
+                if (!$g_response->json('success')) {
+                    $fail("The captcha is invalid.");
+                }
+            }]
+        ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
@@ -187,7 +213,7 @@ class AuthController extends Controller
         //NOTIFICATION ONLY IF LOGGED IN BUT NOT YET VERIFIED
         if ($user->email_verified_at === null) {
             Log::errorLog('Unverified user tried to access home!', $user->user_id);
-            return view('notification', ['type' => 'success_registration']);
+            return view('layouts.notification', ['type' => 'success_registration']);
         }
 
         return redirect()->route('home');
@@ -237,6 +263,6 @@ class AuthController extends Controller
         }
 
         //Log::authLog('User is verified now!', $user->user_id);
-        return view('notification', ['type' => 'profile_activated']);
+        return view('layouts.notification', ['type' => 'profile_activated']);
     }
 }
