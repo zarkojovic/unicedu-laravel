@@ -280,19 +280,22 @@ Route::get("/test", function () {
     $user = Auth::user();
     $deals = Deal::where('user_id', $user->user_id)->pluck('user_id', 'bitrix_deal_id')->toArray();
 
-    if (count($deals) > 0) {
-        $fields = User::getAllUserFieldsValue();
-
-        foreach ($deals as $key => $val) {
-            // Make API call to create the deal in Bitrix24
-            $res = CRest::call("crm.deal.update", [
-                'ID' => (string)$key,
-                'FIELDS' => $fields
-            ]);
-        }
 
 
-    }
+//    UPDATING THE DEALS
+
+//    if (count($deals) > 0) {
+//        $fields = User::getAllUserFieldsValue();
+//
+//        foreach ($deals as $key => $val) {
+//            // Make API call to create the deal in Bitrix24
+//            $res = CRest::call("crm.deal.update", [
+//                'ID' => (string)$key,
+//                'FIELDS' => $fields
+//            ]);
+//        }
+//
+//    }
 
 });
 
