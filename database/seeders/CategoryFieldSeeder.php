@@ -16,7 +16,7 @@ class CategoryFieldSeeder extends Seeder
         $category_names = ['Personal Information', 'Address', 'Documents', 'Deals', 'Hidden'];
 
         foreach ($category_names as $category_name) {
-            if ($category_name == 'Hidden') {
+            if ($category_name == 'Hidden' || $category_name == 'Deals') {
                 $category = FieldCategory::create([
                     'category_name' => $category_name,
                     'is_visible' => false
