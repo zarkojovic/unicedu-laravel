@@ -81,7 +81,7 @@
                                 @endif
                         @endforeach
                         @else
-                            <h1 class="mt-5 text-center">No applications yet.</h1>
+                            <h5 class="mt-5 text-center">No applications yet.</h5>
                         @endif
 
                     </div>
