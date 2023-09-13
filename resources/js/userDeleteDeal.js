@@ -6,6 +6,7 @@ $(document).ready(function() {
         // Retrieve the deal_id value from the clicked button and store it in the dealId variable
         dealId = $(this).data('deal-id');
     });
+    console.log(dealId);
 
 // Get the CSRF token from the meta tag
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -38,19 +39,19 @@ $(document).ready(function() {
 // Get the deal ID you want to delete (you may need to customize this part)
 
 
-
-    // Send a request to your API to delete the deal
-    $.ajax({
-        url: '/api/deals/' + dealId, // Replace with your API endpoint
-        type: 'DELETE',
-        success: function (response) {
-            // Handle success, e.g., display a success message
-            console.log('Deal deleted successfully');
-            // Close the modal
-            $('#confirmDeleteModal').modal('hide');
-        },
-        error: function (error) {
-            // Handle error, e.g., display an error message
-            console.error('Error deleting deal:', error);
-        }
-    });
+    //
+    // // Send a request to your API to delete the deal
+    // $.ajax({
+    //     url: '/api/deals/' + dealId, // Replace with your API endpoint
+    //     type: 'DELETE',
+    //     success: function (response) {
+    //         // Handle success, e.g., display a success message
+    //         console.log('Deal deleted successfully');
+    //         // Close the modal
+    //         $('#confirmDeleteModal').modal('hide');
+    //     },
+    //     error: function (error) {
+    //         // Handle error, e.g., display an error message
+    //         console.error('Error deleting deal:', error);
+    //     }
+    // });

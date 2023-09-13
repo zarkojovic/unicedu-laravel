@@ -10,9 +10,11 @@
         class="container-fluid min-vh-100 py-sm-5 py-4 px-4 vw-100 bg-gradient d-flex align-items-center justify-content-center w-100">
         <div class="row justify-content-center align-items-center">
             <div
-                class="col-lg-10 bg-white bg-white p-sm-5 p-4 rounded-5">
-                <div class="row">
-                    <img src="{{asset("images/logos/polandstudylogo.png")}}" alt="Logo" class="w-50 mx-auto mb-3">
+                class="col-lg-10 col-md-8 bg-white bg-white p-sm-5 p-4 rounded-5">
+                <div class="row justify-content-center">
+                    <div class="col-5 mx-auto">
+                        <img src="{{asset("images/logos/polandstudylogo.png")}}" alt="Logo" class="img-fluid mx-auto mb-3">
+                    </div>
                 </div>
                 <h2 class="text-center text-dark">Welcome to platform!</h2>
                 <p class="text-center text-dark">Please enter your details</p>
