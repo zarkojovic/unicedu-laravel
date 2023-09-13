@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Role;
 
@@ -81,9 +83,93 @@ class User extends Authenticatable implements MustVerifyEmail
 //        return $this->find($id);
 //    }
 
-    public function updateUser($id, $data)
+
+    public static function getAllUserFieldsValue()
     {
-        return $this->where('id', $id)->update($data);
+
+        $user = Auth::user();
+
+        $pathOriginalImage = "public/profile/original";
+        $pathDocuments = "public/profile/documents";
+
+        //GET FROM UNIVERSITY APPLICATION FORM SUBMIT
+
+
+        $userInfoFields = UserInfo::where('user_id', $user->user_id)
+            ->whereNotNull("value")
+            ->pluck("value", "field_id")
+            ->toArray(); #ASOCIJATIVNI NIZ
+
+        $userInfoFiles = UserInfo::where('user_id', $user->user_id)
+            ->whereNull("value")
+            ->whereNotNull("file_path")
+            ->pluck("file_path", "field_id")
+            ->toArray();
+
+        $userInfoFilesNames = UserInfo::where('user_id', $user->user_id)
+            ->whereNull("value")
+            ->whereNotNull("file_path")
+            ->pluck("file_name", "field_id")
+            ->toArray();
+
+
+
+        //EXTRACT FIELD NAMES FOR FIELDS FROM USER_INFO TABLE THAT ARE NOT FILES
+        $userInfoFieldIds = array_keys($userInfoFields);
+        $fieldNames = Field::whereIn('field_id', $userInfoFieldIds)
+            ->pluck('field_name', 'field_id')
+            ->toArray();
+
+        // Populate $dealFields with the field names and values
+        foreach ($userInfoFields as $fieldId => $fieldValue) {
+            $fieldName = $fieldNames[$fieldId] ?? null;
+            if ($fieldName) {
+                $dealFields[$fieldName] = $fieldValue;
+            }
+        }
+
+        //EXTRACT FIELD NAMES FOR FILES
+        $userInfoFileIds = array_keys($userInfoFiles);
+        $fieldNames = Field::whereIn('field_id', $userInfoFileIds)
+            ->pluck('field_name', 'field_id')
+            ->toArray();
+
+
+        //EXTRACT FIELD NAMES FOR FILES, FILE NAMES AND FILE CONTENTS
+        foreach ($userInfoFiles as $fieldId => $fieldFilePath) {
+            $fieldName = $fieldNames[$fieldId] ?? null;
+            $fileName = $userInfoFilesNames[$fieldId] ?? null;
+
+            if ($fieldName) {
+                $path = $fieldName === "UF_CRM_1667336320092" ? $pathOriginalImage : $pathDocuments;
+                $fileContent = Storage::get($path . '/' . $fieldFilePath);
+
+                $dealFields[$fieldName] = [
+                    'fileData' => [
+                        $fileName,
+                        base64_encode($fileContent)
+                    ]
+                ];
+            }
+        }
+
+
+        //EXTRACT APPLICATION FIELDS NAMES AND THEIR VALUES (FROM DROPDOWNS) AND THEIR OPTION NAMES
+        $applicationFieldsValues = [];
+
+
+        //MERGE WITH APPLICATION FIELDS
+        $dealFields = array_merge($dealFields, $applicationFieldsValues);
+//            foreach ($deals as $deal) {
+//                // Make API call to create the deal in Bitrix24
+//                $result = CRest::call("crm.deal.update", [
+//                    'ID' => '7887',
+//                    'FIELDS' => [$dealFields]
+//                ]);
+//            }
+        return $dealFields;
+
     }
+
 
 }

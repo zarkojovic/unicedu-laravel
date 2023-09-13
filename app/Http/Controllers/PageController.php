@@ -61,6 +61,9 @@ class PageController extends Controller
             // Find the page by its ID
             $page = Page::findOrFail($id);
 
+            if (!$page->is_editable) {
+                throw new \Exception('This page is not editable!');
+            }
             // Path to the resource/js directory
             $jsPath = resource_path('js');
 
@@ -73,7 +76,7 @@ class PageController extends Controller
 
             // Fetch all roles and field categories
             $roles = Role::all();
-            $categories = FieldCategory::where('category_name','<>','Hidden')->get();
+            $categories = FieldCategory::where('category_name', '<>', 'Hidden')->get();
 
             // Get selected field category IDs for the page
             $selectedCategories = DB::table('field_category_page')->select('field_category_id')
@@ -299,7 +302,9 @@ class PageController extends Controller
             if ($page) {
                 // Store the title of the page for later use
                 $name = $page->title;
-
+                if (!$page->is_editable) {
+                    throw new \Exception("You can't delete this page!");
+                }
                 // Begin a database transaction
                 DB::beginTransaction();
 

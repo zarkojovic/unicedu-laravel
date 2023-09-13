@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('icon');
             $table->unsignedBigInteger('role_id');
+            $table->boolean('is_editable')->default(true);
             $table->timestamps();
         });
 

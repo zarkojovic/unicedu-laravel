@@ -190,6 +190,20 @@ function printElements(array = [], modal = false) {
 
     if (modal) {
 
+        let placeholder = `<div class="ph-item rounded-5">
+                                                <div class="ph-col-12">
+
+                                                    <div class="ph-row mb-2">
+                                                        <div class="ph-col-4 me-3  big rounded"></div>
+                                                        <div class="ph-col-4 big ms-3 rounded"></div>
+                                                    </div>
+                                                    <div class="ph-row mb-2">
+                                                        <div class="ph-col-4 me-3  big rounded"></div>
+                                                        <div class="ph-col-4 big ms-3 rounded"></div>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+        $("#fieldsModalWrap").append(placeholder);
         // Request category fields, active fields, and details for printing
         axios.post('/user_fields', data)
             .then(response => {
@@ -421,6 +435,7 @@ $(document).ready(function () {
     });
 
     $(document).on('change', '#profile-image-input', function () {
+        showSpinner();
         this.form.submit();
     });
 

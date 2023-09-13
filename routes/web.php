@@ -7,9 +7,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FieldController;
+use App\Models\Deal;
 use App\Models\Field;
 use App\Models\Log;
 use App\Models\Page;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -83,10 +85,6 @@ Route::middleware(["auth"])->group(function () {
 
         Route::get('/applications', [UserController::class, 'showMyApplications'])->name('applications');
         Route::post('/applications/{deal_id}', [DealController::class, 'deleteDeal']);
-
-
-
-
 
 
         //ADMIN PERMISSIONS
@@ -228,7 +226,7 @@ Route::post("/search-update", [AdminController::class, "setFieldCategory"]);
 Route::post("/apply", [DealController::class, "apply"])->name('makeDeal');
 
 
-Route::get("/test_items", function () {
+Route::get("/test", function () {
 
 
 //    $categories = \App\Models\FieldCategory::whereIn('field_category_id', [1, 2])->get();
@@ -278,4 +276,23 @@ Route::get("/test_items", function () {
 //    }
 //
 //    echo "</pre>";
+
+    $user = Auth::user();
+    $deals = Deal::where('user_id', $user->user_id)->pluck('user_id', 'bitrix_deal_id')->toArray();
+
+    if (count($deals) > 0) {
+        $fields = User::getAllUserFieldsValue();
+
+        foreach ($deals as $key => $val) {
+            // Make API call to create the deal in Bitrix24
+            $res = CRest::call("crm.deal.update", [
+                'ID' => (string)$key,
+                'FIELDS' => $fields
+            ]);
+        }
+
+
+    }
+
 });
+
