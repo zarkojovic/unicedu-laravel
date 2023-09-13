@@ -65,7 +65,7 @@ class PageSeeder extends Seeder
 
             if ($page['route'] == '/profile') {
 
-                $ids = ['1', '2', '3', '4'];
+                $ids = ['1', '2', '3'];
                 foreach ($ids as $id) {
                     DB::table('field_category_page')->insert([
                         'field_category_id' => $id,
