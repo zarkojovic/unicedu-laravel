@@ -243,9 +243,13 @@ class UserController extends RootController
         $currentDate = now()->format('Y-m-d');
         $newFileName = $currentDate . '_' . $uniqueString . '.' . $fileExtension;
 
+        if (!Storage::exists($pathOriginal)){
+            Log::errorLog("Original folder path not found.", Auth::user()->user_id);
+            return redirect()->route('profile')->with(["errors" => ['Saving image on the server failed.']]);
+        }
         $moved = Storage::putFileAs($pathOriginal, $file, $newFileName);
         if (!$moved) {
-            Log::errorLog("Failed to update profile image on server.", Auth::user()->user_id);
+            Log::errorLog("Failed to move profile image to original folder.", Auth::user()->user_id);
             return redirect()->route('profile')->with(["errors" => ['Saving image on the server failed.']]);
         }
 
@@ -299,16 +303,6 @@ class UserController extends RootController
             }
 
             // Insert a row into the UserInfo table
-//            $updated = UserInfo::updateOrInsert(
-//                [
-//                    'user_id' => $user->user_id,
-//                    'field_id' => $fieldId,
-//                ],
-//                [
-//                    'file_name' => $fileName,
-//                    'file_path' => $newFileName,
-//                ]
-//            );
             $userInfoImage = UserInfo::where('user_id', $user->user_id)
                 ->where('field_id', $fieldId)
                 ->first();
