@@ -80,10 +80,6 @@ Route::middleware(["auth"])->group(function () {
 //        DELETE FILE
         Route::post('/removeFileFromUserInfo', [\App\Http\Controllers\UserController::class, 'removeUserFile']);
 
-        // DOCUMENTS
-        Route::get('/documents', function () {
-            return view('student.documents');
-        });
 
         Route::get('/applications', [UserController::class, 'showMyApplications'])->name('applications');
 
