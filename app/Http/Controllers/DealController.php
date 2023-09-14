@@ -52,7 +52,9 @@ class DealController extends RootController
             return redirect()->route("fallback");
         }
 
-        $dealCount = Deal::where('user_id',$user->user_id)->count();
+        $dealCount = Deal::where('user_id',$user->user_id)
+                            ->where('active',1)
+                            ->count();
 
         if ($dealCount === 4){//5 deals
             Log::errorLog('Max number of deals already reached.', $user->user_id);

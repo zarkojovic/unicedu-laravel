@@ -12,7 +12,8 @@
     <div class="container">
         <div class="row">
             <div class="col-6">
-                <form action="/forgot_password" id="form-reset-password">
+                <form action="/forgot-password" method="POST" id="form-reset-password">
+                    @csrf
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email"/>
                     <input type="submit" value="Submit"/>

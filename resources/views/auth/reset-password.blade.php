@@ -1,4 +1,4 @@
-<?php $pageTitle = "Login" ?>
+<?php $pageTitle = "Password Reset" ?>
 @extends("layouts.app")
 
 @section("main")
@@ -16,9 +16,9 @@
                         <img src="{{asset("images/logos/polandstudylogo.png")}}" alt="Logo" class="img-fluid mx-auto mb-3">
                     </div>
                 </div>
-                <h2 class="text-center text-dark">Welcome to platform!</h2>
+                <h2 class="text-center text-dark">Welcome to Password Reset Panel!</h2>
                 <p class="text-center text-dark">Please enter your details</p>
-                <form action="/login" method="POST" id="loginForm">
+                <form action="/reset-password" method="POST" id="passwordResetForm">
                     @csrf
                     <div class="row  my-3">
                         <div class="col-sm-12">
@@ -48,36 +48,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div class="row  my-3">
+                        <div class="col-sm-12">
                             <div class="form-group">
-                                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
-                                @if ($errors->has('g-recaptcha-response'))
-                                    <span class="invalid-feedback" style="display:block">
-                                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                                    </span>
-                                @endif
+                                <label for="password_confirmation" class="text-dark fw-medium">Confirm Password</label>
+                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+                            </div>
+
+                            <input type="hidden" name="token" value="{{ $token  }}"/>
+
+                            <div id="repeatMessageWrap">
+                                @error('repeat_password')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button
-                                type="button"
-                                onclick="handleSubmit(event)"
-                                id="loginSubmit"
-                                class=" w-100 btn btn-primary mt-3">Submit
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <p class="text-center m-0 mt-3">New to platform? <a href="{{route("register")}}">Sign Up</a></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <p class="text-center m-0 mt-3">Forgot your password? <a href="{{route("password.request")}}"> Reset password</a></p>
+                            <input type="submit" id="passwordResetSubmit" name="submitBtn" class=" w-100 btn btn-primary mt-3"/>
                         </div>
                     </div>
                 </form>
@@ -87,8 +76,6 @@
 @endsection
 
 @section('scripts')
-
-    <script src="https://www.google.com/recaptcha/api.js?render={{config('services.recaptcha.site_key')}}"></script>
     <script>
 
         function hideSpinner() {
@@ -100,20 +87,20 @@
         }
 
         // Function to validate an email address using a regular expression
-        function validateEmail() {
-            // Get the form elements
-            const emailInput = document.getElementById('email');
-            // Your regex pattern for email validation
-            const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-            const email = emailInput.value;
-            if (!emailPattern.test(email)) {
-                document.getElementById("emailMessageWrap").innerHTML = `<span class="text-danger">Invalid email address. Please enter a valid email address.</span>`;
-                return 0;
-            } else {
-                document.getElementById("emailMessageWrap").innerHTML = '';
-                return 1;
-            }
-        }
+        // function validateEmail() {
+        //     // Get the form elements
+        //     const emailInput = document.getElementById('email');
+        //     // Your regex pattern for email validation
+        //     const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        //     const email = emailInput.value;
+        //     if (!emailPattern.test(email)) {
+        //         document.getElementById("emailMessageWrap").innerHTML = `<span class="text-danger">Invalid email address. Please enter a valid email address.</span>`;
+        //         return 0;
+        //     } else {
+        //         document.getElementById("emailMessageWrap").innerHTML = '';
+        //         return 1;
+        //     }
+        // }
 
         function validatePassword() {
             const passwordInput = document.getElementById('password');
@@ -121,7 +108,7 @@
             // Get the values entered by the user
             const password = passwordInput.value;
             const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-            if (password == '') {
+            if (password === '') {
                 document.getElementById("passwordMessageWrap").innerHTML = `<span class="text-danger">Password is empty!</span>`;
                 return 0;
             } else {
@@ -131,37 +118,37 @@
         }
 
         // Function to handle form submission
-        function handleSubmit(event) {
-            var err = 0;
-            // Validate the email input
-            if (!validateEmail()) {
-                err = 1;
-            }
-            if (!validatePassword()) {
-                err = 1;
-            }
-            if (!err) {
-                showSpinner()
-                // event.preventDefault();
-                grecaptcha.ready(function () {
-                    grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'submit'}).then(function (token) {
-                        document.getElementById('g-recaptcha-response').value = token;
-                        document.getElementById("loginForm").submit();
-                    });
-                });
-            }
-        }
+        {{--function handleSubmit(event) {--}}
+        {{--    var err = 0;--}}
+        {{--    // Validate the email input--}}
+        {{--    // if (!validateEmail()) {--}}
+        {{--    //     err = 1;--}}
+        {{--    // }--}}
+        {{--    if (!validatePassword()) {--}}
+        {{--        err = 1;--}}
+        {{--    }--}}
+        {{--    if (!err) {--}}
+        {{--        showSpinner()--}}
+        {{--        // event.preventDefault();--}}
+        {{--        --}}{{--grecaptcha.ready(function () {--}}
+        {{--        --}}{{--    grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'submit'}).then(function (token) {--}}
+        {{--        --}}{{--        document.getElementById('g-recaptcha-response').value = token;--}}
+        {{--        --}}{{--        document.getElementById("passwordResetForm").submit();--}}
+        {{--        --}}{{--    });--}}
+        {{--        --}}{{--});--}}
+        {{--    }--}}
+        {{--}--}}
 
 
-        const loginForm = document.getElementById('loginForm');
-        document.getElementById('email').addEventListener('change', validateEmail);
-        document.getElementById('loginSubmit').addEventListener('click', handleSubmit);
-
-        loginForm.addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                event.preventDefault(); // Prevent the default Enter key behavior
-                handleSubmit();
-            }
-        });
+        // const passwordResetForm = document.getElementById('passwordResetForm');
+        // // document.getElementById('email').addEventListener('change', validateEmail);
+        // // document.getElementById('passwordResetSubmit').addEventListener('click', handleSubmit);
+        //
+        // passwordResetForm.addEventListener('keypress', function (event) {
+        //     if (event.key === 'Enter') {
+        //         event.preventDefault(); // Prevent the default Enter key behavior
+        //         handleSubmit();
+        //     }
+        // });
     </script>
 @endsection
