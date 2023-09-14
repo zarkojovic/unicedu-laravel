@@ -19,37 +19,44 @@ class PageSeeder extends Seeder
                 'route' => '/profile',
                 'title' => 'My Information',
                 'icon' => 'ti ti-user',
-                'role_id' => '1'
+                'role_id' => '1',
+                'is_editable' => false
             ], [
                 'route' => '/pages',
                 'title' => 'Pages',
                 'icon' => 'ti ti-wallpaper',
-                'role_id' => '3'
+                'role_id' => '3',
+                'is_editable' => false
             ], [
                 'route' => '/categories',
                 'title' => 'Categories',
                 'icon' => 'ti ti-box-multiple',
-                'role_id' => '3'
+                'role_id' => '3',
+                'is_editable' => false
             ], [
                 'route' => '/fields',
                 'title' => 'Fields',
                 'icon' => 'ti ti-row-insert-top',
-                'role_id' => '3'
+                'role_id' => '3',
+                'is_editable' => false
             ], [
                 'route' => '/users',
                 'title' => 'Users',
                 'icon' => 'ti ti-users',
-                'role_id' => '3'
+                'role_id' => '3',
+                'is_editable' => false
             ], [
                 'route' => '/applications',
                 'title' => 'Applications',
                 'icon' => 'ti ti-school',
-                'role_id' => '1'
+                'role_id' => '1',
+                'is_editable' => false
             ], [
                 'route' => '/applications',
                 'title' => 'Applications',
                 'icon' => 'ti ti-api-app',
-                'role_id' => '3'
+                'role_id' => '3',
+                'is_editable' => false
             ]
         ];
 
@@ -59,6 +66,7 @@ class PageSeeder extends Seeder
             $new->route = $page['route'];
             $new->title = $page['title'];
             $new->icon = $page['icon'];
+            $new->is_editable = $page['is_editable'];
             $new->role_id = $page['role_id'];
 
             $new->save();

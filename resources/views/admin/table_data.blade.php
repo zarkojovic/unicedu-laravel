@@ -60,20 +60,42 @@
                             @endif
                         @endforeach
                         <th scope="col">
-                            <a class="btn btn-save" href="{{url()->current().'/'.$item->id.'/edit'}}">
-                                Edit
-                            </a>
+                            @if(isset($item->is_editable))
+                                @if($item->is_editable)
+                                    <a class="btn btn-save" href="{{url()->current().'/'.$item->id.'/edit'}}">
+                                        Edit
+                                    </a>
+                                @endif
+                            @else
+                                <a class="btn btn-save" href="{{url()->current().'/'.$item->id.'/edit'}}">
+                                    Edit
+                                </a>
+                            @endif
                         </th>
                         <th scope="col">
                             @if(Route::has('delete'.$name))
-                                <form action="{{route('delete'.$name)}}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $item->id }}">
-                                    <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete this item?')">
-                                        Delete
-                                    </button>
-                                </form>
+                                @if(isset($item->is_editable))
+                                    @if($item->is_editable)
+                                        <form action="{{route('delete'.$name)}}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $item->id }}">
+                                            <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                @else
+                                    <form action="{{route('delete'.$name)}}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $item->id }}">
+                                        <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this item?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
                         </th>
                     </tr>
