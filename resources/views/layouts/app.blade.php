@@ -19,9 +19,18 @@
 <div id="preloader">
     <img src="{{ asset("images/logos/polandstudylogo.png") }}" alt="spinner" class="rotate-hor-center"/>
 </div>
-@yield('main')
 
-@vite(['resources/scss/styles.scss',
+<div id="app">
+
+
+    @yield('main')
+
+
+</div>
+
+@vite([
+            'resources/js/app.js',
+            'resources/scss/styles.scss',
             'resources/libs/jquery/dist/jquery.min.js',
             'resources/libs/bootstrap/dist/js/bootstrap.bundle.min.js',
             'resources/js/dashboard.js',
@@ -29,7 +38,8 @@
             'resources/js/app.min.js',
             'resources/libs/apexcharts/dist/apexcharts.min.js',
             'resources/libs/simplebar/dist/simplebar.js',
-            'resources/js/jquery.ui_1.13.2.js'])
+            'resources/js/jquery.ui_1.13.2.js'
+            ])
 
 @yield('scripts')
 

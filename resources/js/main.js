@@ -395,21 +395,24 @@ function printElements(array = [], modal = false) {
     }
 }
 
-
 $(document).ready(function () {
     hideSpinner();
 
-
-    // deleting file from user info
+// Event handler for removing a file from user info
     $(document).on('click', ".removeFileBtn", function () {
+        // Get data attributes from the clicked element
         var id = $(this).data('field_id');
         var is_required = $(this).data('is_required');
         var formLabel = $(this).data('form_label');
         var field_name = $(this).data('field_name');
+
+        // Confirm the file removal action
         if (confirm('Are you sure you want to remove this file?')) {
             var data = {
                 field_id: id
             };
+
+            // Send a request to remove the file
             axios.post('/removeFileFromUserInfo', data)
                 .then(response => {
                     var requiredSpan = `<span class="text-danger">*</span>`;
@@ -418,25 +421,85 @@ $(document).ready(function () {
                     <br>
                     <label class="upload-document-label mb-3" for="${field_name}"><span>Upload Document</span></label>
                     <input type="file" id="${field_name}" name="${field_name}"  data-field-id="${id}" class="form-control userFiles d-none">
-                    `;
+                `;
+                    // Replace the parent HTML with the updated file input
                     $(this).parent().html(html);
+
                     let displayHtml = `<div class="mb-3" id="displayField${id}">
-                                                <label class="form-label">${formLabel} ${is_required ? '<i>(required)</i>' : ''} </label>
-                                                <p id="display${formLabel}" class="form-control-static mb-3"> <span class='small text-muted fst-italic'>Empty</span> </p>
-                                                </div>`
+                    <label class="form-label">${formLabel} ${is_required ? '<i>(required)</i>' : ''} </label>
+                    <p id="display${formLabel}" class="form-control-static mb-3"> <span class='small text-muted fst-italic'>Empty</span> </p>
+                </div>`;
+                    // Replace the display field HTML with the default content
                     $(`#displayField` + id).html(displayHtml);
 
                     showToast(response.data.message, 'success');
-                }).catch(error => {
-                console.log(error);
-                showToast('File not removed!', 'error');
-            });
+                })
+                .catch(error => {
+                    console.log(error);
+                    showToast('File not removed!', 'error');
+                });
         }
     });
 
     $(document).on('change', '#profile-image-input', function () {
-        showSpinner();
-        this.form.submit();
+// Initialize the Bootstrap modal
+        const photoModalElement = document.getElementById("photoModal");
+        const myModal = new bootstrap.Modal(photoModalElement);
+
+// Show the modal
+        myModal.show();
+
+// Get the file input element
+        const fileInput = document.getElementById('profile-image-input');
+
+// Create an image element with a class
+        const imageElement = document.createElement('img');
+        imageElement.classList.add('img-fluid');
+
+// Get the selected file
+        const file = fileInput.files[0];
+
+        if (file) {
+            const photoWrap = document.getElementById('bodyPhotoModal');
+            photoWrap.innerHTML = '';
+
+            // Create a FileReader to read the selected image
+            const reader = new FileReader();
+
+            // Handle the image load event
+            reader.onload = function (e) {
+                imageElement.src = e.target.result;
+                photoWrap.appendChild(imageElement);
+
+                // Create and append modal title
+                const modalTitle = document.createElement('h4');
+                modalTitle.classList.add('text-center', 'mt-3', 'mb-0');
+                modalTitle.textContent = 'Are you sure you want to use this image?';
+                photoWrap.appendChild(modalTitle);
+
+                // Create and append modal text
+                const modalText = document.createElement('p');
+                modalText.classList.add('text-center', 'mt-3', 'mb-0', 'text-danger');
+                modalText.textContent = 'ATTENTION! This image will be used when sending your applications.';
+                photoWrap.appendChild(modalText);
+
+                // Add a click event listener to the save button
+                const saveProfilePictureButton = document.getElementById('saveProfilePicture');
+                saveProfilePictureButton.addEventListener('click', function () {
+                    myModal.hide();
+                    showSpinner();
+                    // Assuming that `this.form` refers to the form you want to submit
+                    this.form.submit();
+                });
+            };
+
+            // Read the file as a data URL
+            reader.readAsDataURL(file);
+        } else {
+            alert('Please select a valid image file.');
+        }
+
+
     });
 
     $(document).on("click", ".btnEditClass", function () {
@@ -456,46 +519,44 @@ $(document).ready(function () {
     }
 
     $(document).on("click", ".btnSaveClass", function () {
-            try {
-                showSpinner();
-                // Extract data attributes
-                let id = $(this).data("category");
-                let print = $(this).data("print");
-                var numbersArray = [];
+        try {
+            showSpinner();
+            // Extract data attributes
+            let id = $(this).data("category");
+            let print = $(this).data("print");
+            var numbersArray = [];
 
-                // Convert comma-separated string to array of numbers
-                if (print.toString().includes(',')) {
-                    numbersArray = print.split(',').map(Number);
-                } else {
-                    numbersArray.push(parseInt(print))
-                }
-
-                // Get the form element and create FormData object
-                var formEl = document.getElementById('userForm' + id);
-                var formObj = new FormData(formEl);
-
-                // Send data for updating user information
-                axios.post("/update_user", formObj, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }
-                }).then(response => {
-                    // Display success message and refresh elements
-                    showToast('Profile Updated!', 'success');
-                    printElements(numbersArray);
-                }).catch(error => {
-                    // Display error message
-                    hideSpinner();
-                    showToast(error.response.data.error, 'error');
-                })
-            } catch
-                (error) {
-                showToast(eerror.response.data, 'error');
-
+            // Convert comma-separated string to array of numbers
+            if (print.toString().includes(',')) {
+                numbersArray = print.split(',').map(Number);
+            } else {
+                numbersArray.push(parseInt(print))
             }
+
+            // Get the form element and create FormData object
+            var formEl = document.getElementById('userForm' + id);
+            var formObj = new FormData(formEl);
+
+            // Send data for updating user information
+            axios.post("/update_user", formObj, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            }).then(response => {
+                // Display success message and refresh elements
+                showToast('Profile Updated!', 'success');
+                printElements(numbersArray);
+            }).catch(error => {
+                // Display error message
+                hideSpinner();
+                showToast(error.response.data.error, 'error');
+            })
+        } catch
+            (error) {
+            showToast(eerror.response.data, 'error');
+
         }
-    )
-    ;
+    });
 
     $(document).on("click", ".btnCancelClass", function () {
         let id = $(this).data("category");
@@ -508,120 +569,25 @@ $(document).ready(function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     try {
+        // Remove the alertNotification after 10 seconds
         setTimeout(function () {
             $(".alertNotification").remove();
         }, 10000);
 
-
-        let path = window.location.pathname;
-
-
-        if (path == '/applications') {
-
-            printElements([4], true);
-            let show = $("#showModal").val();
-
-            var myModal = new bootstrap.Modal(document.getElementById("dealModal"));
-
-            if (show == 'true') {
-                myModal.show();
-            }
-
-            $(document).on("click", "#dealSubmit", function () {
-
-                var dealform = document.forms['dealForm'];
-                var elements = dealform.elements;
-                var errors = 0;
-
-                for (let i = 0; i < elements.length - 2; i++) {
-                    if (elements[i].value == '' || elements[i].value == '0') {
-                        errors++;
-                    }
-                }
-
-                if (errors > 0) {
-                    let html = `<span class="text-danger">You didn't fill all of the fields!</span>`
-                    $("#modalErrorWrap").html(html)
-                } else {
-                    myModal.hide();
-                    showSpinner();
-                    $("#modalErrorWrap").html('')
-                    document.forms['dealForm'].submit();
-                }
-
-            })
-
-        }
-
-        // Check if the page is for page editing or inserting
-        if (path.includes('pages') && (path.includes('edit') || path.includes('insert'))) {
-
-            var searchTimeout;
-
-            // Event for inputting text
-            $(document).on('keyup', '#iconSearch', function () {
-                var icon = $(this).val();
-
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(function () {
-                    if (icon.length >= 3 || icon.length === 0) {
-                        axios.post('/api/get_icons', {name: icon})
-                            .then(response => {
-                                var data = response.data;
-                                var html = '';
-                                var i = 0;
-
-                                for (const item in data) {
-                                    i++;
-                                    html += `<div class="col-1 my-1">
-                                            <div class="p-4 bg-primary h3 text-center m-0 rounded icon-item"
-                                                data-value="ti ${data[item]}"><i
-                                                class="text-white ti ${data[item]}"></i></div>
-                                        </div>`;
-                                }
-
-                                if (i === 0) {
-                                    html += `<div><h3 class="mt-3 text-center">No results for your search!</h3></div>`;
-                                }
-
-                                $("#iconsWrap").html(html);
-                            });
-                    }
-                }, 400);
-            });
-
-            $(document).on('click', '.icon-item', function () {
-                $('.icon-item').removeClass('bg-dark');
-                $(this).addClass('bg-dark');
-                let value = $(this).data('value');
-                $('#icon').val(value);
-            });
-        }
+        var path = window.location.pathname;
 
         if (path === '/') {
             path = '/profile';
         }
 
-
-        // $(`#${path == '/register' ? 'registerForm' : 'loginForm'}`).submit(function (event) {
-        //     event.preventDefault();
-        //
-        //     grecaptcha.ready(function () {
-        //         grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", {action: 'subscribe_newsletter'}).then(function (token) {
-        //             $(`#${path == '/register' ? 'registerForm' : 'loginForm'}`).prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-        //             $('#contactUSForm').unbind('submit').submit();
-        //         });
-        //         ;
-        //     });
-        // });
-
+        // Check if the page is not a login, register, or admin page
         if (path != '/login' && path != '/register' && !path.includes('admin')) {
-
             // Fetch page category data and print elements
             axios.post("/page_category", {name: path})
                 .then(response => {
-                    let res = response.data;
+                    const res = response.data;
                     const idArray = res.map(item => item.field_category_id);
+
                     if (idArray.length > 0) {
                         printElements(idArray);
                     } else {
@@ -634,9 +600,99 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         }
 
+        // Check if the path is '/applications'
+        if (path == '/applications') {
+            // Print specific elements
+            printElements([4], true);
+
+            // Check if the 'showModal' value is 'true'
+            const show = $("#showModal").val();
+            const dealModalElement = document.getElementById("dealModal");
+            const myModal = new bootstrap.Modal(dealModalElement);
+
+            if (show == 'true') {
+                // Show the modal
+                myModal.show();
+            }
+
+            // Handle form submission
+            $(document).on("click", "#dealSubmit", function () {
+                const dealform = document.forms['dealForm'];
+                const elements = dealform.elements;
+                let errors = 0;
+
+                // Check for empty or '0' values in form elements
+                for (let i = 0; i < elements.length - 2; i++) {
+                    if (elements[i].value == '' || elements[i].value == '0') {
+                        errors++;
+                    }
+                }
+
+                if (errors > 0) {
+                    // Display an error message
+                    const html = `<span class="text-danger">You didn't fill all of the fields!</span>`;
+                    $("#modalErrorWrap").html(html);
+                } else {
+                    // Hide the modal, show a spinner, and submit the form
+                    myModal.hide();
+                    showSpinner();
+                    $("#modalErrorWrap").html('');
+                    document.forms['dealForm'].submit();
+                }
+            });
+        }
+
+        // Check if the path includes 'pages' and is either 'edit' or 'insert'
+        if (path.includes('pages') && (path.includes('edit') || path.includes('insert'))) {
+            let searchTimeout;
+
+            // Event handler for inputting text in the search box
+            $(document).on('keyup', '#iconSearch', function () {
+                const icon = $(this).val();
+
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function () {
+                    if (icon.length >= 3 || icon.length === 0) {
+                        // Fetch and display icons based on the search input
+                        axios.post('/api/get_icons', {name: icon})
+                            .then(response => {
+                                const data = response.data;
+                                let html = '';
+                                let i = 0;
+
+                                for (const item in data) {
+                                    i++;
+                                    html += `<div class="col-1 my-1">
+                                        <div class="p-4 bg-primary h3 text-center m-0 rounded icon-item"
+                                            data-value="ti ${data[item]}"><i
+                                            class="text-white ti ${data[item]}"></i></div>
+                                    </div>`;
+                                }
+
+                                if (i === 0) {
+                                    html += `<div><h3 class="mt-3 text-center">No results for your search!</h3></div>`;
+                                }
+
+                                $("#iconsWrap").html(html);
+                            });
+                    }
+                }, 400);
+            });
+
+            // Event handler for selecting an icon
+            $(document).on('click', '.icon-item', function () {
+                $('.icon-item').removeClass('bg-dark');
+                $(this).addClass('bg-dark');
+                const value = $(this).data('value');
+                $('#icon').val(value);
+            });
+        }
+
     } catch (error) {
+        // Handle unexpected errors
         console.error('Unexpected error:', error);
     }
+
 
     function handleFileInputChange() {
         const input = this;

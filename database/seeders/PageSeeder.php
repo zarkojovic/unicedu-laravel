@@ -16,6 +16,13 @@ class PageSeeder extends Seeder
     {
         $pages = [
             [
+                'route' => '/dashboard',
+                'title' => 'Dashboard',
+                'icon' => 'ti ti-dashboard',
+                'role_id' => '3',
+                'is_editable' => false
+            ],
+            [
                 'route' => '/profile',
                 'title' => 'My Information',
                 'icon' => 'ti ti-user',

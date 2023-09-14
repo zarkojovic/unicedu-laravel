@@ -25,6 +25,7 @@
                                     <img src="{{ asset("storage/profile/thumbnail/{$user->profile_image}")  }}"
                                          alt="Profile Picture"
                                          class="img-fluid"
+                                         id="profileImage"
                                     />
                                 </div>
                             </div>
@@ -44,10 +45,6 @@
                                         <input type="file" class="d-none" name="profile-image"
                                                id="profile-image-input"/>
                                     </form>
-{{--                                    <form action="/apply" method="post">--}}
-{{--                                        @csrf--}}
-{{--                                        <input type="submit" value="Apply for unviersity"/>--}}
-{{--                                    </form>--}}
                                 </div>
                             </div>
                         </div>
@@ -76,9 +73,35 @@
             </div>
         </div>
     </div>
+
+
     <div id="fieldsWrap" class="container-fluid pt-0"></div>
 
+    @php
+        $data = ['helloo','ehhe']
+    @endphp
 
+
+        <example-component :user="{{json_encode($data)}}"/>
+
+    <!-- Modal -->
+    <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirm your image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="bodyPhotoModal">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveProfilePicture">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')

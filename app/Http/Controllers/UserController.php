@@ -177,11 +177,7 @@ class UserController extends RootController
                         }
                     }
                 }
-
-
                 DB::commit();
-
-
             } catch (\Exception $ex) {
                 http_response_code(501);
                 Log::errorLog($ex->getMessage(), Auth::user()->user_id);
@@ -192,32 +188,31 @@ class UserController extends RootController
         }
 
 
-        $deals = Deal::where('user_id', $user->user_id)->pluck('user_id', 'bitrix_deal_id')->toArray();
-
-        if (count($deals) > 0) {
-
-            $fields = User::getAllUserFieldsValue();
-
-            foreach ($deals as $key => $val) {
-                // Make API call to create the deal in Bitrix24
-                $res = CRest::call("crm.deal.update", [
-                    'ID' => (string)$key,
-                    'FIELDS' => $fields
-                ]);
-
-                if ($res['result']) {
-                    Log::apiLog('Deal ' . $key . ' successfully updated!');
-                } else {
-                    Log::errorLog('Failed to update deal ' . $key);
-                }
-            }
-
-        }
+//        $deals = Deal::where('user_id', $user->user_id)->pluck('user_id', 'bitrix_deal_id')->toArray();
+//
+//        if (count($deals) > 0) {
+//
+//            $fields = User::getAllUserFieldsValue();
+//
+//            foreach ($deals as $key => $val) {
+//                // Make API call to create the deal in Bitrix24
+//                $res = CRest::call("crm.deal.update", [
+//                    'ID' => (string)$key,
+//                    'FIELDS' => $fields
+//                ]);
+//
+//                if ($res['result']) {
+//                    Log::apiLog('Deal ' . $key . ' successfully updated!');
+//                } else {
+//                    Log::errorLog('Failed to update deal ' . $key);
+//                }
+//            }
+//
+//        }
 
     }
 
-    public
-    function getUserInfo()
+    public function getUserInfo()
     {
         $user = Auth::user();
         $info = Db::table("user_infos")
