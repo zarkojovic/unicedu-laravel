@@ -77,12 +77,12 @@
 
     <div id="fieldsWrap" class="container-fluid pt-0"></div>
 
-    @php
-        $data = ['helloo','ehhe']
-    @endphp
+{{--    @php--}}
+{{--        $data = ['helloo','ehhe']--}}
+{{--    @endphp--}}
 
 
-        <example-component :user="{{json_encode($data)}}"/>
+{{--        <example-component :user="{{json_encode($data)}}"/>--}}
 
     <!-- Modal -->
     <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

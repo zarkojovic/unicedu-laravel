@@ -442,6 +442,7 @@ $(document).ready(function () {
     });
 
     $(document).on('change', '#profile-image-input', function () {
+
 // Initialize the Bootstrap modal
         const photoModalElement = document.getElementById("photoModal");
         const myModal = new bootstrap.Modal(photoModalElement);
@@ -459,6 +460,7 @@ $(document).ready(function () {
 // Get the selected file
         const file = fileInput.files[0];
 
+        var that = this;
         if (file) {
             const photoWrap = document.getElementById('bodyPhotoModal');
             photoWrap.innerHTML = '';
@@ -485,11 +487,12 @@ $(document).ready(function () {
 
                 // Add a click event listener to the save button
                 const saveProfilePictureButton = document.getElementById('saveProfilePicture');
+
                 saveProfilePictureButton.addEventListener('click', function () {
                     myModal.hide();
                     showSpinner();
                     // Assuming that `this.form` refers to the form you want to submit
-                    this.form.submit();
+                    that.form.submit();
                 });
             };
 

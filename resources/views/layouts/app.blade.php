@@ -29,7 +29,7 @@
 </div>
 
 @vite([
-            'resources/js/app.js',
+//            'resources/js/app.js',
             'resources/scss/styles.scss',
             'resources/libs/jquery/dist/jquery.min.js',
             'resources/libs/bootstrap/dist/js/bootstrap.bundle.min.js',
