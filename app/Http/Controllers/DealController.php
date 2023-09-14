@@ -52,6 +52,15 @@ class DealController extends RootController
             return redirect()->route("fallback");
         }
 
+        $dealCount = Deal::where('user_id',$user->user_id)
+                            ->where('active',1)
+                            ->count();
+
+        if ($dealCount === 4){//5 deals
+            Log::errorLog('Max number of deals already reached.', $user->user_id);
+            return redirect()->back()->with(["errors" => ["You have already reached the maximum number applications."]]);
+        }
+
         try {
             $title = "University Application From Platform";
             $contactId = $user->contact_id;
@@ -218,31 +227,47 @@ class DealController extends RootController
         }
     }
 
-    public function deleteDeal($deal_id)
+    public function deleteDeal(Request $request)
     {
+
+        $deal_id = $request->deal_id;
+
+        // Get the authenticated user
         $user = Auth::user();
 
-        // This function is making deal unactive, making user think he deleted it
-        // But it will be removed from Bitrix24
+        // Find the deal with the given ID
+        $deal = Deal::where('user_id', $user->user_id)
+                    ->find($deal_id);
 
-        $deal = Deal::find($deal_id);
+
 
         if (!$deal) {
-            Log::errorLog('Tried to remove deal that doesen\'t exist.', $user->user_id);
-            return redirect()->route('home')->withErrors(['error' => 'An error occurred while deleting an application.']);
+            Log::errorLog('Tried to remove a deal that doesn\'t exist.', $user->user_id);
+            return redirect('/applications')->with('error', 'An error occurred while deleting an application.');
         }
-        // Update the 'active' column
-        $deal->active = false; // Assuming you want to set it to true
-        if (!($deal->save())) {
-            Log::errorLog('Couldn\'t remove deal from database.', $user->user_id);
-            return redirect()->route('home')->withErrors(['error' => 'An error occurred while deleting an application.']);
+        //OVDE MOZDA TRY CATCH
+        // Retrieve the Bitrix deal ID associated with the deal
+        $bitrix_deal_id = $deal->bitrix_deal_id;
+
+        // Make an API call to delete the deal in Bitrix24
+        $result = CRest::call("crm.deal.delete", ['ID' => (string) $bitrix_deal_id]);
+
+        // Check if the deal was successfully removed from Bitrix24
+        if (isset($result['error_description']) && $result['error_description'] === 'Not found') {
+            Log::apiLog('Deal failed to delete from Bitrix24.', $user->user_id);
+            return redirect('/applications')->with('error', 'An error occurred while deleting an application.');
         }
 
+        // Update the 'active' column to indicate that the deal is inactive (false)
+        $deal->active = false;
 
-        Log::informationLog('Removed deal.', $user->user_id);
+        if (!$deal->save()) {
+            Log::errorLog('Couldn\'t remove the deal from the database.', $user->user_id);
+            return redirect()->route('home')->with(['error' => 'An error occurred while deleting an application.']);
+        }
 
-        // Optionally, you can return a success message or perform other actions here
+        Log::informationLog('Deal set as inactive (active = 0) in the database.', $user->user_id);
+
+        return redirect('/applications')->with('success', 'Application removed successfully.');
     }
-
-
 }

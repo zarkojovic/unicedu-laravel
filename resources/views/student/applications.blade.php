@@ -30,6 +30,13 @@
                 </div>
             </div>
         @endif
+            @if (session('error'))
+                <div class="row mt-4 alertNotification rounded-5 mb-3">
+                    <div class="alert alert-danger mb-0" role="alert">
+                        <p class="m-0">{{ session('error') }}</p>
+                    </div>
+                </div>
+            @endif
         <div class="row">
             <div class="col-lg-12 d-flex align-items-strech">
                 <div class="card w-100 mb-0 rounded-5">
@@ -101,8 +108,12 @@
 
                         </div>
                         <div class="modal-footer">
+                            <form id="deleteDealForm" method="POST" action="/applications">
+                                @csrf
+                                <input type="hidden" name="deal_id" value="" id="dealId"/>
+                                <button type="submit" id="confirmDeleteButton" class="btn btn-success rounded-3">Yes</button>
+                            </form>
                             <button type="button" class="btn btn-danger rounded-3" data-bs-dismiss="modal">No</button>
-                            <button type="submit" id="confirmDeleteButton" class="btn btn-success rounded-3">Yes</button>
                         </div>
                     </div>
                 </div>
@@ -131,7 +142,10 @@
                 </div>
             </div>
         </div>
+
 @endsection
             @section('scripts')
                 @vite(['resources/js/userDeleteDeal.js']);
 @endsection
+
+
