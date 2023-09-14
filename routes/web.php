@@ -12,8 +12,10 @@ use App\Models\Field;
 use App\Models\Log;
 use App\Models\Page;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 
 //CUSTOM 404 REDIRECT
@@ -151,6 +153,24 @@ Route::middleware(['guest'])->group(function () {
     Route::get("/login", "\App\Http\Controllers\AuthController@login")->name("login");
 
     Route::post("/login", "\App\Http\Controllers\AuthController@auth");
+
+    #TEST ROUTE FOR PASSWORD RESET
+    Route::get('/forgot_password', function () {
+        return view('auth.forgot_password');
+    })->name('password.request');
+
+    #TEST ROUTE FOR PASSWORD RESET
+    Route::post('/forgot_password', function (Request $request) {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email' => __($status)]);
+    })->name('password.email');
 
 });
 
