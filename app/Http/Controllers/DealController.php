@@ -52,6 +52,13 @@ class DealController extends RootController
             return redirect()->route("fallback");
         }
 
+        $dealCount = Deal::where('user_id',$user->user_id)->count();
+
+        if ($dealCount === 4){//5 deals
+            Log::errorLog('Max number of deals already reached.', $user->user_id);
+            return redirect()->back()->with(["errors" => ["You have already reached the maximum number applications."]]);
+        }
+
         try {
             $title = "University Application From Platform";
             $contactId = $user->contact_id;
@@ -62,12 +69,12 @@ class DealController extends RootController
             $applicationFields = $request->all();
 
             if (empty($applicationFields)) {
-                return redirect()->route("home")->with(["errors" => ["You must fill in your information before applying to universities."]]);
+                return redirect()->back()->with(["errors" => ["You must fill in your information before applying to universities."]]);
             }
 
             foreach ($applicationFields as $key=>$value) {
                 if (!$value){
-                    return redirect()->route("home")->with(["errors" => ["You must fill in the required information in your application before applying to universities."]]);
+                    return redirect()->back()->with(["errors" => ["You must fill in the required information in your application before applying to universities."]]);
                 }
             }
 

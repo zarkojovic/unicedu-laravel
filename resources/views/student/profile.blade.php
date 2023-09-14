@@ -40,7 +40,7 @@
                                         @csrf
                                         @method('PUT')
                                         <label class="text-primary text-hover t05 profile-image-label"
-                                               for="profile-image-input">Change Profile Picture</label>
+                                               for="profile-image-input">Upload Profile Image (Required)</label>
                                         <input type="file" class="d-none" name="profile-image"
                                                id="profile-image-input"/>
                                     </form>
